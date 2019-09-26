@@ -1,5 +1,4 @@
 <?php
-print("Hi");
-print("<br>");
-print("How are you?");
-печать ( "у меня нормально");
+require_once("ISKombat/ISKombat.php");
+
+$isCombat = new ISKombat();
