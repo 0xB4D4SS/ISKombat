@@ -1,4 +1,4 @@
 <?php
-print("It's moderation branch");
-print("test succesfull");
-print("hh");
+require_once("ISKombat/ISKombat.php");
+
+$isCombat = new ISKombat();
