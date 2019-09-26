@@ -1,4 +1,7 @@
 <?php
+// need to make move, setState and hit functions
+
+
 require_once("Fighter.php");
 
 const STATE = array(
@@ -35,11 +38,13 @@ class ISKombat {
         //$data->{"hitTimeStamp"} = 0;      // to check time of hit before next hit
         //$data->{"hitType"} = "block";     //(hand, leg or block)
         //$data->{"health"} = 100;
-        //$data->{"direction"} = "forward";
+        //$data->{"direction"} = "right";
         //$data->{"movingSpeed"} = 10;      //?
         //$data->{"jumpSpeed"} = 25;        //↓
         //$data->{"jumpAcceleration"} = 50; //to count jumping parabola
-        $this->Fighters = array(new Fighter($data, $this->state));
+        $this->Fighters = array(
+                        "Fighter1" => new Fighter($data, $this->state)
+                    );
         //scene
         $this->scene = new stdClass();
         $this->scene->left = 0;
@@ -49,8 +54,21 @@ class ISKombat {
     /*
     // moving fighter
     public function move($id, $direction) {
-        if (Fighter)
+        if (Fighters->$id) {
+            switch ($direction) {
+                case "right":
+                    if ((Fighters["Fighter1"]->x + Fighters["Fighter1"]->movingSpeed) < scene->right) return "Success";
+                    return "error";
+                    break;
+
+                case "left":
+                    if ((Fighters["Fighter1"]->x + Fighters["Fighter1"]->movingSpeed) > scene->left) return "Success";
+                    return "error";
+                    break;
+            }
+        }
     }
+    */
     //
     public function setState($id, $STATE) {
 
@@ -59,5 +77,5 @@ class ISKombat {
     public function hit($id, $hitType) {
 
     }
-    */
+    
 }
