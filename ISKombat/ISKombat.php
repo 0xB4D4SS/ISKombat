@@ -1,39 +1,37 @@
 <?php
 // need to make move, setState and hit functions
 
-
 require_once("Fighter.php");
 
-const STATE = array(
-            "STANDING" => "STANDING",
-            "CROUCHING" => "CROUCHING",
-            "DOWN" => "DOWN",
-            "JUMP" => "JUMP"
-        );    
-
-const WIDTH = array(  
-            "STANDING" => 1,
-            "CROUCHING" => 1.5,
-            "DOWN" => 5,
-            "JUMP" => 1
-        );
-
-const HEIGHT = array(  
-            "STANDING" => 5,
-            "CROUCHING" => 2.5,
-            "DOWN" => 1,
-            "JUMP" => 10
-        );
-
 class ISKombat {
+    const STATE = array(
+        "STANDING" => "STANDING",
+        "CROUCHING" => "CROUCHING",
+        "DOWN" => "DOWN",
+        "JUMP" => "JUMP"
+    );    
+
+    const WIDTH = array(  
+        "STANDING" => 1,
+        "CROUCHING" => 1.5,
+        "DOWN" => 5,
+        "JUMP" => 1
+    );
+
+    const HEIGHT = array(  
+        "STANDING" => 5,
+        "CROUCHING" => 2.5,
+        "DOWN" => 1,
+        "JUMP" => 10
+    );
     function __construct() {
         $data = new stdClass();
         $data->{"id"} = 0;
         $data->{"x"} = 0;
         $data->{"y"} = 0;
-        $data->{"state"} = STATE["STANDING"];
-        $data->{"width"} = WIDTH[$this->state];
-        $data->{"height"} = HEIGHT[$this->state];
+        $data->{"state"} = STATE["STANDING"]; // Illegal string offset 'STANDING' 
+        $data->{"width"} = ISKombat::WIDTH[$this->state];  // how to put values here?
+        $data->{"height"} = ISKombat::HEIGHT[$this->state];
         //$data->{"hit"} = false;
         //$data->{"hitTimeStamp"} = 0;      // to check time of hit before next hit
         //$data->{"hitType"} = "block";     //(hand, leg or block)
@@ -51,31 +49,37 @@ class ISKombat {
         $this->scene->right = 100;
 
     }
-    /*
+    
     // moving fighter
     public function move($id, $direction) {
-        if (Fighters->$id) {
+        if ($this->id = $id) {
             switch ($direction) {
                 case "right":
-                    if ((Fighters["Fighter1"]->x + Fighters["Fighter1"]->movingSpeed) < scene->right) return "Success";
-                    return "error";
+                    if ($this->x < $this->scene->right) return true;
+                    return false;
                     break;
 
                 case "left":
-                    if ((Fighters["Fighter1"]->x + Fighters["Fighter1"]->movingSpeed) > scene->left) return "Success";
-                    return "error";
+                    if ($this->x > $this->scene->left) return true;
+                    return false;
                     break;
             }
         }
     }
-    */
     //
-    public function setState($id, $STATE) {
-
+    public function setState($id, $state) {
+        if ($this->id = $id) {
+            $this->state = STATE[$state];
+            return true;
+        }
+        return false;
     }
     //
     public function hit($id, $hitType) {
-
+        if ($this->id = $id) {
+            return true;
+        }
+        return false;
     }
     
 }
