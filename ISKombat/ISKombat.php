@@ -52,7 +52,7 @@ class ISKombat {
     
     // moving fighter
     public function move($id, $direction) {
-        if ($this->id = $id) {
+        if ($this->id == $id) {
             switch ($direction) {
                 case "right":
                     if ($this->x < $this->scene->right) return true;
@@ -68,15 +68,15 @@ class ISKombat {
     }
     //
     public function setState($id, $state) {
-        if ($this->id = $id) {
-            $this->state = STATE[$state];
+        if ($this->id == $id) {
+            $this->state = ISKombat::STATE[$state]; // should i change width and height too?
             return true;
         }
         return false;
     }
     //
     public function hit($id, $hitType) {
-        if ($this->id = $id) {
+        if ($this->id == $id) {
             return true;
         }
         return false;
