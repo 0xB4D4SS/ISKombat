@@ -25,6 +25,7 @@ class ISKombat {
         "JUMP" => 10
     );
     function __construct() {
+        //fighter
         $data = new stdClass();
         $data->{"id"} = 0;
         $data->{"x"} = 0;
@@ -34,7 +35,7 @@ class ISKombat {
         $data->{"height"} = ISKombat::HEIGHT[$this->state];
         //$data->{"hit"} = false;
         //$data->{"hitTimeStamp"} = 0;      // to check time of hit before next hit
-        //$data->{"hitType"} = "block";     //(hand, leg or block)
+        $data->{"hitType"} = "block";     //(hand, leg or block)
         //$data->{"health"} = 100;
         //$data->{"direction"} = "right";
         //$data->{"movingSpeed"} = 10;      //?
@@ -77,6 +78,7 @@ class ISKombat {
     //
     public function hit($id, $hitType) {
         if ($this->id == $id) {
+            $this->hitType = $hitType;
             return true;
         }
         return false;
