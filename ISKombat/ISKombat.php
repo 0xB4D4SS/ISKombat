@@ -29,7 +29,7 @@ class ISKombat {
         $data->{"id"} = 0;
         $data->{"x"} = 0;
         $data->{"y"} = 0;
-        $data->{"state"} = STATE["STANDING"]; // Illegal string offset 'STANDING' 
+        $data->{"state"} = ISKombat::STATE["STANDING"];
         $data->{"width"} = ISKombat::WIDTH[$this->state];  // how to put values here?
         $data->{"height"} = ISKombat::HEIGHT[$this->state];
         //$data->{"hit"} = false;
