@@ -1,5 +1,4 @@
 <?php
-// need to make move, setState and hit functions
 
 require_once("Fighter.php");
 
@@ -31,10 +30,10 @@ class ISKombat {
         $data->{"x"} = 0;
         $data->{"y"} = 0;
         $data->{"state"} = ISKombat::STATE["STANDING"];
-        $data->{"width"} = ISKombat::WIDTH[$this->state];  // how to put values here?
-        $data->{"height"} = ISKombat::HEIGHT[$this->state];
+        $data->{"width"} = ISKombat::WIDTH[$data->state];
+        $data->{"height"} = ISKombat::HEIGHT[$data->state];
         //$data->{"hit"} = false;
-        //$data->{"hitTimeStamp"} = 0;      // to check time of hit before next hit
+        $data->{"hitTimeStamp"} = 0;      // to check time of hit before next hit
         $data->{"hitType"} = "block";     //(hand, leg or block)
         //$data->{"health"} = 100;
         //$data->{"direction"} = "right";
@@ -42,7 +41,7 @@ class ISKombat {
         //$data->{"jumpSpeed"} = 25;        //↓
         //$data->{"jumpAcceleration"} = 50; //to count jumping parabola
         $this->Fighters = array(
-                        "Fighter1" => new Fighter($data, $this->state)
+                        "Fighter1" => new Fighter($data, $data->state)
                     );
         //scene
         $this->scene = new stdClass();
@@ -56,12 +55,20 @@ class ISKombat {
         if ($this->id == $id) {
             switch ($direction) {
                 case "right":
-                    if ($this->x < $this->scene->right) return true;
+                    if ($this->x < $this->scene->right) {
+                        $this->x += $this->movingSpeed;
+                        $this->direction = $direction;
+                        return true;
+                    }
                     return false;
                     break;
 
                 case "left":
-                    if ($this->x > $this->scene->left) return true;
+                    if ($this->x > $this->scene->left) {
+                        $this->x -= $this->movingSpeed;    
+                        $this->direction = $direction;
+                        return true;
+                    }
                     return false;
                     break;
             }
@@ -79,6 +86,7 @@ class ISKombat {
     public function hit($id, $hitType) {
         if ($this->id == $id) {
             $this->hitType = $hitType;
+            $this->hitTimeStamp = date();
             return true;
         }
         return false;

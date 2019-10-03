@@ -7,7 +7,5 @@ class Fighter {
             $this->{$key} = $value;
             print_r($key."=".$value." , ");
         }
-        //$this->width = ISKombat::WIDTH[$this->$STATE->state];
-        //$this->height = ISKombat::HEIGHT[$this->$STATE->state];
     }
 }
