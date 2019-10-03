@@ -15,7 +15,7 @@ function router($params) {
             return $app->move($params);
             break;
         default:
-            print_r("default");
+            return "default";
             break;
     }  
 }
@@ -25,15 +25,15 @@ function answer($data) {
         return array(
             "result" => "ok",
             "data" => $data
-        );
+            );
     }
     return array(
         "result" => "error",
         "error" => array(
-            "code" => 999,
-            "text" => "unknown error"
-        )
-    );
+                "code" => 999,
+                "text" => "unknown error"
+                )
+        );
 }
 
 echo json_encode(answer(router($_GET)));

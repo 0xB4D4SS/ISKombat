@@ -1,5 +1,5 @@
 async function sendMoveRequest() {
-    const response = await fetch("api/?method=move");
+    const response = await fetch("/api/?method=default");
     const result = await response.json();
     return result;
 }
@@ -10,5 +10,5 @@ window.onload = function() {
                                 async function() {
                                     console.log(await sendMoveRequest());
                                 }
-    );
+                                );
 }

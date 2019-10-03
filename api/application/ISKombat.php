@@ -32,17 +32,19 @@ class ISKombat {
         $data->{"state"} = ISKombat::STATE["STANDING"];
         $data->{"width"} = ISKombat::WIDTH[$data->state];
         $data->{"height"} = ISKombat::HEIGHT[$data->state];
-        //$data->{"hit"} = false;
         $data->{"hitTimeStamp"} = 0;      // to check time of hit before next hit
         $data->{"hitType"} = "block";     //(hand, leg or block)
-        //$data->{"health"} = 100;
-        //$data->{"direction"} = "right";
-        //$data->{"movingSpeed"} = 10;      //?
+        $data->{"movingSpeed"} = 10;
+        $data->{"direction"} = "right";
+        $data->{"health"} = 100;
+        //$data->{"hit"} = false;
         //$data->{"jumpSpeed"} = 25;        //↓
         //$data->{"jumpAcceleration"} = 50; //to count jumping parabola
+
         $this->Fighters = array(
                         "Fighter1" => new Fighter($data, $data->state)
                     );
+                    
         //scene
         $this->scene = new stdClass();
         $this->scene->left = 0;
