@@ -42,7 +42,7 @@ class ISKombat {
         //$data->{"jumpAcceleration"} = 50; //to count jumping parabola
 
         $this->Fighters = array(
-                        "Fighter1" => new Fighter($data, $data->state)
+                        "Fighter1" => new Fighter($data)
                     );
                     
         //scene
