@@ -8,15 +8,9 @@ function router($params) {
     $app = new Application();
     $method = $params["method"];
     switch ($method) {
-        case "test":
-            return $app->test($params);
-            break;
-        case "move":
-            return $app->move($params);
-            break;
-        default:
-            return "default";
-            break;
+        case "test": return $app->test($params);
+        case "move": return $app->move($params);
+        default:     return "default";
     }  
 }
 
