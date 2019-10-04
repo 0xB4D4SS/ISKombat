@@ -1,6 +1,5 @@
 <?php
 error_reporting(-1);
-require_once("application/ISKombat.php");
 require_once("application/Application.php");
 
 //testing GET, POST etc.
@@ -10,7 +9,7 @@ function router($params) {
     switch ($method) {
         case "test": return $app->test($params);
         case "move": return $app->move($params);
-        default:     return "default";
+        default:     return false;
     }  
 }
 

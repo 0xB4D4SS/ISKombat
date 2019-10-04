@@ -1,5 +1,6 @@
 <?php
 //responsing to client
+require_once('ISKombat.php');
 class Application {
 
     function __construct() {
@@ -11,7 +12,10 @@ class Application {
     }
 
     public function move($params) {
-        return $this->iskombat->move($params);
+        return $this->iskombat->move(
+            $params['id'],
+            $params['direction']
+        );
     }
     
     
