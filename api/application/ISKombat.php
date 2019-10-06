@@ -63,16 +63,15 @@ class ISKombat {
                         $this->Fighters["Fighter1"]->direction = $direction;
                         return true;
                     }
-                    return false;
                 case "left":
                     if ($this->Fighters["Fighter1"]->x > $this->scene->left) {
                         $this->Fighters["Fighter1"]->x -= $this->Fighters["Fighter1"]->movingSpeed;
                         $this->Fighters["Fighter1"]->direction = $direction;
                         return true;
                     }
-                    return false;
             }
         }
+        return false;
     }
     //
     public function setState($id = null, $state = null) {
