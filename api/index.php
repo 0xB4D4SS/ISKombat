@@ -9,6 +9,8 @@ function router($params) {
     switch ($method) {
         case "test": return $app->test($params);
         case "move": return $app->move($params);
+        case "setState" : return $app->setState($params);
+        case "hit": return $app->hit($params);
         default:     return false;
     }  
 }

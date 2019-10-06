@@ -52,43 +52,41 @@ class ISKombat {
 
     }
     
-    // moving fighter
-    public function move($id, $direction) {
-        if ($this->id == $id) {
+    // TODO: нужен объект со связями id->fighter или типа того (Часть авторизации?),
+    //       а пока мучаем Fighter1.
+    public function move($id = null, $direction = null) {
+        if ($this->Fighters["Fighter1"]->id == $id) {
             switch ($direction) {
                 case "right":
-                    if ($this->x < $this->scene->right) {
-                        $this->x += $this->movingSpeed;
-                        $this->direction = $direction;
+                    if ($this->Fighters["Fighter1"]->x < $this->scene->right) {
+                        $this->Fighters["Fighter1"]->x += $this->Fighters["Fighter1"]->movingSpeed;
+                        $this->Fighters["Fighter1"]->direction = $direction;
                         return true;
                     }
                     return false;
-                    break;
-
                 case "left":
-                    if ($this->x > $this->scene->left) {
-                        $this->x -= $this->movingSpeed;    
-                        $this->direction = $direction;
+                    if ($this->Fighters["Fighter1"]->x > $this->scene->left) {
+                        $this->Fighters["Fighter1"]->x -= $this->Fighters["Fighter1"]->movingSpeed;
+                        $this->Fighters["Fighter1"]->direction = $direction;
                         return true;
                     }
                     return false;
-                    break;
             }
         }
     }
     //
-    public function setState($id, $state) {
-        if ($this->id == $id) {
-            $this->state = ISKombat::STATE[$state]; // should i change width and height too?
+    public function setState($id = null, $state = null) {
+        if ($this->Fighters["Fighter1"]->id == $id) {
+            $this->Fighters["Fighter1"]->state = ISKombat::STATE[$state]; // TODO: change width and height too
             return true;
         }
         return false;
     }
     //
-    public function hit($id, $hitType) {
-        if ($this->id == $id) {
-            $this->hitType = $hitType;
-            $this->hitTimeStamp = date();
+    public function hit($id = null, $hitType = null) {
+        if ($this->Fighters["Fighter1"]->id == $id) {
+            $this->Fighters["Fighter1"]->hitType = $hitType; //TODO: ... = ISKombat::HITTYPE[$hitType] или типа того
+            $this->Fighters["Fighter1"]->hitTimeStamp = date();
             return true;
         }
         return false;

@@ -17,6 +17,17 @@ class Application {
             $params['direction']
         );
     }
-    
-    
+
+    public function hit($params) {
+        return $this->iskombat->hit(
+            $params['id'],
+            $params['hitType']
+        );
+    }
+    public function setState($params) {
+        return $this->iskombat->setState(
+            $params['id'],
+            $params['state']
+        );
+    }
 }
