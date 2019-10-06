@@ -7,22 +7,33 @@ class ISKombat {
         "STANDING" => "STANDING",
         "CROUCHING" => "CROUCHING",
         "DOWN" => "DOWN",
-        "JUMP" => "JUMP"
+        "JUMP" => "JUMP",
+        "DEAD" => "DEAD"
     );    
 
     const WIDTH = array(  
         "STANDING" => 1,
         "CROUCHING" => 1.5,
         "DOWN" => 5,
-        "JUMP" => 1
+        "JUMP" => 1,
+        "DEAD" => 5
     );
 
     const HEIGHT = array(  
         "STANDING" => 5,
         "CROUCHING" => 2.5,
         "DOWN" => 1,
-        "JUMP" => 10
+        "JUMP" => 10,
+        "DEAD" => 1
     );
+
+    const HITTYPE = array(
+        "HANDKICK" => "HANDKICK",
+        "LEGKICK" => "LEGKICK",
+        "JUMPKICK" => "JUMPKICK",
+        "CROUCHKICK" => "CROUCHKICK"
+    );
+
     function __construct() {
         //fighter
         $data = new stdClass();
@@ -76,7 +87,9 @@ class ISKombat {
     //
     public function setState($id = null, $state = null) {
         if ($this->Fighters["Fighter1"]->id == $id) {
-            $this->Fighters["Fighter1"]->state = ISKombat::STATE[$state]; // TODO: change width and height too
+            $this->Fighters["Fighter1"]->state = ISKombat::STATE[$state];
+            $this->Fighters["Fighter1"]->width = ISKombat::WIDTH[$this->Fighters["Fighter1"]->state];
+            $this->Fighters["Fighter1"]->height = ISKombat::HEIGHT[$this->Fighters["Fighter1"]->state];
             return true;
         }
         return false;
@@ -84,8 +97,8 @@ class ISKombat {
     //
     public function hit($id = null, $hitType = null) {
         if ($this->Fighters["Fighter1"]->id == $id) {
-            $this->Fighters["Fighter1"]->hitType = $hitType; //TODO: ... = ISKombat::HITTYPE[$hitType] или типа того
-            $this->Fighters["Fighter1"]->hitTimeStamp = date();
+            $this->Fighters["Fighter1"]->hitType = ISKombat::HITTYPE[$hitType];
+            $this->Fighters["Fighter1"]->hitTimeStamp = date("U"); // returns seconds since start of Unix epoch (1 Jan, 1970, 00:00:00 GMT)
             return true;
         }
         return false;
