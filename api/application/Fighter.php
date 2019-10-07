@@ -1,5 +1,4 @@
 <?php
-//need to deal with width and height values
 
 class Fighter {
     function __construct($data) {
