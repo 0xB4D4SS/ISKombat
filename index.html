@@ -3,9 +3,33 @@
         <meta charset="utf-8">
         <title>ISKombat</title>
         <script src="public/js/main.js"></script>
+        <script src="public/js/server.js"></script>
+        
     </head>
     <body>
-        <p> Адын</p>
-        <button id="move">Click</button>
+        <div>
+            <p>Authorize</p>
+            <label>Login</label><input id="login">
+            <br>
+            <label>Password</label><input type="password" id="pass">
+            <br>
+            <button id="loginButton">Log in</button>
+        </div>
+        <div>
+            <p> Адын</p>
+            <button id="move_right">Move right</button>
+            <br>
+            <button id="move_left">Move left</button>
+            <br>
+            <button id="hit_hand">Hit with hand</button>
+            <br>
+            <button id="hit_leg">Hit with leg</button>
+            <br>
+            <button id="stand">Stand</button>
+            <br>
+            <button id="crouch">Crouch</button>
+            <br>
+            <button id="jump">Jump</button>
+        </div>
     </body>
 </html>
