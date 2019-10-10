@@ -1,79 +1,39 @@
-async function sendMoveRightRequest() {
-    const response = await fetch('api/?method=move&id=0&direction=right');
-    const result = await response.json();
-    return result;
-}
-
-async function sendMoveLeftRequest() {
-    const response = await fetch('api/?method=move&id=0&direction=left');
-    const result = await response.json();
-    return result;
-}
-
-async function sendHandHitRequest() {
-    const response = await fetch('api/?method=hit&id=0&hitType=HANDKICK');
-    const result = await response.json();
-    return result;
-}
-
-async function sendLegHitRequest() {
-    const response = await fetch('api/?method=hit&id=0&hitType=LEGKICK');
-    const result = await response.json();
-    return result;
-}
-
-async function sendStandRequest() {
-    const response = await fetch('api/?method=setState&id=0&state=STANDING');
-    const result = await response.json();
-    return result;
-}
-
-async function sendCrouchRequest() {
-    const response = await fetch('api/?method=setState&id=0&state=CROUCHING');
-    const result = await response.json();
-    return result;
-}
-
-async function sendJumpRequest() {
-    const response = await fetch('api/?method=setState&id=0&state=JUMP');
-    const result = await response.json();
-    return result;
-}
-// change of same method's parameters should be inside one function prob :thinking:
-
 window.onload = function () {
-    const moveRightButton = document.getElementById('move_right');
-    moveRightButton.addEventListener('click', async function () {
-        console.log(await sendMoveRightRequest());
+    const server = new Server();
+    //authorization
+    document.getElementById("loginButton").addEventListener("click", async function() {
+        const login = document.getElementById("login").value;
+        const pass = document.getElementById("pass").value;
+        if (login && pass) {
+            console.log(await server.auth(login, pass));
+        }else alert("no login or pass");
+    });
+    //game methods
+    document.getElementById('move_right').addEventListener('click', async function () {
+        console.log(await server.move(0, "right"));
     });
 
-    const moveLeftButton = document.getElementById('move_left');
-    moveLeftButton.addEventListener('click', async function () {
-        console.log(await sendMoveLeftRequest());
+    document.getElementById('move_left').addEventListener('click', async function () {
+        console.log(await server.move(0, "left"));
     });
 
-    const handHitButton = document.getElementById('hit_hand');
-    handHitButton.addEventListener('click', async function () {
-        console.log(await sendHandHitRequest());
+    document.getElementById('hit_hand').addEventListener('click', async function () {
+        console.log(await server.hit(0, "HANDKICK"));
     });
 
-    const legHitButton = document.getElementById('hit_leg');
-    legHitButton.addEventListener('click', async function () {
-        console.log(await sendLegHitRequest());
+    document.getElementById('hit_leg').addEventListener('click', async function () {
+        console.log(await server.hit(0, "LEGKICK"));
     });
 
-    const standButton = document.getElementById('stand');
-    standButton.addEventListener('click', async function () {
-        console.log(await sendStandRequest());
+    document.getElementById('stand').addEventListener('click', async function () {
+        console.log(await server.setState(0, "STANDING"));
     });
 
-    const crouchButton = document.getElementById('crouch');
-    crouchButton.addEventListener('click', async function () {
-        console.log(await sendCrouchRequest());
+    document.getElementById('crouch').addEventListener('click', async function () {
+        console.log(await server.setState(0, "CROUCHING"));
     });
 
-    const jumpButton = document.getElementById('jump');
-    jumpButton.addEventListener('click', async function () {
-        console.log(await sendJumpRequest());
+    document.getElementById('jump').addEventListener('click', async function () {
+        console.log(await server.setState(0, "JUMP"));
     });
 };

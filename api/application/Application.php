@@ -1,33 +1,49 @@
 <?php
 //responsing to client
-require_once('ISKombat.php');
+require_once('ISKombat/ISKombat.php');
+require_once("user/User.php");
+
 class Application {
 
     function __construct() {
         $this->iskombat = new ISKombat();
+        $this->user = new User();
     } 
-    
-    public function test($params) {
-        return true;
+    // user
+    public function login($params) {
+        if ($params["login"] && $params["pass"]) {
+            return $this->user->login($params["login"], $params["pass"]);
+        }
+        return false;
     }
-
+    // game
     public function move($params) {
-        return $this->iskombat->move(
-            $params['id'],              // Notice: Undefined index: id in C:\openserver\OSPanel\domains\localhost\api\application\Application.php on line 16
-            $params['direction']        // Notice: Undefined index: direction in C:\openserver\OSPanel\domains\localhost\api\application\Application.php on line 17
-        );
+        if ($params["id"] && $params["direction"]) {
+            return $this->iskombat->move(
+                $params['id'],           
+                $params['direction'] 
+            );
+        }
+        return false;
     }
 
     public function hit($params) {
-        return $this->iskombat->hit(
-            $params['id'],              // Notice: Undefined index: id in C:\openserver\OSPanel\domains\localhost\api\application\Application.php on line 23
-            $params['hitType']          // Notice: Undefined index: hitType in C:\openserver\OSPanel\domains\localhost\api\application\Application.php on line 24
-        );
+        if ($params["id"] && $params["hitType"]) {
+            return $this->iskombat->hit(
+                $params['id'],       
+                $params['hitType']     
+            );
+        }
+        return false;
     }
+
     public function setState($params) {
-        return $this->iskombat->setState(
-            $params['id'],                  // Notice: Undefined index: id in C:\openserver\OSPanel\domains\localhost\api\application\Application.php on line 29
-            $params['state']                // Notice: Undefined index: state in C:\openserver\OSPanel\domains\localhost\api\application\Application.php on line 30
-        );
+        if ($params["id"] && $params["state"]) {
+            return $this->iskombat->setState(
+                $params['id'],      
+                $params['state']      
+            );
+        }
+        return false;
     }
 }

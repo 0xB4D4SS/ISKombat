@@ -1,12 +1,14 @@
 <?php
-error_reporting(-1);
+error_reporting(1);
 require_once("application/Application.php");
 
-//testing GET, POST etc.
 function router($params) {
     $app = new Application();
     $method = $params["method"];
     switch ($method) {
+        //user methods
+        case "login": return $app->login($params);
+        // game methods
         case "test": return $app->test($params);
         case "move": return $app->move($params);
         case "setState" : return $app->setState($params);
