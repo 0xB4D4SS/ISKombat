@@ -3,6 +3,7 @@
 require_once("Fighter.php");
 
 class ISKombat {
+
     const STATE = array(
         "STANDING" => "STANDING",
         "CROUCHING" => "CROUCHING",
@@ -51,54 +52,59 @@ class ISKombat {
         //$data->{"hit"} = false;
         //$data->{"jumpSpeed"} = 25;        //↓
         //$data->{"jumpAcceleration"} = 50; //to count jumping parabola
-
         $this->Fighters = array(
-                        "Fighter1" => new Fighter($data)
-                    );
-                    
+                        "1" => new Fighter($data)
+                    ); 
         //scene
         $this->scene = new stdClass();
         $this->scene->left = 0;
         $this->scene->right = 100;
 
     }
-    
-    // TODO: нужен объект со связями id->fighter или типа того (Часть авторизации?),
-    //       а пока мучаем Fighter1.
+    //
+    private function getFighterById($id) {
+        for ($i=0; $i < count($this->Fighters); $i++) {
+            if ($this->Fighters[$i]->id == $id) return $this->Fighters[$i];
+            else return false;
+        }
+    }
+    //
     public function move($id = null, $direction = null) {
-        if ($this->Fighters["Fighter1"]->id == $id) {
+        if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
             switch ($direction) {
                 case "right":
-                    if ($this->Fighters["Fighter1"]->x < $this->scene->right) {
-                        $this->Fighters["Fighter1"]->x += $this->Fighters["Fighter1"]->movingSpeed;
-                        $this->Fighters["Fighter1"]->direction = $direction;
+                    if (getFighterById($id)->x < $this->scene->right) {
+                        getFighterById($id)->x += getFighterById($id)->movingSpeed;
+                        getFighterById($id)->direction = $direction;
                         return true;
                     }
+                break;
                 case "left":
-                    if ($this->Fighters["Fighter1"]->x > $this->scene->left) {
-                        $this->Fighters["Fighter1"]->x -= $this->Fighters["Fighter1"]->movingSpeed;
-                        $this->Fighters["Fighter1"]->direction = $direction;
+                    if (getFighterById($id)->x > $this->scene->left) {
+                        getFighterById($id)->x -= getFighterById($id)->movingSpeed;
+                        getFighterById($id)->direction = $direction;
                         return true;
                     }
+                break;
             }
         }
         return false;
     }
     //
     public function setState($id = null, $state = null) {
-        if ($this->Fighters["Fighter1"]->id == $id) {
-            $this->Fighters["Fighter1"]->state = ISKombat::STATE[$state];
-            $this->Fighters["Fighter1"]->width = ISKombat::WIDTH[$this->Fighters["Fighter1"]->state];
-            $this->Fighters["Fighter1"]->height = ISKombat::HEIGHT[$this->Fighters["Fighter1"]->state];
+        if (getFighterById($id)) {
+            getFighterById($id)->state = ISKombat::STATE[$state];
+            getFighterById($id)->width = ISKombat::WIDTH[getFighterById($id)->state];
+            getFighterById($id)->height = ISKombat::HEIGHT[getFighterById($id)->state];
             return true;
         }
         return false;
     }
     //
     public function hit($id = null, $hitType = null) {
-        if ($this->Fighters["Fighter1"]->id == $id) {
-            $this->Fighters["Fighter1"]->hitType = ISKombat::HITTYPE[$hitType];
-            $this->Fighters["Fighter1"]->hitTimeStamp = date("U"); // returns seconds since start of Unix epoch (1 Jan, 1970, 00:00:00 GMT)
+        if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
+            getFighterById($id)->hitType = ISKombat::HITTYPE[$hitType];
+            getFighterById($id)->hitTimeStamp = date("U"); // returns seconds since start of Unix epoch (1 Jan, 1970, 00:00:00 GMT)
             return true;
         }
         return false;
