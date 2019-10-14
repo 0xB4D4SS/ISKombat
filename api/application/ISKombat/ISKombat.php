@@ -115,15 +115,17 @@ class ISKombat {
             case "right":
                 if (getFighterById($initiatorId)->x + ISKombat::HITLENGTH[$hitType] >= getFighterById($enemyId)->x
                     && getFighterById($initiatorId)->x + ISKombat::HITLENGTH[$hitType] <= getFighterById($enemyId)->x + getFighterById($enemyId)->width) {
-                    getFighterById($enemyId)->health -= ISKombat::HITDAMAGE[$hitType];
-                }
+                    return true;
+                }else
+                return false;
             break;
 
             case "left":
                 if (getFighterById($initiatorId)->x - ISKombat::HITLENGTH[$hitType] <= getFighterById($enemyId)->x + getFighterById($enemyId)->width
                     && getFighterById($initiatorId)->x - ISKombat::HITLENGTH[$hitType] >= getFighterById($enemyId)->x) {
-                    getFighterById($enemyId)->health -= ISKombat::HITDAMAGE[$hitType];
-                }
+                    return true;
+                }else
+                return false;
             break;   
         }
     }
@@ -135,11 +137,15 @@ class ISKombat {
             switch ($hitType) {
                 
                 case "HANDKICK":
-                    hitCheck($id, 0/*enemy id*/);
+                    if (hitCheck($id, $enemyId)) {
+                        getFighterById($enemyId)->health -= ISKombat::HITDAMAGE[$hitType]; //need to understand, how to determine enemy's id
+                    }
                 break;
 
                 case "LEGKICK":
-                    hitCheck($id, 0/*enemy id*/);
+                    if (hitCheck($id, $enemyId)) {
+                        getFighterById($enemyId)->health -= ISKombat::HITDAMAGE[$hitType];
+                    }
                 break;
             }
             return true;
