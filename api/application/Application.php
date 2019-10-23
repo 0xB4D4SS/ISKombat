@@ -2,17 +2,26 @@
 //responsing to client
 require_once('ISKombat/ISKombat.php');
 require_once("user/User.php");
+require_once("db/Database.php");
 
 class Application {
 
     function __construct() {
         $this->iskombat = new ISKombat();
-        $this->user = new User();
+        $db = new Database();
+        $this->user = new User($db);
     } 
     // user
     public function login($params) {
         if ($params["login"] && $params["pass"]) {
             return $this->user->login($params["login"], $params["pass"]);
+        }
+        return false;
+    }
+
+    public function logout($params) {
+        if ($params["login"] && $params["pass"]) {
+            return $this->user->logout($params["login"], $params["pass"]);
         }
         return false;
     }
