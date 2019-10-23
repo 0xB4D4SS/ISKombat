@@ -49,5 +49,10 @@ class Database {
         $result = $this->connection->query($query);
         return $this->allRecords($result);
     }
+    public function getUserByToken($token) {
+        $query = "SELECT * FROM users WHERE token = '".$token."'";
+        $result = $this->connection->query($query);
+        return $this->allRecords($result);
+    }
 
 }
