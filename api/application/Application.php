@@ -2,36 +2,57 @@
 //responsing to client
 require_once('ISKombat/ISKombat.php');
 require_once("user/User.php");
-require_once("db/Database.php");
+require_once("db/DB.php");
 
 class Application {
 
     function __construct() {
         $this->iskombat = new ISKombat();
-        $db = new Database();
+        $db = new DB();
         $this->user = new User($db);
     } 
     // user
     public function login($params) {
         if ($params["login"] && $params["pass"]) {
             return $this->user->login($params["login"], $params["pass"]);
+
+        }
+        return false;
+    }
+
+    public function register($params) {
+        if ($params["login"] && $params["pass"]) {
+            return $this->user->register($params["login"], $params["pass"]);
         }
         return false;
     }
 
     public function logout($params) {
-        if ($params["login"] && $params["pass"]) {
-            return $this->user->logout($params["login"], $params["pass"]);
+        if ($params["token"]) {
+            return $this->user->logout($params["token"]);
+        }
+        return false;
+    }
+
+    public function getAllUsers($params) {
+        if ($params["token"]) {
+            $user = $this->user->getUserByToken($params["token"]);
+            if ($user) {
+                return $this->user->getLobbyUsers($user->id);
+            }
         }
         return false;
     }
     // game
     public function move($params) {
-        if ($params["id"] && $params["direction"]) {
-            return $this->iskombat->move(
-                $params['id'],           
-                $params['direction'] 
-            );
+        if ($params["token"]) {
+            $user = $this->db->getUserByToken($params["token"]);
+            if ($user && $params["direction"]) {
+                return $this->iskombat->move(
+                    $user->id,           
+                    $params['direction'] 
+                );
+            }
         }
         return false;
     }
