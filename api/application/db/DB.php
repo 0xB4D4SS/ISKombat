@@ -4,9 +4,9 @@ class DB {
         $servername = "127.0.0.1";
         $username = "root";
         $password = "";
-        $dbname = "iskombat";
+        $dbname = "is_kombat";
         $this->connection = new mysqli($servername, $username, $password, $dbname);
-        if ($this->connection->connect_error) {
+        if ($this->$connection->connect_error) {
             die("Connection failed".$connection->connect_error);
         }
     }
@@ -17,7 +17,7 @@ class DB {
 
     private function oneRecord($result) {
         while ($obj = $result->fetch_object()) {
-            return $obj;                        // for one record
+            return $obj; // for one record
         }
         return null;
     }
@@ -29,11 +29,11 @@ class DB {
         }
         return $res;
     }
-
+    
     public function registerUser($login, $pass, $token) {
         $query = "INSERT INTO users (login, password, token) VALUES ( '".$login."', '".$pass."', '".$token."')";
         $result = $this->connection->query($query);
-        return true; 
+        return $this->oneRecord($result); 
     }
 
     public function getUserByLoginPass($login, $pass) {
@@ -47,28 +47,22 @@ class DB {
         return true;
     }
 
-    /*
-        SQL request for online lobby users:
-            SELECT id, login FROM `users` WHERE token <> '' AND id NOT IN (SELECT fighters.user_id FROM fighters AS f, battles AS b WHERE b.status = 'open' AND (b.fighter_id1 = f.id OR b.fighter_id2 = f.id) AND id <>
-    */
-
-    public function getLobbysUsers($userId) {
-        $query = "SELECT
-                    id, login 
-                FROM 
-                    users
+    public function getLobbyUsers($userId) {
+        $query = "SELECT id, login
+                FROM users
                 WHERE 
-                    token <> '' 
-                    AND id NOT IN (SELECT 
-                                f.user_id 
-                            FROM 
-                                fighters AS f, battles AS b 
-                            WHERE 
-                                b.status = 'open' AND 
-                                (b.fighter_id1 = f.id OR 
-                                 b.fighter_id2 = f.id)
-                            )    
-                    AND id <> '. $userId";
+                    token <> '' AND 
+                    id NOT IN 
+                        (SELECT 
+                            f.user_id 
+                        FROM 
+                            fighters AS f, 
+                            battles AS b
+                        WHERE 
+                            b.status='open' AND
+                            (b.fighter_id1 = f.id OR 
+                             b.fighter_id2 = f.id)) AND
+                    id <>" . $userId;
         $result = $this->connection->query($query);
         return $this->allRecords($result);
     }

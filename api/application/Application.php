@@ -7,15 +7,15 @@ require_once("db/DB.php");
 class Application {
 
     function __construct() {
-        $this->iskombat = new ISKombat();
         $db = new DB();
         $this->user = new User($db);
+        $this->iskombat = new ISKombat();
     } 
+
     // user
     public function login($params) {
         if ($params["login"] && $params["pass"]) {
             return $this->user->login($params["login"], $params["pass"]);
-
         }
         return false;
     }
@@ -43,6 +43,7 @@ class Application {
         }
         return false;
     }
+
     // game
     public function move($params) {
         if ($params["token"]) {

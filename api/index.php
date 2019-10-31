@@ -1,5 +1,5 @@
 <?php
-error_reporting(-1);
+error_reporting(1);
 require_once("application/Application.php");
 
 function router($params) {
@@ -10,6 +10,7 @@ function router($params) {
         case "login": return $app->login($params);
         case "register": return $app->register($params);
         case "logout": return $app->logout($params);
+        // lobby
         case "getAllUsers": return $app->getAllUsers($params);
         // game methods
         case "test": return null;
