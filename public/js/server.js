@@ -1,32 +1,29 @@
 class Server {
 
-    async sendRequest(method, data) {
+    token = null;
 
+    async sendRequest(method, data) {
         const dataArr = [];
         for (let key in data) {
             dataArr.push(`${key}=${data[key]}`);
         }
-
         if (this.token) {
-            dataArr.push(`${token}=${this.token}`);
+            dataArr.push(`token=${this.token}`);
         }
-
         const response = await fetch(
             `api/?method=${method}&${dataArr.join("&")}`
         );
-
         const answer = await response.json();
-
         if (answer && answer.result === "ok") {
             return answer.data;
-        }else
-        return answer.error;
+        }
+        return false;
     }
 
-    auth(login, pass) {
-        const result = this.sendRequest("login", {login, pass});
-        if (result && result.data) {
-            this.token = result.data.token;
+    async auth(login, pass) {
+        const result = await this.sendRequest("login", {login, pass});
+        if (result && result.token) {
+            this.token = result.token;
         }
         return result;
     }
@@ -34,17 +31,17 @@ class Server {
     register(login, pass) {
         const result = this.sendRequest("register", {login, pass});
         if (result && result.data) {
-            this.token = result.data.token;
+            this.token = result.token;
         }
         return result;
     }
 
     logout() {
-        return this.sendRequest("logout", {token: this.token});
+        return this.sendRequest("logout");
     }
 
     getAllUsers() {
-        return this.sendRequest("getAllUsers", {token: this.token});
+        return this.sendRequest("getAllUsers");
     }
     
     move(id, direction) {
