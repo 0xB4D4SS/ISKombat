@@ -35,8 +35,8 @@ class Application {
     }
 
     public function getAllUsers($params) {
-        if ($params["token"]) {
-            $user = $this->user->getUserByToken($params["token"]);
+        if ($params['token']) {
+            $user = $this->user->getUserByToken($params['token']);
             if ($user) {
                 return $this->user->getLobbyUsers($user->id);
             }

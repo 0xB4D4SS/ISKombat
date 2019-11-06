@@ -33,7 +33,7 @@ class DB {
     public function registerUser($login, $pass, $token) {
         $query = "INSERT INTO users (login, password, token) VALUES ( '".$login."', '".$pass."', '".$token."')";
         $result = $this->connection->query($query);
-        return $this->oneRecord($result); 
+        return true;
     }
 
     public function getUserByLoginPass($login, $pass) {
@@ -60,9 +60,9 @@ class DB {
                             battles AS b
                         WHERE 
                             b.status='open' AND
-                            (b.fighter_id1 = f.id OR 
-                             b.fighter_id2 = f.id)) AND
-                    id <>" . $userId;
+                            (b.id_fighter1 = f.id OR 
+                             b.id_fighter2 = f.id)) AND
+                    id <> '".$userId."'";
         $result = $this->connection->query($query);
         return $this->allRecords($result);
     }

@@ -7,11 +7,12 @@ function showPage(name) {
     document.getElementById(name).style.display = "block";
 }
 
-async function initLobbyPage() {
-    const result = await server.getAllUsers();
+async function initLobbyPage(token) {
+    const result = await server.getAllUsers(token);
     if (result) {
         console.log(result);
     }
+    return false;
     //TODO: output user login
     //TODO: list of users (online, and then offline)
 }
@@ -27,7 +28,7 @@ window.onload = function () {
             const result = await server.auth(login, pass);
             if (result) {
                 showPage("lobbyPage");
-                initLobbyPage();
+                initLobbyPage(server.token);
             }
         }else alert("no login or pass");
     });
