@@ -1,2 +1,4 @@
 Mortal Kombat web-project for IS-21 group from UdSU
-# ЗАГРУЖАЙТЕ КОД СЮДА
+
+# НЕ ЗАГРУЖАЙТЕ КОД СЮДА,
+# ДЛЯ ЭТОГО ЕСТЬ ВЕТКА moderation
