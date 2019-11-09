@@ -8,8 +8,13 @@ function router($params) {
     switch ($method) {
         //user methods
         case "login": return $app->login($params);
+        case "register": return $app->register($params);
+        case "logout": return $app->logout($params);
+        // lobby
+        case "getAllUsers": return $app->getAllUsers($params);
+        case "newChallenge": return $app->newChallenge($params);
         // game methods
-        case "test": return $app->test($params);
+        case "test": return null;
         case "move": return $app->move($params);
         case "setState" : return $app->setState($params);
         case "hit": return $app->hit($params);

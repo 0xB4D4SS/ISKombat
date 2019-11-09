@@ -30,28 +30,36 @@ class ISKombat {
 
     const HITTYPE = array(
         "HANDKICK" => "HANDKICK",
-        "LEGKICK" => "LEGKICK",
-        "JUMPKICK" => "JUMPKICK",
-        "CROUCHKICK" => "CROUCHKICK"
+        "LEGKICK" => "LEGKICK"
+    );
+
+    const HITLENGTH = array(
+        "HANDKICK" => 5,
+        "LEGKICK" => 8
+    );
+
+    const HITDAMAGE = array(
+        "HANDKICK" => 10,
+        "LEGKICK" => 15
     );
 
     function __construct() {
         //fighter
         $data = new stdClass();
-        $data->{"id"} = 0;
-        $data->{"x"} = 0;
-        $data->{"y"} = 0;
-        $data->{"state"} = ISKombat::STATE["STANDING"];
-        $data->{"width"} = ISKombat::WIDTH[$data->state];
-        $data->{"height"} = ISKombat::HEIGHT[$data->state];
-        $data->{"hitTimeStamp"} = 0;      // to check time of hit before next hit
-        $data->{"hitType"} = "block";     //(hand, leg or block)
-        $data->{"movingSpeed"} = 10;
-        $data->{"direction"} = "right";
-        $data->{"health"} = 100;
-        //$data->{"hit"} = false;
-        //$data->{"jumpSpeed"} = 25;        //↓
-        //$data->{"jumpAcceleration"} = 50; //to count jumping parabola
+        $data->id = 0;
+        $data->x = 0;
+        $data->y = 0;
+        $data->state = ISKombat::STATE["STANDING"];
+        $data->width = ISKombat::WIDTH[$data->state];
+        $data->height = ISKombat::HEIGHT[$data->state];
+        $data->hitTimeStamp = 0;      // to check time of hit before next hit
+        $data->hitType = "block";     //(hand, leg or block)
+        $data->movingSpeed = 10;
+        $data->direction = "right";
+        $data->health = 100;
+        $data->hit = false;
+        //$data->jumpSpeed = 25;        //↓
+        //$data->jumpAcceleration = 50; //to count jumping parabola
         $this->Fighters = array(
                         "1" => new Fighter($data)
                     ); 
@@ -101,10 +109,45 @@ class ISKombat {
         return false;
     }
     //
+    private function hitCheck($initiatorId, $enemyId) {
+        switch (getFighterById($initiatorId)->direction) {
+
+            case "right":
+                if (getFighterById($initiatorId)->x + ISKombat::HITLENGTH[$hitType] >= getFighterById($enemyId)->x
+                    && getFighterById($initiatorId)->x + ISKombat::HITLENGTH[$hitType] <= getFighterById($enemyId)->x + getFighterById($enemyId)->width) {
+                    return true;
+                }else
+                return false;
+            break;
+
+            case "left":
+                if (getFighterById($initiatorId)->x - ISKombat::HITLENGTH[$hitType] <= getFighterById($enemyId)->x + getFighterById($enemyId)->width
+                    && getFighterById($initiatorId)->x - ISKombat::HITLENGTH[$hitType] >= getFighterById($enemyId)->x) {
+                    return true;
+                }else
+                return false;
+            break;   
+        }
+    }
+    //
     public function hit($id = null, $hitType = null) {
         if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
             getFighterById($id)->hitType = ISKombat::HITTYPE[$hitType];
             getFighterById($id)->hitTimeStamp = date("U"); // returns seconds since start of Unix epoch (1 Jan, 1970, 00:00:00 GMT)
+            switch ($hitType) {
+                
+                case "HANDKICK":
+                    if (hitCheck($id, $enemyId)) {
+                        getFighterById($enemyId)->health -= ISKombat::HITDAMAGE[$hitType]; //need to understand, how to determine enemy's id
+                    }
+                break;
+
+                case "LEGKICK":
+                    if (hitCheck($id, $enemyId)) {
+                        getFighterById($enemyId)->health -= ISKombat::HITDAMAGE[$hitType];
+                    }
+                break;
+            }
             return true;
         }
         return false;

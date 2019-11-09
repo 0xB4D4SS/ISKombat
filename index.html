@@ -2,20 +2,29 @@
     <head>
         <meta charset="utf-8">
         <title>ISKombat</title>
-        <script src="public/js/main.js"></script>
         <script src="public/js/server.js"></script>
-        
+        <script src="public/js/main.js"></script>
     </head>
     <body>
-        <div>
+        <div id="authPage">
             <p>Authorize</p>
             <label>Login</label><input id="login">
             <br>
             <label>Password</label><input type="password" id="pass">
             <br>
-            <button id="loginButton">Log in</button>
+            <button id="loginButton">Login</button>
+            <button id="registerButton">Register</button>
+            
         </div>
-        <div>
+        <div id="lobbyPage">
+            <h1>Lobby</h1>
+            <p>Player list:</p>
+            <div id="lobbyTable">
+                
+            </div>
+            <button id="logoutButton">Logout</button>
+        </div>
+        <div id="gamePage">
             <p> Адын</p>
             <button id="move_right">Move right</button>
             <br>
