@@ -38,7 +38,4 @@ Class User {
         return $this->db->getUserByToken($token);
     }
 
-    public function getLobbyUsers($userId) {
-        return $this->db->getLobbyUsers($userId);
-    }
 }
