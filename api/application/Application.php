@@ -50,10 +50,39 @@ class Application {
         if ($params['token'] && $params['id']) {
             $user = $this->user->getUserByToken($params['token']);
             if ($user) {
-                $this->lobby->newChallenge($user->id, $params['id']);
+                return $this->lobby->newChallenge($user->id, $params['id']);
             }
         }
         return false;
+    }
+
+    public function isChallenge($params) {
+        if ($params['token']) {
+            $user = $this->user->getUserByToken($params['token']);
+            if ($user) {
+                return $this->lobby->isChallenge($user->id);
+            }
+        }
+        return false;
+    }
+
+    public function isChallengeAccepted($params) {
+        if ($params['token']) {
+            $user = $this->user->getUserByToken($params['token']);
+            if ($user) {
+                return $this->lobby->isChallengeAccepted($user->id);
+            }
+        }
+        return false;
+    }
+
+    public function acceptChallenge($params) {
+        if ($params['token'] && $params['answer']) {
+            $user = $this->user->getUserByToken($params['token']);
+            if ($user) {
+                return $this->lobby->acceptChallenge($user->id, $params['answer']); 
+            }
+        }
     }
 
     // game

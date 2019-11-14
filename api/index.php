@@ -13,6 +13,9 @@ function router($params) {
         // lobby
         case "getAllUsers": return $app->getAllUsers($params);
         case "newChallenge": return $app->newChallenge($params);
+        case "isChallenge": return $app->isChallenge($params);
+        case "isChallengeAccepted": return $app->isChallengeAccepted($params);
+        case "acceptChallenge": return $app->acceptChallenge($params);
         // game methods
         case "test": return null;
         case "move": return $app->move($params);

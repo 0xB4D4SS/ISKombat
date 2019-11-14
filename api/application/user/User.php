@@ -9,6 +9,10 @@ Class User {
         return md5($login . $pass . strval(rand()));
     }
 
+    public function getUserByToken($token) {
+        return $this->db->getUserByToken($token);
+    }
+    
     public function login($login, $pass) {
         //get user
         $user = $this->db->getUserByLoginPass($login, $pass);
@@ -34,8 +38,6 @@ Class User {
         return array("token" => $token);
     }
 
-    public function getUserByToken($token) {
-        return $this->db->getUserByToken($token);
-    }
+    
 
 }

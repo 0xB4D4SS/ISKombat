@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 06 2019 г., 19:41
+-- Время создания: Ноя 14 2019 г., 11:39
 -- Версия сервера: 10.3.13-MariaDB
 -- Версия PHP: 7.1.22
 
@@ -65,7 +65,7 @@ CREATE TABLE `lobby` (
 --
 
 INSERT INTO `lobby` (`id`, `id_user1`, `id_user2`, `status`) VALUES
-(1, 1, 2, 'open');
+(12, 9, 5, 'open');
 
 -- --------------------------------------------------------
 
@@ -85,10 +85,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `token`) VALUES
-(5, 'vasya', '123', '57f2e57750b6bf055852313a57ab200b'),
-(6, 'petya', '321', '1c61198ecf817d6b1661b737d71c4674'),
-(8, 'dima', '000', 'b158a20243279668c0daa08b8d17a6eb'),
-(9, '123', '123', '8780e81007621ffdcc0c4c14ff997a24');
+(5, 'vasya', '123', ''),
+(6, 'petya', '321', ''),
+(8, 'dima', '000', ''),
+(9, '123', '123', '');
 
 --
 -- Индексы сохранённых таблиц
@@ -139,13 +139,13 @@ ALTER TABLE `fighters`
 -- AUTO_INCREMENT для таблицы `lobby`
 --
 ALTER TABLE `lobby`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

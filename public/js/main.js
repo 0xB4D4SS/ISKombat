@@ -12,8 +12,10 @@ function addUserToLobby(user) {
         div.innerHTML = user.login;
     const button = document.createElement('button');
         button.innerHTML = 'Challenge user';
-    document.addEventListener('click', function() {
+    button.addEventListener('click', function() {
         server.newChallenge(user.id);
+        server.stopCallChallenge();
+        server.startCallIsChallengeAccepted();
     });
     document.getElementById('lobbyTable').appendChild(div);
     document.getElementById('lobbyTable').appendChild(button);

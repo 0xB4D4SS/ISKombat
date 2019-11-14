@@ -2,6 +2,7 @@ class Server {
 
     token = null;
     sendIsChallenge = false;
+    sendIsChallengeAccepted = false;
 
     async sendRequest(method, data) {
         const dataArr = [];
@@ -33,6 +34,18 @@ class Server {
         this.sendIsChallenge = false;
     }
 
+    async startCallIsChallengeAccepted() {
+        if (this.sendIsChallengeAccepted) {
+            const result = await this.sendRequest("isChallengeAccepted");
+            this.startCallIsChallengeAccepted();
+            return result;
+        }
+    }
+
+    stopCallIsChallengeAccepted() {
+        this.sendIsChallengeAccepted = false;
+    }
+
     async auth(login, pass) {
         const result = await this.sendRequest("login", {login, pass});
         if (result && result.token) {
@@ -53,6 +66,7 @@ class Server {
 
     logout() {
         this.stopCallChallenge();
+        this.stopCallIsChallengeAccepted();
         return this.sendRequest("logout");
     }
 
@@ -61,6 +75,7 @@ class Server {
     }
 
     newChallenge(id) {
+        this.sendIsChallengeAccepted = true;
         return this.sendRequest("newChallenge", { id });
     }
     
