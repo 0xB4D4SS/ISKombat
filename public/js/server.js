@@ -1,8 +1,10 @@
 class Server {
 
-    token = null;
-    sendIsChallenge = false;
-    sendIsChallengeAccepted = false;
+    construct() {
+	this.token = null;
+	this.sendIsChallenge = false;
+	this.sendIsChallengeAccepted = false;
+    }
 
     async sendRequest(method, data) {
         const dataArr = [];
