@@ -84,6 +84,7 @@ class Application {
                 return $this->lobby->acceptChallenge($user->id, $params['answer']); 
             }
         }
+        return false;
     }
 
     // game
