@@ -86,21 +86,29 @@ class DB {
     }
 
     public function isChallenge($userId) {
-        $query = "SELECT * FROM lobby WHERE id_user2 = '".$userId."'";
+        $query = "SELECT * 
+                  FROM lobby 
+                  WHERE id_user2 = '".$userId."' AND status = 'open'";
         $result = $this->connection->query($query);
-        return $this->allRecords($result);
+        return $this->oneRecord($result);
     }
 
     public function isChallengeAccepted($userId) {
-        $query = "SELECT * FROM lobby WHERE id_user1 = '".$userId."' AND status = 'game'";
+        $query = "SELECT * FROM lobby WHERE id_user1 = ".$userId." AND status = 'game'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
 
     public function acceptChallenge($userId, $answer) {
-        $query = "UPDATE lobby SET status = '".$answer."' WHERE id_user2 = '".$userId."'";
+        $query = "UPDATE lobby SET status = '".$answer."' WHERE id_user2 = ".$userId."";
         $result = $this->connection->query($query);
         return true;
+    }
+
+    public function getLobby($userId2){
+        $query = "SELECT id FROM lobby WHERE id_user2 = ".$userId2." AND status = 'game'";
+        $result = $this->connection->query($query);
+        return $this->oneRecord($result); 
     }
 
 }

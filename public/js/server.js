@@ -1,9 +1,11 @@
 class Server {
 
-    construct() {
-	this.token = null;
-	this.sendIsChallenge = false;
-	this.sendIsChallengeAccepted = false;
+    constructor(callChallengeCB, isAcceptChallengeCB) {
+        this.token = null;
+        this.sendIsChallenge = false;
+        this.sendIsChallengeAccepted = false;
+        this.callChallengeCB = callChallengeCB;
+        this.isAcceptChallengeCB = isAcceptChallengeCB;
     }
 
     async sendRequest(method, data) {
@@ -27,8 +29,12 @@ class Server {
     async startCallChallenge() {
         if (this.sendIsChallenge) {
             const result = await this.sendRequest("isChallenge");
+            if (result) {
+                this.stopCallChallenge();
+                this.callChallengeCB();
+                return;
+            }
             this.startCallChallenge();
-            return result;
         }
     }
 
@@ -39,6 +45,10 @@ class Server {
     async startCallIsChallengeAccepted() {
         if (this.sendIsChallengeAccepted) {
             const result = await this.sendRequest("isChallengeAccepted");
+            if (result) {
+                this.stopCallIsChallengeAccepted();
+                this.isAcceptChallengeCB();
+            }
             this.startCallIsChallengeAccepted();
             return result;
         }
@@ -79,6 +89,10 @@ class Server {
     newChallenge(id) {
         this.sendIsChallengeAccepted = true;
         return this.sendRequest("newChallenge", { id });
+    }
+
+    acceptChallenge(answer) {
+        return this.sendRequest("acceptChallenge", { answer });
     }
     
     move(id, direction) {

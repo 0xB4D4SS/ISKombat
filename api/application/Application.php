@@ -11,7 +11,7 @@ class Application {
         $db = new DB();
         $this->user = new User($db);
         $this->lobby = new Lobby($db);
-        $this->iskombat = new ISKombat();
+        $this->iskombat = new ISKombat($db);
     } 
 
     // user
@@ -19,7 +19,7 @@ class Application {
         if ($params["login"] && $params["pass"]) {
             return $this->user->login($params["login"], $params["pass"]);
         }
-        return false;
+        return false;   
     }
 
     public function register($params) {
@@ -81,7 +81,12 @@ class Application {
         if ($params['token'] && $params['answer']) {
             $user = $this->user->getUserByToken($params['token']);
             if ($user) {
-                return $this->lobby->acceptChallenge($user->id, $params['answer']); 
+                $result = $this->lobby->acceptChallenge($user->id, $params['answer']); 
+                if ($params['answer'] === 'yes') {
+                    $lobby = $this->lobby->getLobby($user->id);
+                    $this->iskombat->createKombat($lobby->id_user1, $user->id);
+                }
+                return $result;
             }
         }
         return false;

@@ -43,7 +43,8 @@ class ISKombat {
         "LEGKICK" => 15
     );
 
-    function __construct() {
+    function __construct($db) {
+        $this->db = $db;
         //fighter
         $data = new stdClass();
         $data->id = 0;
@@ -67,7 +68,6 @@ class ISKombat {
         $this->scene = new stdClass();
         $this->scene->left = 0;
         $this->scene->right = 100;
-
     }
     //
     private function getFighterById($id) {
@@ -76,6 +76,19 @@ class ISKombat {
             else return false;
         }
     }
+
+    // создать бой
+    public function createKombat($userId1, $userId2) {
+
+        print_r($userId1 . ', ' . $userId2);
+
+        // создать каждому пользователю бойцов (будет ДВА запроса в БД)
+        // для бойца добавить:
+        // x, y, state, width, height, direction, health
+        // hitTimestamp, hitType, moveTimestamp
+        // создать сам бой
+    }
+
     //
     public function move($id = null, $direction = null) {
         if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {

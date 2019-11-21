@@ -1,4 +1,27 @@
-const server = new Server();
+const server = new Server(callChallengeCB, isAcceptChallengeCB);
+
+function callChallengeCB() {
+    document.getElementById('challenge').style.display = "block";
+    document.getElementById('accept').onclick = async function () {
+        const result = await server.acceptChallenge('yes');
+        if (result) {
+            document.getElementById('challenge').style.display = "none";
+            showPage("gamePage");
+        }
+    };
+    document.getElementById('decline').onclick = async function () {
+        const result = await server.acceptChallenge('no');
+        if (result) {
+            document.getElementById('challenge').style.display = "none";
+            server.sendIsChallenge = true;
+            server.startCallChallenge();
+        }
+    };
+}
+
+function isAcceptChallengeCB() {
+    showPage('gamePage');
+}
 
 function showPage(name) {
     document.getElementById("authPage").style.display = "none";
