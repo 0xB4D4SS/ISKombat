@@ -20,7 +20,7 @@ function router($params) {
         case "move": return $app->move($params);           // метод, перемещающий бойца по сцене
         //case "setState": return $app->setState($params); // метод, меняющий состояние бойца ( стоит, сидит, лежит, в прыжке, мертв )
         case "hit": return $app->hit($params);             // метод, позволяющий бойцу сделать удар ( ногой или рукой )
-        case "update": return $app->update($params);
+        case "update": return $app->update($params);       // метод, обновляющий данные битвы
         default: return false;
     }  
 }

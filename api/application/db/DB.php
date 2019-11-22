@@ -99,19 +99,68 @@ class DB {
         return $this->oneRecord($result);
     }
 
-    public function acceptChallenge($userId, $answer) {
-        $query = "UPDATE lobby SET status = '".$answer."' WHERE id_user2 = ".$userId."";
+    public function acceptChallenge($userId2, $answer) {
+        $query = "UPDATE lobby SET status = '".$answer."' WHERE id_user2 = ".$userId2."";
         $result = $this->connection->query($query);
         return true;
     }
 
     public function getLobby($userId2){
-        $query = "SELECT id FROM lobby WHERE id_user2 = ".$userId2." AND status = 'game'";
+        $query = "SELECT * FROM lobby WHERE id_user2 = ".$userId2." AND status = 'game'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result); 
     }
     //game
-    public function createFighter($userId) {
-        
+    public function deleteFighter($userId) {
+        $query = "DELETE FROM fighters WHERE user_id = ".$userId."";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
+    public function createFighter1($fighter1Data) {
+        $query = "INSERT INTO fighters 
+                  (user_id, x, y, width, height, state, direction, health)
+                  VALUES (".$fighter1Data->userId1.", 
+                          ".$fighter1Data->x.", 
+                          ".$fighter1Data->y.", 
+                          ".$fighter1Data->width.",
+                          ".$fighter1Data->height.",
+                         '".$fighter1Data->state."',
+                         '".$fighter1Data->direction."', 
+                          ".$fighter1Data->health.")";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
+    public function createFighter2($fighter2Data) {
+        $query = "INSERT INTO fighters 
+                  (user_id, x, y, width, height, state, direction, health)
+                  VALUES (".$fighter2Data->userId2.", 
+                          ".$fighter2Data->x.", 
+                          ".$fighter2Data->y.", 
+                          ".$fighter2Data->width.",
+                          ".$fighter2Data->height.",
+                         '".$fighter2Data->state."',
+                         '".$fighter2Data->direction."', 
+                          ".$fighter2Data->health.")";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
+    public function getFighterByUserId($userId) {
+        $query = "SELECT * FROM fighters WHERE user_id = ".$userId."";
+        $result = $this->connection->query($query);
+        return $this->oneRecord($result);
+    }
+
+    public function createBattle($fighterId1, $fighterId2, $timestamp) {
+        $query = "INSERT INTO battles
+                  (id_fighter1, id_fighter2, timestamp, status) 
+                  VALUES (".$fighterId1.",
+                         ".$fighterId2.",
+                         ".$timestamp.",
+                         'game')";
+        $result = $this->connection->query($query);
+        return true;
     }
 }

@@ -22,8 +22,8 @@ class Lobby {
         return $this->db->isChallengeAccepted($userId);
     }
 
-    public function acceptChallenge($userId, $answer) {
-        return $this->db->acceptChallenge($userId, ($answer === 'yes') ? 'game' : 'close');
+    public function acceptChallenge($userId2, $answer) {
+        return $this->db->acceptChallenge($userId2, ($answer === 'yes') ? 'game' : 'close');
     }
 
     public function getLobby($userId2) {

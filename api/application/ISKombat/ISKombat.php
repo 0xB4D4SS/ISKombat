@@ -45,29 +45,17 @@ class ISKombat {
 
     function __construct($db) {
         $this->db = $db;
-        //fighter
-        $data = new stdClass();
-        $data->id = 0;
-        $data->x = 0;
-        $data->y = 0;
-        $data->state = ISKombat::STATE["STANDING"];
-        $data->width = ISKombat::WIDTH[$data->state];
-        $data->height = ISKombat::HEIGHT[$data->state];
-        $data->hitTimeStamp = 0;      // to check time of hit before next hit
-        $data->hitType = "block";     //(hand, leg or block)
-        $data->movingSpeed = 10;
-        $data->direction = "right";
-        $data->health = 100;
-        $data->hit = false;
+        //$data->hitTimeStamp = 0;      // to check time of hit before next hit
+        //$data->hitType = "block";     //(hand, leg or block)
+        //$data->movingSpeed = 10;
+        //$data->hit = false;
         //$data->jumpSpeed = 25;        //↓
         //$data->jumpAcceleration = 50; //to count jumping parabola
+        /*
         $this->Fighters = array(
                         "1" => new Fighter($data)
                     ); 
-        //scene
-        $this->scene = new stdClass();
-        $this->scene->left = 0;
-        $this->scene->right = 100;
+        */
     }
     //
     private function getFighterById($id) {
@@ -76,18 +64,42 @@ class ISKombat {
             else return false;
         }
     }
-
     // создать бой
     public function createKombat($userId1, $userId2) {
-        $this->db->createFighter($userId1);
-        $this->db->createFighter($userId2);
-        //print_r($userId1 . ', ' . $userId2);
-
-        // создать каждому пользователю бойцов (будет ДВА запроса в БД)
+        //scene
+        $this->scene = new stdClass();
+        $this->scene->left = 0;
+        $this->scene->right = 100;
+        //fighter1 initialization
+        $fighter1Data = new stdClass();
+        $fighter1Data->userId1 = $userId1;
+        $fighter1Data->x = 0;
+        $fighter1Data->y = 0;
+        $fighter1Data->state = ISKombat::STATE["STANDING"];
+        $fighter1Data->width = ISKombat::WIDTH[$fighter1Data->state];
+        $fighter1Data->height = ISKombat::HEIGHT[$fighter1Data->state];
+        $fighter1Data->direction = "right";
+        $fighter1Data->health = 100;
+        $this->db->deleteFighter($userId1);
+        $this->db->createFighter1($fighter1Data);
+        //fighter2 initialization
+        $fighter2Data = new stdClass();
+        $fighter2Data->userId2 = $userId2;
+        $fighter2Data->x = 100;
+        $fighter2Data->y = 0;
+        $fighter2Data->state = ISKombat::STATE["STANDING"];
+        $fighter2Data->width = ISKombat::WIDTH[$fighter2Data->state];
+        $fighter2Data->height = ISKombat::HEIGHT[$fighter2Data->state];
+        $fighter2Data->direction = "left";
+        $fighter2Data->health = 100;
+        $this->db->deleteFighter($userId2);
+        $this->db->createFighter2($fighter2Data);
+        $fighter1 = $this->db->getFighterByUserId($userId1);
+        $fighter2 = $this->db->getFighterByUserId($userId2);
+        $timestamp = date("U"); 
+        $this->db->createBattle($fighter1->id, $fighter2->id, $timestamp); //which status to push in DB?
         // для бойца добавить:
-        // x, y, state, width, height, direction, health
-        // hitTimestamp, hitType, moveTimestamp
-        // создать сам бой
+        // hitTimestamp, hitType, moveTimestamp ??? 
     }
     //
     public function move($id = null, $direction = null) {

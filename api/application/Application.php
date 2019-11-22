@@ -93,6 +93,11 @@ class Application {
     }
 
     // game
+    // TODO: update method, that updates data of each fighter's attributes
+    public function update($params) {
+
+    }
+
     public function move($params) {
         if ($params["token"]) {
             $user = $this->db->getUserByToken($params["token"]);
