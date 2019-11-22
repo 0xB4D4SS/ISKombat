@@ -102,6 +102,9 @@ class ISKombat {
         // hitTimestamp, hitType, moveTimestamp ??? 
     }
     //
+    public function exitBattle($userId) {
+        return $this->db->exitBattle($userId);
+    }
     public function move($id = null, $direction = null) {
         if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
             switch ($direction) {

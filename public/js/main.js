@@ -115,4 +115,10 @@ window.onload = function () {
     document.getElementById('jump').addEventListener('click', async function () {
         console.log(await server.setState(0, "JUMP"));
     });
+    document.getElementById("exitBattle").addEventListener("click", async function() {
+        const result = await server.exitBattle();
+        if (result) {
+            showPage("lobbyPage");
+        }
+});
 };

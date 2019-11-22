@@ -91,7 +91,6 @@ class Application {
         }
         return false;
     }
-
     // game
     // TODO: update method, that updates data of each fighter's attributes
     public function update($params) {
@@ -127,6 +126,16 @@ class Application {
                 $params['id'],      
                 $params['state']      
             );
+        }
+        return false;
+    }
+
+    public function exitBattle($params) {
+        if ($params['token']) {
+            $user = $this->user->getUserByToken($params['token']);
+            if ($user) {
+                return $this->iskombat->exitBattle($user->id);
+            }
         }
         return false;
     }

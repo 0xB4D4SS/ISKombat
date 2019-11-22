@@ -106,4 +106,8 @@ class Server {
     setState(id, state) {
         return this.sendRequest("setState", {id, state});
     }
+
+    exitBattle() {
+        return this.sendRequest("exitBattle");
+    }
 }

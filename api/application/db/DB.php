@@ -163,4 +163,9 @@ class DB {
         $result = $this->connection->query($query);
         return true;
     }
+
+    public function exitBattle($userId) {
+        // if both users leave battle, we should delete record from "battles" table, and fighters from "fighters" table in DB
+        return true;
+    }
 }
