@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 14 2019 г., 11:39
+-- Время создания: Ноя 22 2019 г., 14:15
 -- Версия сервера: 10.3.13-MariaDB
 -- Версия PHP: 7.1.22
 
@@ -32,7 +32,7 @@ CREATE TABLE `battles` (
   `id` int(11) NOT NULL,
   `id_fighter1` int(11) NOT NULL,
   `id_fighter2` int(11) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `timestamp` bigint(20) DEFAULT NULL,
   `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -44,7 +44,14 @@ CREATE TABLE `battles` (
 
 CREATE TABLE `fighters` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL
+  `user_id` int(11) DEFAULT NULL,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
+  `width` int(11) NOT NULL,
+  `height` int(11) NOT NULL,
+  `state` varchar(32) NOT NULL,
+  `direction` varchar(32) NOT NULL,
+  `health` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -59,13 +66,6 @@ CREATE TABLE `lobby` (
   `id_user2` int(11) NOT NULL,
   `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `lobby`
---
-
-INSERT INTO `lobby` (`id`, `id_user1`, `id_user2`, `status`) VALUES
-(12, 9, 5, 'open');
 
 -- --------------------------------------------------------
 
@@ -85,10 +85,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `token`) VALUES
-(5, 'vasya', '123', ''),
-(6, 'petya', '321', ''),
-(8, 'dima', '000', ''),
-(9, '123', '123', '');
+(5, 'vasya', '123', 'ef8159089b0e0d01e742f1e71f1c5b33'),
+(6, 'petya', '321', NULL),
+(8, 'dima', '000', NULL),
+(9, '123', '123', '030fa8f31192340016cdb8624337c275');
 
 --
 -- Индексы сохранённых таблиц
@@ -127,25 +127,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `battles`
 --
 ALTER TABLE `battles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `fighters`
 --
 ALTER TABLE `fighters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT для таблицы `lobby`
 --
 ALTER TABLE `lobby`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
