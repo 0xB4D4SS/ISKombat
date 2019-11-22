@@ -29,7 +29,7 @@ class DB {
         }
         return $res;
     }
-    
+    //users and auth
     public function registerUser($login, $pass, $token) {
         $query = "INSERT INTO users (login, password, token) VALUES ( '".$login."', '".$pass."', '".$token."')";
         $result = $this->connection->query($query);
@@ -45,6 +45,12 @@ class DB {
         $query = "UPDATE users SET token = '".$token."' WHERE id = '".$id."'";
         $result = $this->connection->query($query);
         return true;
+    }
+
+    public function getUserByToken($token) {
+        $query = "SELECT * FROM users WHERE token = '".$token."'";
+        $result = $this->connection->query($query);
+        return $this->oneRecord($result);
     }
 
     public function getLobbyUsers($userId) {
@@ -66,13 +72,7 @@ class DB {
         $result = $this->connection->query($query);
         return $this->allRecords($result);
     }
-
-    public function getUserByToken($token) {
-        $query = "SELECT * FROM users WHERE token = '".$token."'";
-        $result = $this->connection->query($query);
-        return $this->oneRecord($result);
-    }
-
+    //lobby
     public function deleteOldUserChallenge($userId) {
         $query = "DELETE FROM lobby WHERE id_user1 = '".$userId."'";
         $result = $this->connection->query($query);
@@ -110,5 +110,8 @@ class DB {
         $result = $this->connection->query($query);
         return $this->oneRecord($result); 
     }
-
+    //game
+    public function createFighter($userId) {
+        
+    }
 }

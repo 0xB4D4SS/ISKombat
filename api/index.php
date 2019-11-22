@@ -17,9 +17,9 @@ function router($params) {
         case "isChallengeAccepted": return $app->isChallengeAccepted($params);  // возвращает запись из БД из таблицы lobby, если вызываемый на бой пользователь принял вызов
         case "acceptChallenge": return $app->acceptChallenge($params);          // обновляет статус записи в БД в таблице lobby в зависимости от того, принял ли пользователь вызов на бой 
         // game methods
-        case "move": return $app->move($params);         // метод, перемещающий бойца по сцене
+        case "move": return $app->move($params);           // метод, перемещающий бойца по сцене
         //case "setState": return $app->setState($params); // метод, меняющий состояние бойца ( стоит, сидит, лежит, в прыжке, мертв )
-        case "hit": return $app->hit($params);           // метод, позволяющий бойцу сделать удар ( ногой или рукой )
+        case "hit": return $app->hit($params);             // метод, позволяющий бойцу сделать удар ( ногой или рукой )
         case "update": return $app->update($params);
         default: return false;
     }  

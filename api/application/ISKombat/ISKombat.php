@@ -79,8 +79,9 @@ class ISKombat {
 
     // создать бой
     public function createKombat($userId1, $userId2) {
-
-        print_r($userId1 . ', ' . $userId2);
+        $this->db->createFighter($userId1);
+        $this->db->createFighter($userId2);
+        //print_r($userId1 . ', ' . $userId2);
 
         // создать каждому пользователю бойцов (будет ДВА запроса в БД)
         // для бойца добавить:
@@ -88,7 +89,6 @@ class ISKombat {
         // hitTimestamp, hitType, moveTimestamp
         // создать сам бой
     }
-
     //
     public function move($id = null, $direction = null) {
         if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
