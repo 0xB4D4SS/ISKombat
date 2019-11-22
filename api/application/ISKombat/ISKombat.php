@@ -102,9 +102,50 @@ class ISKombat {
         // hitTimestamp, hitType, moveTimestamp ??? 
     }
     //
-    public function exitBattle($userId) {
-        return $this->db->exitBattle($userId);
+    public function isFighter($fighterId){
+        return $this->db->isFighter($fighterId);
+
+
     }
+
+    public function getBattle($fighterId){
+        return $this->db->getBattle($fighterId);
+
+    }
+
+
+    public function endBattle($battleId){
+        return $this->db->endBattle($battleId);
+
+    }
+
+
+    public function exitBattle($userId) {
+        $fighter = $this->db->getFighterByUserId($userId);
+        
+        $this->db->deleteFighter($userId);
+        $battle = $this->getBattle($fighter->id);
+       
+
+        if($battle->id_fighter1==$fighter->id){
+            if(!($this->isFighter($battle->id_fighter2))){
+                $this->endBattle($battle->id);
+            } 
+            
+        }
+        if($battle->id_fighter2==$fighter->id){
+            if(!($this->isFighter($battle->id_fighter1))){
+                $this->endBattle($battle->id);
+            }
+            
+        }
+        return true;
+       
+    }
+
+
+
+
     public function move($id = null, $direction = null) {
         if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
             switch ($direction) {

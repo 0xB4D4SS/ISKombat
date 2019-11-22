@@ -134,6 +134,7 @@ class Application {
         if ($params['token']) {
             $user = $this->user->getUserByToken($params['token']);
             if ($user) {
+                
                 return $this->iskombat->exitBattle($user->id);
             }
         }

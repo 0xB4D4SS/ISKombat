@@ -108,6 +108,8 @@ class Server {
     }
 
     exitBattle() {
+        this.sendIsChallenge = true;
+        this.startCallChallenge();
         return this.sendRequest("exitBattle");
     }
 }

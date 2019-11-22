@@ -164,8 +164,29 @@ class DB {
         return true;
     }
 
-    public function exitBattle($userId) {
-        // if both users leave battle, we should delete record from "battles" table, and fighters from "fighters" table in DB
+    public function exitBattle($fighterId) {
+        $query = "DELETE FROM fighters WHERE id = ".$fighterId."" ;
+            $result = $this->connection->query($query);   // if both users leave battle, we should delete record from "battles" table, and fighters from "fighters" table in DB
         return true;
     }
+    public function getBattle($fighterId){
+        $query = "SELECT * FROM battles WHERE id_fighter1 = ".$fighterId." OR id_fighter2 = ".$fighterId."";
+        $result = $this->connection->query($query);
+        return $this->oneRecord($result);
+
+    }
+
+    public function isFighter($fighterId){
+        $query = "SELECT * FROM fighters WHERE id = ".$fighterId."";
+        $result = $this->connection->query($query);
+        return $this->oneRecord($result);
+    }
+   
+    public function endBattle($battleId){
+        $query = "DELETE FROM battles WHERE id = ".$battleId."";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
+    
 }
