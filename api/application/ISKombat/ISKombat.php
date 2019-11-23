@@ -104,13 +104,10 @@ class ISKombat {
     //
     public function isFighter($fighterId){
         return $this->db->isFighter($fighterId);
-
-
     }
 
     public function getBattle($fighterId){
         return $this->db->getBattle($fighterId);
-
     }
 
 
@@ -130,12 +127,14 @@ class ISKombat {
         if($battle->id_fighter1==$fighter->id){
             if(!($this->isFighter($battle->id_fighter2))){
                 $this->endBattle($battle->id);
+                $this->db->endLobby($userId);
             } 
             
         }
         if($battle->id_fighter2==$fighter->id){
             if(!($this->isFighter($battle->id_fighter1))){
                 $this->endBattle($battle->id);
+                $this->db->endLobby($userId);
             }
             
         }

@@ -188,5 +188,12 @@ class DB {
         return true;
     }
 
+    public function endLobby($userId) {
+        $query = "DELETE FROM lobby WHERE id_user1 = ".$userId." OR id_user2 = ".$userId."";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
+
     
 }
