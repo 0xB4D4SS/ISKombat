@@ -164,12 +164,6 @@ class DB {
         return true;
     }
 
-    public function deleteFighterById($fighterId) {
-        $query = "DELETE FROM fighters WHERE id = ".$fighterId."" ;
-        $result = $this->connection->query($query);
-        return true;
-    }
-
     public function getBattle($fighterId) {
         $query = "SELECT * FROM battles WHERE id_fighter1 = ".$fighterId." OR id_fighter2 = ".$fighterId."";
         $result = $this->connection->query($query);
