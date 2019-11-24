@@ -107,9 +107,9 @@ class Server {
         return this.sendRequest("setState", {id, state});
     }
 
-    exitBattle() {
+    deleteFighter() {
         this.sendIsChallenge = true;
         this.startCallChallenge();
-        return this.sendRequest("exitBattle");
+        return this.sendRequest("deleteFighter");
     }
 }

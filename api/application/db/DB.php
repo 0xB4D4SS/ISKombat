@@ -111,7 +111,7 @@ class DB {
         return $this->oneRecord($result); 
     }
     //game
-    public function deleteFighter($userId) {
+    public function deleteFighterByUserId($userId) {
         $query = "DELETE FROM fighters WHERE user_id = ".$userId."";
         $result = $this->connection->query($query);
         return true;
@@ -164,36 +164,34 @@ class DB {
         return true;
     }
 
-    public function exitBattle($fighterId) {
+    public function deleteFighterById($fighterId) {
         $query = "DELETE FROM fighters WHERE id = ".$fighterId."" ;
-            $result = $this->connection->query($query);   // if both users leave battle, we should delete record from "battles" table, and fighters from "fighters" table in DB
+        $result = $this->connection->query($query);
         return true;
     }
-    public function getBattle($fighterId){
+
+    public function getBattle($fighterId) {
         $query = "SELECT * FROM battles WHERE id_fighter1 = ".$fighterId." OR id_fighter2 = ".$fighterId."";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
-
     }
 
-    public function isFighter($fighterId){
+    public function getFighter($fighterId) {
         $query = "SELECT * FROM fighters WHERE id = ".$fighterId."";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
    
-    public function endBattle($battleId){
+    public function deleteBattle($battleId) {
         $query = "DELETE FROM battles WHERE id = ".$battleId."";
         $result = $this->connection->query($query);
         return true;
     }
 
-    public function endLobby($userId) {
+    public function deleteLobby($userId) {
         $query = "DELETE FROM lobby WHERE id_user1 = ".$userId." OR id_user2 = ".$userId."";
         $result = $this->connection->query($query);
         return true;
     }
-
-
     
 }

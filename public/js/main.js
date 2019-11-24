@@ -86,7 +86,6 @@ window.onload = function () {
                 showPage("authPage");
             }
     });
-
     //game methods
     document.getElementById('move_right').addEventListener('click', async function () {
         console.log(await server.move(0, "right"));
@@ -116,9 +115,9 @@ window.onload = function () {
         console.log(await server.setState(0, "JUMP"));
     });
     document.getElementById("exitBattle").addEventListener("click", async function() {
-        const result = await server.exitBattle();
+        const result = await server.deleteFighter();
         if (result) {
             showPage("lobbyPage");
         }
-});
+    });
 };

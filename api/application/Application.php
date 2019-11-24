@@ -130,12 +130,11 @@ class Application {
         return false;
     }
 
-    public function exitBattle($params) {
+    public function deleteFighter($params) {
         if ($params['token']) {
             $user = $this->user->getUserByToken($params['token']);
             if ($user) {
-                
-                return $this->iskombat->exitBattle($user->id);
+                return $this->iskombat->deleteFighter($user->id);
             }
         }
         return false;

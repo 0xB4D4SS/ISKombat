@@ -80,7 +80,7 @@ class ISKombat {
         $fighter1Data->height = ISKombat::HEIGHT[$fighter1Data->state];
         $fighter1Data->direction = "right";
         $fighter1Data->health = 100;
-        $this->db->deleteFighter($userId1);
+        $this->db->deleteFighterByUserId($userId1);
         $this->db->createFighter1($fighter1Data);
         //fighter2 initialization
         $fighter2Data = new stdClass();
@@ -92,7 +92,7 @@ class ISKombat {
         $fighter2Data->height = ISKombat::HEIGHT[$fighter2Data->state];
         $fighter2Data->direction = "left";
         $fighter2Data->health = 100;
-        $this->db->deleteFighter($userId2);
+        $this->db->deleteFighterByUserId($userId2);
         $this->db->createFighter2($fighter2Data);
         $fighter1 = $this->db->getFighterByUserId($userId1);
         $fighter2 = $this->db->getFighterByUserId($userId2);
@@ -102,48 +102,36 @@ class ISKombat {
         // hitTimestamp, hitType, moveTimestamp ??? 
     }
     //
-    public function isFighter($fighterId){
-        return $this->db->isFighter($fighterId);
+    public function getFighter($fighterId){
+        return $this->db->getFighter($fighterId);
     }
 
     public function getBattle($fighterId){
         return $this->db->getBattle($fighterId);
     }
 
-
-    public function endBattle($battleId){
-        return $this->db->endBattle($battleId);
-
+    public function deleteBattle($battleId){
+        return $this->db->deleteBattle($battleId);
     }
 
-
-    public function exitBattle($userId) {
+    public function deleteFighter($userId) {
         $fighter = $this->db->getFighterByUserId($userId);
-        
-        $this->db->deleteFighter($userId);
+        $this->db->deleteFighterByUserId($userId);
         $battle = $this->getBattle($fighter->id);
-       
-
-        if($battle->id_fighter1==$fighter->id){
-            if(!($this->isFighter($battle->id_fighter2))){
-                $this->endBattle($battle->id);
-                $this->db->endLobby($userId);
+        if ($battle->id_fighter1 == $fighter->id) {
+            if (!($this->getFighter($battle->id_fighter2))) {
+                $this->deleteBattle($battle->id);
+                $this->db->deleteLobby($userId);
             } 
-            
         }
-        if($battle->id_fighter2==$fighter->id){
-            if(!($this->isFighter($battle->id_fighter1))){
-                $this->endBattle($battle->id);
-                $this->db->endLobby($userId);
+        if ($battle->id_fighter2 == $fighter->id) {
+            if (!($this->getFighter($battle->id_fighter1))) {
+                $this->deleteBattle($battle->id);
+                $this->db->deleteLobby($userId);
             }
-            
         }
         return true;
-       
     }
-
-
-
 
     public function move($id = null, $direction = null) {
         if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
