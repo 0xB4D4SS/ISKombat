@@ -45,7 +45,7 @@ class Server {
     async startCallIsChallengeAccepted() {
         if (this.sendIsChallengeAccepted) {
             const result = await this.sendRequest("isChallengeAccepted");
-            if (result) {
+            if (result) {                      // why this data isn't enough to complete if?`
                 this.stopCallIsChallengeAccepted();
                 this.isAcceptChallengeCB();
             }
@@ -85,6 +85,10 @@ class Server {
     getAllUsers() {
         return this.sendRequest("getAllUsers");
     }
+
+    //isUserChallenged(id) {
+    //    return this.sendRequest("isUserChallenged", { id });
+    //}
 
     newChallenge(id) {
         this.sendIsChallengeAccepted = true;

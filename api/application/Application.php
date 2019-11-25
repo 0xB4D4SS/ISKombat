@@ -47,6 +47,12 @@ class Application {
         return false;
     }
 
+    //public function isUserChallenged($params) {
+    //    if ($params['id']) {
+    //        return $this->lobby->isUserChallenged($params['id']);
+    //    }
+    //}
+
     public function newChallenge($params) {
         if ($params['token'] && $params['id']) {
             $user = $this->user->getUserByToken($params['token']);
@@ -83,7 +89,7 @@ class Application {
             if ($user) {
                 $result = $this->lobby->acceptChallenge($user->id, $params['answer']); 
                 if ($params['answer'] === 'yes') {
-                    $lobby = $this->lobby->getLobby($user->id);
+                    $lobby = $this->lobby->getLobbyInGame($user->id);
                     $this->iskombat->createKombat($lobby->id_user1, $user->id);
                 }
                 return $result;

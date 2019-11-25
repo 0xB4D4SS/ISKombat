@@ -42,7 +42,7 @@ class DB {
         return $this->oneRecord($result); 
     }
     public function updateUserToken($id, $token) {
-        $query = "UPDATE users SET token = '".$token."' WHERE id = '".$id."'";
+        $query = "UPDATE users SET token = '".$token."' WHERE id = ".$id."";
         $result = $this->connection->query($query);
         return true;
     }
@@ -52,7 +52,7 @@ class DB {
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
-
+    //lobby
     public function getLobbyUsers($userId) {
         $query = "SELECT id, login
                 FROM users
@@ -68,19 +68,19 @@ class DB {
                             b.status='open' AND
                             (b.id_fighter1 = f.id OR 
                              b.id_fighter2 = f.id)) AND
-                    id <> '".$userId."'";
+                    id <> ".$userId."";
         $result = $this->connection->query($query);
         return $this->allRecords($result);
     }
-    //lobby
+
     public function deleteOldUserChallenge($userId) {
-        $query = "DELETE FROM lobby WHERE id_user1 = '".$userId."'";
+        $query = "DELETE FROM lobby WHERE id_user1 = ".$userId."";
         $result = $this->connection->query($query);
         return true;
     }
 
     public function newChallenge($userId1, $userId2) {
-        $query = "INSERT INTO lobby (id_user1, id_user2, status) VALUES ('".$userId1."', '".$userId2."', 'open')";
+        $query = "INSERT INTO lobby (id_user1, id_user2, status) VALUES (".$userId1.", ".$userId2.", 'open')";
         $result = $this->connection->query($query);
         return true;
     }
@@ -88,7 +88,7 @@ class DB {
     public function isChallenge($userId) {
         $query = "SELECT * 
                   FROM lobby 
-                  WHERE id_user2 = '".$userId."' AND status = 'open'";
+                  WHERE id_user2 = ".$userId." AND status = 'open'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
@@ -105,7 +105,7 @@ class DB {
         return true;
     }
 
-    public function getLobby($userId2){
+    public function getLobbyInGame($userId2){
         $query = "SELECT * FROM lobby WHERE id_user2 = ".$userId2." AND status = 'game'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result); 

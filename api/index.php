@@ -12,6 +12,7 @@ function router($params) {
         case "logout": return $app->logout($params);                            // разлогинивает пользователя
         // lobby
         case "getAllUsers": return $app->getAllUsers($params);                  // возвращает список пользователей онлайн
+        //case "isUserChallenged": return $app->isUserChallenged($params);        // возвращает истину, если пользователю уже отправили запрос на бой
         case "newChallenge": return $app->newChallenge($params);                // создает запись в БД, в lobby с новым запросом на бой
         case "isChallenge": return $app->isChallenge($params);                  // возвращает запись из БД из таблицы lobby, если пользователя вызывали на бой
         case "isChallengeAccepted": return $app->isChallengeAccepted($params);  // возвращает запись из БД из таблицы lobby, если вызываемый на бой пользователь принял вызов

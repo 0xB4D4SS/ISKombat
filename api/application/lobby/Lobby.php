@@ -8,7 +8,14 @@ class Lobby {
         return $this->db->getLobbyUsers($userId);
     }
 
-    public function newChallenge($userId1, $userId2) {
+    //public function isUserChallenged($userId) {
+    //    return $this->db->isChallenge($userId);
+    //}
+
+    public function newChallenge($userId1, $userId2) { 
+        if ($this->db->isChallenge($userId2)) {
+            return true;
+        }
         $this->db->deleteOldUserChallenge($userId1);
         $this->db->newChallenge($userId1, $userId2);
         return true;
@@ -26,7 +33,7 @@ class Lobby {
         return $this->db->acceptChallenge($userId2, ($answer === 'yes') ? 'game' : 'close');
     }
 
-    public function getLobby($userId2) {
-        return $this->db->getLobby($userId2);
+    public function getLobbyInGame($userId2) {
+        return $this->db->getLobbyInGame($userId2);
     }
 }

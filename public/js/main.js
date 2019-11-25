@@ -20,6 +20,7 @@ function callChallengeCB() {
 }
 
 function isAcceptChallengeCB() {
+    server.stopCallIsChallengeAccepted();
     showPage('gamePage');
 }
 
@@ -36,9 +37,16 @@ function addUserToLobby(user) {
     const button = document.createElement('button');
         button.innerHTML = 'Challenge user';
     button.addEventListener('click', function() {
+        //const result = server.isUserChallenged(user.id);
+        //if (result) {
+        //    alert(user.login + " already challenged!");
+        //    server.stopCallIsChallengeAccepted();
+        //    server.startCallChallenge();
+        //}
         server.newChallenge(user.id);
         server.stopCallChallenge();
         server.startCallIsChallengeAccepted();
+        
     });
     document.getElementById('lobbyTable').appendChild(div);
     document.getElementById('lobbyTable').appendChild(button);
@@ -78,6 +86,10 @@ window.onload = function () {
                 alert("success!");
             }
         }else alert("no login or pass");
+    });
+
+    document.getElementById("refreshLobby").addEventListener("click", function() {
+        initLobbyPage();
     });
 
     document.getElementById("logoutButton").addEventListener("click", async function() {
