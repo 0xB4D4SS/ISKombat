@@ -86,9 +86,9 @@ class Server {
         return this.sendRequest("getAllUsers");
     }
 
-    //isUserChallenged(id) {
-    //    return this.sendRequest("isUserChallenged", { id });
-    //}
+    isUserChallenged(id) {
+        return this.sendRequest("isUserChallenged", { id });
+    }
 
     newChallenge(id) {
         this.sendIsChallengeAccepted = true;

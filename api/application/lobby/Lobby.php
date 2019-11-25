@@ -8,9 +8,13 @@ class Lobby {
         return $this->db->getLobbyUsers($userId);
     }
 
-    //public function isUserChallenged($userId) {
-    //    return $this->db->isChallenge($userId);
-    //}
+    public function isUserChallenged($userId) {
+        $result = $this->db->isChallenge($userId);
+        if ($result->id) {
+            return true;
+        }
+        return false;
+    }
 
     public function newChallenge($userId1, $userId2) { 
         if ($this->db->isChallenge($userId2)) {

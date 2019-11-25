@@ -47,11 +47,11 @@ class Application {
         return false;
     }
 
-    //public function isUserChallenged($params) {
-    //    if ($params['id']) {
-    //        return $this->lobby->isUserChallenged($params['id']);
-    //    }
-    //}
+    public function isUserChallenged($params) {
+        if ($params['id']) {
+            return $this->lobby->isUserChallenged($params['id']);
+        }
+    }
 
     public function newChallenge($params) {
         if ($params['token'] && $params['id']) {
