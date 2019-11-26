@@ -11,7 +11,7 @@ class Lobby {
     public function isUserChallenged($userId) {
         $result = $this->db->isChallenge($userId);
         if ($result->id) {
-            return true;
+          return true;  
         }
         return false;
     }
@@ -35,6 +35,7 @@ class Lobby {
 
     public function acceptChallenge($userId2, $answer) {
         return $this->db->acceptChallenge($userId2, ($answer === 'yes') ? 'game' : 'close');
+        
     }
 
     public function getLobbyInGame($userId2) {

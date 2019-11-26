@@ -88,7 +88,7 @@ class DB {
     public function isChallenge($userId) {
         $query = "SELECT * 
                   FROM lobby 
-                  WHERE id_user2 = ".$userId." AND status = 'open'";
+                  WHERE id_user2 = ".$userId." AND status = 'open' OR id_user1 = ".$userId." AND status = 'open'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
