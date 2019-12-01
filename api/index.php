@@ -22,7 +22,7 @@ function router($params) {
         //case "setState": return $app->setState($params); // метод, меняющий состояние бойца ( стоит, сидит, лежит, в прыжке, мертв )
         case "hit": return $app->hit($params);             // метод, позволяющий бойцу сделать удар ( ногой или рукой )
         case "deleteFighter": return $app->deleteFighter($params);
-        case "update": return $app->update($params);       // метод, обновляющий данные битвы
+        case "updateBattle": return $app->updateBattle($params);       // метод, обновляющий данные битвы
         default: return false;
     }  
 }

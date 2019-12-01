@@ -1,11 +1,13 @@
 class Server {
 
-    constructor(callChallengeCB, isAcceptChallengeCB) {
+    constructor(callChallengeCB, isAcceptChallengeCB, renderCB) {
         this.token = null;
         this.sendIsChallenge = false;
         this.sendIsChallengeAccepted = false;
+        this.sendUpdateBattle = false;
         this.callChallengeCB = callChallengeCB;
         this.isAcceptChallengeCB = isAcceptChallengeCB;
+        this.renderCB = renderCB;
     }
 
     async sendRequest(method, data) {
@@ -97,6 +99,16 @@ class Server {
 
     acceptChallenge(answer) {
         return this.sendRequest("acceptChallenge", { answer });
+    }
+
+    async updateBattle() {
+        if (this.sendUpdate) {
+            const result = await this.sendRequest("update");
+            if (result) {
+                this.renderCB();
+            }
+        }
+        this.updateBattle();
     }
     /*
     move(id, direction) {

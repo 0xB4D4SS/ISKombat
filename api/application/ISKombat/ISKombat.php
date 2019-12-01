@@ -4,6 +4,8 @@ require_once("Fighter.php");
 
 class ISKombat {
 
+    const BATTLE_TIME = 60000;
+
     const STATE = array(
         "STANDING" => "STANDING",
         "CROUCHING" => "CROUCHING",
@@ -102,14 +104,40 @@ class ISKombat {
         }
         return false;
     }
+    private function updateScene($scene) {
+
+    }
+
+    private function updateFighter($fighter) {
+
+    }
     // TODO:
-    public function updateBattle($battle) {
+    public function updateBattle($userId, $battle) {
         $currTimestamp = date("U");
         if ($currTimestamp - $battle->timestamp >= $battle->delta) {
+            $battle->timestamp = $startTimestamp;
+            $newTimestamp = $currTimestamp;
+            if ($newTimestamp - ISKombat::BATTLE_TIME >= $startTimestamp) { // ending battle
+                $this->db->deleteLobby($userId);
+                $this->db->deleteFighterById($battle->id_fighter1);
+                $this->db->deleteFighterById($battle->id_fighter2);
+                $this->db->deleteBattle($battle->id);
+                return $this->endBattle(); // method, that shows endbattle screen
+            }
+            $this->db->updateBattleTimestamp($battle->id, $newTimestamp);
+            $fighter1 = $this->db->getFighter($battle->id_fighter1);
+            $fighter2 = $this->db->getFighter($battle->id_fighter2);
+            $scene = $this->scene;
+            // подвинуть бойцов (если он летит, если он лежит (изменить статус))
+            return json_encode( $this->updateScene($scene),
+                                $this->updateFighter($fighter1),
+                                $this->updateFighter($fighter2) 
+                              );
+
             // взять текущее время на сервере в миллисекундах
             // если currentTime - timestamp >= delta, то обновлять сцену
             // уменьшить время, оставшееся на бой
-            // подвинуть бойцов (если он летит, если он лежит (изменить статус))
+            
             // если время боя вышло - завершить бой (экран конца боя, удаление бойцов и баттла)
             // вернуть в ответе сцену и бойцов
         }

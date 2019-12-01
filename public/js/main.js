@@ -1,14 +1,15 @@
 
 window.onload = function () {
 
-const server = new Server(callChallengeCB, isAcceptChallengeCB);
+const server = new Server(callChallengeCB, isAcceptChallengeCB, renderCB);
 const graph = new Graph();
 const image = new this.Image();
 image.src = "";
 //этот метод должен вызываться внутри updateBattle
-function render() {
+function renderCB() {
     graph.clear();
-    graph.sprite(image, 100, 200);
+    
+    //graph.sprite(image, 100, 200);
 }
 
 function callChallengeCB() {
@@ -18,7 +19,8 @@ function callChallengeCB() {
         if (result) {
             document.getElementById('challenge').style.display = "none";
             showPage("gamePage");
-            render();
+            server.sendUpdateBattle = true;
+            server.updateBattle();
         }
     };
     document.getElementById('decline').onclick = async function () {
@@ -34,7 +36,8 @@ function callChallengeCB() {
 function isAcceptChallengeCB() {
     server.stopCallIsChallengeAccepted();
     showPage('gamePage');
-    render();
+    server.sendUpdateBattle = true;
+    server.updateBattle();
 }
 
 function showPage(name) {

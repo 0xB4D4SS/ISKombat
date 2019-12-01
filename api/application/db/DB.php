@@ -178,5 +178,17 @@ class DB {
         $result = $this->connection->query($query);
         return true;
     }
+
+    public function updateBattleTimestamp($battleId, $newTimestamp) {
+        $query = "UPDATE battles SET timestamp = $newTimestamp WHERE id = $battleId";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
+    public function deleteFighterById($fighterId) {
+        $query = "DELETE FROM fighters WHERE id = ".$fighterId."";
+        $result = $this->connection->query($query);
+        return true;
+    }
     
 }
