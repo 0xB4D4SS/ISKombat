@@ -92,6 +92,9 @@ class Application {
                     $lobby = $this->lobby->getLobbyInGame($user->id);
                     $this->iskombat->createKombat($lobby->id_user1, $user->id);
                 }
+                if ($params["answer"] === 'no') {
+                    // what to do if 'no'?
+                }
                 return $result;
             }
         }

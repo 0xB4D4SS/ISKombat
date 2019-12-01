@@ -5,7 +5,7 @@ const server = new Server(callChallengeCB, isAcceptChallengeCB);
 const graph = new Graph();
 const image = new this.Image();
 image.src = "";
-//этот метод должен вызываться с помощью updateBattle
+//этот метод должен вызываться внутри updateBattle
 function render() {
     graph.clear();
     graph.sprite(image, 100, 200);

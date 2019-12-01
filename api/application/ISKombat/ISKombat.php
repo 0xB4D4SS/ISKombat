@@ -104,8 +104,8 @@ class ISKombat {
     }
     // TODO:
     public function updateBattle($battle) {
-        $currtimestamp = date("U");
-        if ($currtimestamp - $battle->timestamp >= $battle->delta) {
+        $currTimestamp = date("U");
+        if ($currTimestamp - $battle->timestamp >= $battle->delta) {
             // взять текущее время на сервере в миллисекундах
             // если currentTime - timestamp >= delta, то обновлять сцену
             // уменьшить время, оставшееся на бой
@@ -118,8 +118,7 @@ class ISKombat {
     public function deleteFighter($userId) {
         $fighter = $this->db->getFighterByUserId($userId);
         $this->db->deleteFighterByUserId($userId);
-        $battle = $this->getBattleByUserId($userId);
-        print_r($battle->id);
+        $battle = $this->db->getBattle($fighter->id);
         if ($battle->id_fighter1 == $fighter->id) {
             if (!($this->db->getFighter($battle->id_fighter2))) {
                 $this->db->deleteBattle($battle->id);

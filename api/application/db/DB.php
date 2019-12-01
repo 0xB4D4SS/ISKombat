@@ -148,7 +148,7 @@ class DB {
     }
 
     public function getBattle($fighterId) {
-        $query = "SELECT * FROM battles WHERE id_fighter1 = ".$fighterId." OR id_fighter2 = ".$fighterId."";
+        $query = "SELECT * FROM battles WHERE id_fighter1 = $fighterId OR id_fighter2 = $fighterId";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
@@ -166,13 +166,15 @@ class DB {
     }
 
     public function deleteBattleByFighterId($fighterId) {
-        $query = "DELETE FROM battles WHERE (id_fighter1 = ".$fighterId.") OR (id_fighter2 = ".$fighterId.")";
+        $query = "DELETE FROM battles
+                  WHERE id_fighter1 = $fighterId
+                  OR id_fighter2 = $fighterId";
         $result = $this->connection->query($query);
         return true;
     }
 
     public function deleteLobby($userId) {
-        $query = "DELETE FROM lobby WHERE (id_user1 = ".$userId.") OR (id_user2 = ".$userId.")";
+        $query = "DELETE FROM lobby WHERE id_user1 = $userId OR id_user2 = $userId";
         $result = $this->connection->query($query);
         return true;
     }
