@@ -100,7 +100,16 @@ class Application {
     // game
     // TODO: update method, that updates data of each fighter's attributes
     public function update($params) {
-
+        if ($params["token"]) {
+            $user = getUserByToken($params["token"]);
+            if ($user) {
+                $battle = $this->iskombat->getBattle($user->id);
+                if ($battle) {
+                    $this->iskombat->updateBattle($battle);
+                }
+            }
+        }
+        return false;
     }
 
     public function move($params) {

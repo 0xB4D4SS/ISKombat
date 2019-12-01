@@ -64,69 +64,71 @@ class ISKombat {
             else return false;
         }
     }
+    
+    private function createFighter($userId, $scene, $direction) {
+        $data = new stdClass();
+        $data->userId = $userId;
+        $data->x = $scene->{ ($direction === "right") ? "left" : "right"};
+        $data->y = 0;
+        $data->state = ISKombat::STATE["STANDING"];
+        $data->width = ISKombat::WIDTH[$data->state];
+        $data->height = ISKombat::HEIGHT[$data->state];
+        $data->direction = "right";
+        $data->health = 100;
+        $this->db->deleteFighterByUserId($userId);
+        $this->db->createFighter($data);
+        return $this->db->getFighterByUserId($userId);
+    }
     // создать бой
     public function createKombat($userId1, $userId2) {
-        //scene
-        $this->scene = new stdClass();
-        $this->scene->left = 0;
-        $this->scene->right = 100;
-        //fighter1 initialization
-        $fighter1Data = new stdClass();
-        $fighter1Data->userId1 = $userId1;
-        $fighter1Data->x = 0;
-        $fighter1Data->y = 0;
-        $fighter1Data->state = ISKombat::STATE["STANDING"];
-        $fighter1Data->width = ISKombat::WIDTH[$fighter1Data->state];
-        $fighter1Data->height = ISKombat::HEIGHT[$fighter1Data->state];
-        $fighter1Data->direction = "right";
-        $fighter1Data->health = 100;
-        $this->db->deleteFighterByUserId($userId1);
-        $this->db->createFighter1($fighter1Data);
-        //fighter2 initialization
-        $fighter2Data = new stdClass();
-        $fighter2Data->userId2 = $userId2;
-        $fighter2Data->x = 100;
-        $fighter2Data->y = 0;
-        $fighter2Data->state = ISKombat::STATE["STANDING"];
-        $fighter2Data->width = ISKombat::WIDTH[$fighter2Data->state];
-        $fighter2Data->height = ISKombat::HEIGHT[$fighter2Data->state];
-        $fighter2Data->direction = "left";
-        $fighter2Data->health = 100;
-        $this->db->deleteFighterByUserId($userId2);
-        $this->db->createFighter2($fighter2Data);
-        $fighter1 = $this->db->getFighterByUserId($userId1);
-        $fighter2 = $this->db->getFighterByUserId($userId2);
-        $timestamp = date("U"); 
-        $this->db->createBattle($fighter1->id, $fighter2->id, $timestamp); //which status to push in DB?
+        $scene = new stdClass();
+        $scene->left = 0;
+        $scene->right = 100;
+        $fighter1 = $this->createFighter($userId1, $scene, "right");
+        $fighter2 = $this->createFighter($userId2, $scene, "left");
+        //$timestamp = date("U");
+        $this->db->deleteBattleByFighterId($fighter1->id); 
+        $this->db->deleteBattleByFighterId($fighter2->id); 
+        $this->db->createBattle($fighter1->id, $fighter2->id);
         // для бойца добавить:
         // hitTimestamp, hitType, moveTimestamp ??? 
+        return true;
     }
     //
-    public function getFighter($fighterId){
-        return $this->db->getFighter($fighterId);
+    public function getBattleByUserId($userId) {
+        $fighter = $this->db->getFighterByUserId($userId);
+        if ($fighter) {
+            return $this->db->getBattle($fighter->id);
+        }
+        return false;
     }
-
-    public function getBattle($fighterId){
-        return $this->db->getBattle($fighterId);
+    // TODO:
+    public function updateBattle($battle) {
+        $currtimestamp = date("U");
+        if ($currtimestamp - $battle->timestamp >= $battle->delta) {
+            // взять текущее время на сервере в миллисекундах
+            // если currentTime - timestamp >= delta, то обновлять сцену
+            // уменьшить время, оставшееся на бой
+            // подвинуть бойцов (если он летит, если он лежит (изменить статус))
+            // если время боя вышло - завершить бой (экран конца боя, удаление бойцов и баттла)
+            // вернуть в ответе сцену и бойцов
+        }
     }
-
-    public function deleteBattle($battleId){
-        return $this->db->deleteBattle($battleId);
-    }
-
+    // TODO: this method DOESN'T delete battle and lobby record when two users had left the fight
     public function deleteFighter($userId) {
         $fighter = $this->db->getFighterByUserId($userId);
         $this->db->deleteFighterByUserId($userId);
-        $battle = $this->getBattle($fighter->id);
+        $battle = $this->getBattleByUserId($userId);
+        print_r($battle->id);
         if ($battle->id_fighter1 == $fighter->id) {
-            if (!($this->getFighter($battle->id_fighter2))) {
-                $this->deleteBattle($battle->id);
+            if (!($this->db->getFighter($battle->id_fighter2))) {
+                $this->db->deleteBattle($battle->id);
                 $this->db->deleteLobby($userId);
             } 
         }
-        if ($battle->id_fighter2 == $fighter->id) {
-            if (!($this->getFighter($battle->id_fighter1))) {
-                $this->deleteBattle($battle->id);
+        else if ($battle->id_fighter2 == $fighter->id) {
+            if (!($this->db->getFighter($battle->id_fighter1))) {
+                $this->db->deleteBattle($battle->id);
                 $this->db->deleteLobby($userId);
             }
         }

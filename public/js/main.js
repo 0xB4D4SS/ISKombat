@@ -1,4 +1,15 @@
+
+window.onload = function () {
+
 const server = new Server(callChallengeCB, isAcceptChallengeCB);
+const graph = new Graph();
+const image = new this.Image();
+image.src = "";
+//этот метод должен вызываться с помощью updateBattle
+function render() {
+    graph.clear();
+    graph.sprite(image, 100, 200);
+}
 
 function callChallengeCB() {
     document.getElementById('challenge').style.display = "block";
@@ -7,6 +18,7 @@ function callChallengeCB() {
         if (result) {
             document.getElementById('challenge').style.display = "none";
             showPage("gamePage");
+            render();
         }
     };
     document.getElementById('decline').onclick = async function () {
@@ -22,6 +34,7 @@ function callChallengeCB() {
 function isAcceptChallengeCB() {
     server.stopCallIsChallengeAccepted();
     showPage('gamePage');
+    render();
 }
 
 function showPage(name) {
@@ -63,7 +76,6 @@ async function initLobbyPage() {
     }
 }
 
-window.onload = function () {
     //authorization
     showPage("authPage");
     document.getElementById("loginButton").addEventListener("click", async function() {
@@ -100,6 +112,7 @@ window.onload = function () {
             }
     });
     //game methods
+    /*
     document.getElementById('move_right').addEventListener('click', async function () {
         console.log(await server.move(0, "right"));
     });
@@ -127,6 +140,7 @@ window.onload = function () {
     document.getElementById('jump').addEventListener('click', async function () {
         console.log(await server.setState(0, "JUMP"));
     });
+    */
     document.getElementById("exitBattle").addEventListener("click", async function() {
         const result = await server.deleteFighter();
         if (result) {

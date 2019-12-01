@@ -117,32 +117,17 @@ class DB {
         return true;
     }
 
-    public function createFighter1($fighter1Data) {
+    public function createFighter($data) {
         $query = "INSERT INTO fighters 
                   (user_id, x, y, width, height, state, direction, health)
-                  VALUES (".$fighter1Data->userId1.", 
-                          ".$fighter1Data->x.", 
-                          ".$fighter1Data->y.", 
-                          ".$fighter1Data->width.",
-                          ".$fighter1Data->height.",
-                         '".$fighter1Data->state."',
-                         '".$fighter1Data->direction."', 
-                          ".$fighter1Data->health.")";
-        $result = $this->connection->query($query);
-        return true;
-    }
-
-    public function createFighter2($fighter2Data) {
-        $query = "INSERT INTO fighters 
-                  (user_id, x, y, width, height, state, direction, health)
-                  VALUES (".$fighter2Data->userId2.", 
-                          ".$fighter2Data->x.", 
-                          ".$fighter2Data->y.", 
-                          ".$fighter2Data->width.",
-                          ".$fighter2Data->height.",
-                         '".$fighter2Data->state."',
-                         '".$fighter2Data->direction."', 
-                          ".$fighter2Data->health.")";
+                  VALUES (".$data->userId.", 
+                          ".$data->x.", 
+                          ".$data->y.", 
+                          ".$data->width.",
+                          ".$data->height.",
+                         '".$data->state."',
+                         '".$data->direction."', 
+                          ".$data->health.")";
         $result = $this->connection->query($query);
         return true;
     }
@@ -153,13 +138,11 @@ class DB {
         return $this->oneRecord($result);
     }
 
-    public function createBattle($fighterId1, $fighterId2, $timestamp) {
+    public function createBattle($fighterId1, $fighterId2) {
         $query = "INSERT INTO battles
-                  (id_fighter1, id_fighter2, timestamp, status) 
+                  (id_fighter1, id_fighter2) 
                   VALUES (".$fighterId1.",
-                         ".$fighterId2.",
-                         ".$timestamp.",
-                         'game')";
+                         ".$fighterId2.")";
         $result = $this->connection->query($query);
         return true;
     }
@@ -182,8 +165,14 @@ class DB {
         return true;
     }
 
+    public function deleteBattleByFighterId($fighterId) {
+        $query = "DELETE FROM battles WHERE (id_fighter1 = ".$fighterId.") OR (id_fighter2 = ".$fighterId.")";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
     public function deleteLobby($userId) {
-        $query = "DELETE FROM lobby WHERE id_user1 = ".$userId." OR id_user2 = ".$userId."";
+        $query = "DELETE FROM lobby WHERE (id_user1 = ".$userId.") OR (id_user2 = ".$userId.")";
         $result = $this->connection->query($query);
         return true;
     }

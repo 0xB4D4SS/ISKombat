@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 22 2019 г., 14:15
+-- Время создания: Ноя 28 2019 г., 08:56
 -- Версия сервера: 10.3.13-MariaDB
 -- Версия PHP: 7.1.22
 
@@ -32,8 +32,11 @@ CREATE TABLE `battles` (
   `id` int(11) NOT NULL,
   `id_fighter1` int(11) NOT NULL,
   `id_fighter2` int(11) NOT NULL,
-  `timestamp` bigint(20) DEFAULT NULL,
-  `status` varchar(50) NOT NULL
+  `timestamp` bigint(20) DEFAULT 0,
+  `status` varchar(50) NOT NULL DEFAULT 'game',
+  `left` int(11) NOT NULL DEFAULT 0,
+  `right` int(11) NOT NULL DEFAULT 100,
+  `delta` int(11) NOT NULL DEFAULT 50
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -85,10 +88,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `token`) VALUES
-(5, 'vasya', '123', 'ef8159089b0e0d01e742f1e71f1c5b33'),
+(5, 'vasya', '123', '5382f7234e134a4b9db07a3efa34fcb4'),
 (6, 'petya', '321', NULL),
 (8, 'dima', '000', NULL),
-(9, '123', '123', '030fa8f31192340016cdb8624337c275');
+(9, '123', '123', '749dd184014a21f0b98f6123a5e4012f');
 
 --
 -- Индексы сохранённых таблиц
@@ -127,19 +130,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `battles`
 --
 ALTER TABLE `battles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `fighters`
 --
 ALTER TABLE `fighters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT для таблицы `lobby`
 --
 ALTER TABLE `lobby`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

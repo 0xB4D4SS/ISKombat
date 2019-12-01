@@ -98,7 +98,7 @@ class Server {
     acceptChallenge(answer) {
         return this.sendRequest("acceptChallenge", { answer });
     }
-    
+    /*
     move(id, direction) {
         return this.sendRequest("move", {id, direction});
     }
@@ -110,7 +110,7 @@ class Server {
     setState(id, state) {
         return this.sendRequest("setState", {id, state});
     }
-
+    */
     deleteFighter() {
         this.sendIsChallenge = true;
         this.startCallChallenge();
