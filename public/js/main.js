@@ -113,6 +113,7 @@ async function initLobbyPage() {
             if (result) {
                 server.stopUpdateBattle();
                 showPage("authPage");
+                
             }
     });
     //game methods

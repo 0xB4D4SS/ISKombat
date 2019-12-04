@@ -101,7 +101,6 @@ class Application {
         return false;
     }
     // game
-    // TODO: update method, that updates data of each fighter's attributes
     public function updateBattle($params) {
         if ($params["token"]) {
             $user = getUserByToken($params["token"]);

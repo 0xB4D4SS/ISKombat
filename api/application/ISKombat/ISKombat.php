@@ -104,45 +104,59 @@ class ISKombat {
         }
         return false;
     }
-    private function updateScene($scene) {
+    private function updateScene($scene) { // method, updating scene data in DB
 
+        return $scene;
     }
 
-    private function updateFighter($fighter) {
+    private function updateFighter($fighterId) { // method, updating fighter's data in DB
+        
+        return $this->db->getFighter($fighter->id);
+    }
 
+    public function endBattle($battle) { // method, that shows endbattle screen
+        
+    }
+    private function isTimeout($newTimestamp, $startTimestamp) {
+        if ($newTimestamp - ISKombat::BATTLE_TIME >= $startTimestamp) {
+            return true;
+        }
+        return false;
     }
     // TODO:
     public function updateBattle($userId, $battle) {
+        // взять текущее время на сервере в ?миллисекундах
         $currTimestamp = date("U");
+        // если currentTime - timestamp >= delta, то обновлять сцену
+        // уменьшить время, оставшееся на бой
         if ($currTimestamp - $battle->timestamp >= $battle->delta) {
-            $battle->timestamp = $startTimestamp;
+            $startTimestamp = $battle->timestamp;
             $newTimestamp = $currTimestamp;
-            if ($newTimestamp - ISKombat::BATTLE_TIME >= $startTimestamp) { // ending battle
+            // если время боя вышло - завершить бой (экран конца боя, удаление бойцов и баттла)
+            if (isTimeout($newTimestamp, $startTimestamp)) {
                 $this->db->deleteLobby($userId);
                 $this->db->deleteFighterById($battle->id_fighter1);
                 $this->db->deleteFighterById($battle->id_fighter2);
                 $this->db->deleteBattle($battle->id);
-                return $this->endBattle(); // method, that shows endbattle screen
+                $this->endBattle();
             }
             $this->db->updateBattleTimestamp($battle->id, $newTimestamp);
             $fighter1 = $this->db->getFighter($battle->id_fighter1);
             $fighter2 = $this->db->getFighter($battle->id_fighter2);
             $scene = $this->scene;
+            $this->updateScene($scene);
+            $this->updateFighter($fighter1->id);
+            $this->updateFighter($fighter2->id);
             // подвинуть бойцов (если он летит, если он лежит (изменить статус))
-            return json_encode( $this->updateScene($scene),
-                                $this->updateFighter($fighter1),
-                                $this->updateFighter($fighter2) 
-                              );
-
-            // взять текущее время на сервере в миллисекундах
-            // если currentTime - timestamp >= delta, то обновлять сцену
-            // уменьшить время, оставшееся на бой
             
-            // если время боя вышло - завершить бой (экран конца боя, удаление бойцов и баттла)
             // вернуть в ответе сцену и бойцов
+            return array( "fighter1" => $fighter1,
+                          "fighter2" => $fighter2,
+                          "scene" => $scene
+                        );
         }
+        return false;
     }
-    // TODO: this method DOESN'T delete battle and lobby record when two users had left the fight
     public function deleteFighter($userId) {
         $fighter = $this->db->getFighterByUserId($userId);
         $this->db->deleteFighterByUserId($userId);
