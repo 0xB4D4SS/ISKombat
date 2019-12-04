@@ -111,6 +111,7 @@ async function initLobbyPage() {
     document.getElementById("logoutButton").addEventListener("click", async function() {
             const result = await server.logout();
             if (result) {
+                server.stopUpdateBattle();
                 showPage("authPage");
             }
     });
@@ -147,6 +148,7 @@ async function initLobbyPage() {
     document.getElementById("exitBattle").addEventListener("click", async function() {
         const result = await server.deleteFighter();
         if (result) {
+            server.stopUpdateBattle();
             showPage("lobbyPage");
         }
     });

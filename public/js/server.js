@@ -47,7 +47,7 @@ class Server {
     async startCallIsChallengeAccepted() {
         if (this.sendIsChallengeAccepted) {
             const result = await this.sendRequest("isChallengeAccepted");
-            if (result) {                      // why this data isn't enough to complete if?`
+            if (result) {
                 this.stopCallIsChallengeAccepted();
                 this.isAcceptChallengeCB();
             }
@@ -102,13 +102,17 @@ class Server {
     }
 
     async updateBattle() {
-        if (this.sendUpdate) {
+        if (this.sendUpdateBattle) {
             const result = await this.sendRequest("update");
             if (result) {
                 this.renderCB();
             }
-        }
-        this.updateBattle();
+            this.updateBattle();
+        }  
+    }
+
+    stopUpdateBattle() {
+        this.sendUpdateBattle = false;
     }
     /*
     move(id, direction) {
