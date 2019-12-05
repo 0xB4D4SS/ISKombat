@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 28 2019 г., 08:56
+-- Время создания: Дек 05 2019 г., 13:52
 -- Версия сервера: 10.3.13-MariaDB
 -- Версия PHP: 7.1.22
 
@@ -33,10 +33,12 @@ CREATE TABLE `battles` (
   `id_fighter1` int(11) NOT NULL,
   `id_fighter2` int(11) NOT NULL,
   `timestamp` bigint(20) DEFAULT 0,
+  `startTimestamp` bigint(20) NOT NULL DEFAULT 0,
+  `duration` int(11) NOT NULL DEFAULT 60000,
   `status` varchar(50) NOT NULL DEFAULT 'game',
   `left` int(11) NOT NULL DEFAULT 0,
   `right` int(11) NOT NULL DEFAULT 100,
-  `delta` int(11) NOT NULL DEFAULT 50
+  `delta` int(11) NOT NULL DEFAULT 33
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -88,10 +90,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `token`) VALUES
-(5, 'vasya', '123', '5382f7234e134a4b9db07a3efa34fcb4'),
+(5, 'vasya', '123', ''),
 (6, 'petya', '321', NULL),
-(8, 'dima', '000', NULL),
-(9, '123', '123', '749dd184014a21f0b98f6123a5e4012f');
+(8, 'dima', '000', 'c4082e5e30232571cc7e219f4861df2f'),
+(9, '123', '123', '');
 
 --
 -- Индексы сохранённых таблиц
@@ -130,25 +132,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `battles`
 --
 ALTER TABLE `battles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT для таблицы `fighters`
 --
 ALTER TABLE `fighters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
 
 --
 -- AUTO_INCREMENT для таблицы `lobby`
 --
 ALTER TABLE `lobby`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

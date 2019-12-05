@@ -4,8 +4,6 @@ require_once("Fighter.php");
 
 class ISKombat {
 
-    const BATTLE_TIME = 60000;
-
     const STATE = array(
         "STANDING" => "STANDING",
         "CROUCHING" => "CROUCHING",
@@ -60,13 +58,15 @@ class ISKombat {
         */
     }
     //
+    /*
     private function getFighterById($id) {
         for ($i=0; $i < count($this->Fighters); $i++) {
             if ($this->Fighters[$i]->id == $id) return $this->Fighters[$i];
             else return false;
         }
     }
-    
+    */
+    //
     private function createFighter($userId, $scene, $direction) {
         $data = new stdClass();
         $data->userId = $userId;
@@ -75,7 +75,7 @@ class ISKombat {
         $data->state = ISKombat::STATE["STANDING"];
         $data->width = ISKombat::WIDTH[$data->state];
         $data->height = ISKombat::HEIGHT[$data->state];
-        $data->direction = "right";
+        $data->direction = $direction;
         $data->health = 100;
         $this->db->deleteFighterByUserId($userId);
         $this->db->createFighter($data);
@@ -83,6 +83,7 @@ class ISKombat {
     }
     // создать бой
     public function createKombat($userId1, $userId2) {
+        $startTimestamp = round(microtime(true) * 1000);
         $scene = new stdClass();
         $scene->left = 0;
         $scene->right = 100;
@@ -91,7 +92,7 @@ class ISKombat {
         //$timestamp = date("U");
         $this->db->deleteBattleByFighterId($fighter1->id); 
         $this->db->deleteBattleByFighterId($fighter2->id); 
-        $this->db->createBattle($fighter1->id, $fighter2->id);
+        $this->db->createBattle($fighter1->id, $fighter2->id, $startTimestamp);
         // для бойца добавить:
         // hitTimestamp, hitType, moveTimestamp ??? 
         return true;
@@ -104,55 +105,41 @@ class ISKombat {
         }
         return false;
     }
-    private function updateScene($scene) { // method, updating scene data in DB
-
-        return $scene;
-    }
-
-    private function updateFighter($fighterId) { // method, updating fighter's data in DB
-        
-        return $this->db->getFighter($fighter->id);
-    }
-
+    //
     public function endBattle($battle) { // method, that shows endbattle screen
         
     }
-    private function isTimeout($newTimestamp, $startTimestamp) {
-        if ($newTimestamp - ISKombat::BATTLE_TIME >= $startTimestamp) {
+    //
+    private function isTimeout($battle) {
+        if ($battle->timestamp - $battle->duration >= $battle->startTimestamp) {
+            return true;
+        }
+        return false;
+    }
+    //
+    private function isUpdate($battle) {
+        if ($battle->timestamp - $battle->startTimestamp >= $battle->delta) {
             return true;
         }
         return false;
     }
     // TODO:
     public function updateBattle($userId, $battle) {
-        // взять текущее время на сервере в ?миллисекундах
-        $currTimestamp = date("U");
-        // если currentTime - timestamp >= delta, то обновлять сцену
-        // уменьшить время, оставшееся на бой
-        if ($currTimestamp - $battle->timestamp >= $battle->delta) {
-            $startTimestamp = $battle->timestamp;
-            $newTimestamp = $currTimestamp;
-            // если время боя вышло - завершить бой (экран конца боя, удаление бойцов и баттла)
-            if (isTimeout($newTimestamp, $startTimestamp)) {
+        $this->db->updateBattleTimestamp($battle->id, round(microtime(true) * 1000));
+        if ($this->isUpdate($battle)) {
+            if ($this->isTimeout($battle)) { // ending battle
                 $this->db->deleteLobby($userId);
                 $this->db->deleteFighterById($battle->id_fighter1);
                 $this->db->deleteFighterById($battle->id_fighter2);
                 $this->db->deleteBattle($battle->id);
-                $this->endBattle();
+                $this->endBattle(); // method, that shows endbattle screen
             }
-            $this->db->updateBattleTimestamp($battle->id, $newTimestamp);
             $fighter1 = $this->db->getFighter($battle->id_fighter1);
             $fighter2 = $this->db->getFighter($battle->id_fighter2);
-            $scene = $this->scene;
-            $this->updateScene($scene);
-            $this->updateFighter($fighter1->id);
-            $this->updateFighter($fighter2->id);
-            // подвинуть бойцов (если он летит, если он лежит (изменить статус))
-            
-            // вернуть в ответе сцену и бойцов
-            return array( "fighter1" => $fighter1,
-                          "fighter2" => $fighter2,
-                          "scene" => $scene
+            return array("scene" => $battle,
+                         "fighters" => array($fighter1,
+                                             $fighter2
+                                            )
                         );
         }
         return false;
@@ -176,7 +163,26 @@ class ISKombat {
         return true;
     }
 
-    public function move($id = null, $direction = null) {
+    public function move($userId, $direction) {
+        $fighter = $this->db->getFighterByUserId($userId);
+        $battle = $this->getBattleByUserId($userId);
+        if ($fighter->state == "STANDING" || $fighter->state == "CROUCHING" || $fighter->state == "JUMPING") {
+            switch ($direction) {
+                case "right":
+                    if ($fighter->x < $battle->right) {
+                        $x = $fighter->x + 1;
+                        return $this->db->moveFighter($fighter->id, $x, $direction);
+                    }
+                break;
+                case "left":
+                    if ($fighter->x > $battle->left) {
+                        $x = $fighter->x - 1;
+                        return $this->db->moveFighter($fighter->id, $x, $direction);
+                    }
+                break;    
+        }
+        return false;
+        /*
         if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
             switch ($direction) {
                 case "right":
@@ -196,8 +202,11 @@ class ISKombat {
             }
         }
         return false;
+        */
+        }
     }
     //
+    /*
     public function setState($id = null, $state = null) {
         if (getFighterById($id)) {
             getFighterById($id)->state = ISKombat::STATE[$state];
@@ -251,5 +260,5 @@ class ISKombat {
         }
         return false;
     }
-    
+    */
 }

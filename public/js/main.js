@@ -4,10 +4,22 @@ window.onload = function () {
 const server = new Server(callChallengeCB, isAcceptChallengeCB, renderCB);
 const graph = new Graph();
 const image = new this.Image();
-image.src = "";
+image.src = "../public/img/Sprite_N.png";
 //этот метод должен вызываться внутри updateBattle
-function renderCB() {
+const FIGHTER_PICS = {
+    STANDING: {sx: 0, sy: 0, sWidth: 50, sHeight: 100},
+    MOVING: {sx: 50, sy: 0, sWidth: 50, sHeight: 100},
+    //TODO: cut all fighter pics, depending on state
+}
+
+function render(data) {
+    console.log(data);
     graph.clear();
+    graph.spriteFighter(image, FIGHTER_PICS.STANDING, 50, 50);
+}
+//этот метод должен вызываться внутри updateBattle
+function renderCB(result) {
+    render(result);
     
     //graph.sprite(image, 100, 200);
 }
@@ -80,7 +92,6 @@ async function initLobbyPage() {
 }
 
     //authorization
-    showPage("authPage");
     document.getElementById("loginButton").addEventListener("click", async function() {
         const login = document.getElementById("login").value;
         const pass = document.getElementById("pass").value;
@@ -88,6 +99,9 @@ async function initLobbyPage() {
             const result = await server.auth(login, pass);
             if (result) {
                 showPage("lobbyPage");
+                const userLogin = document.createElement('h6');
+                userLogin.innerHTML = "You are logged in as " + login;
+                document.getElementById("lobbyHeader").appendChild(userLogin);
                 initLobbyPage();
             }
         }else alert("no login or pass");
@@ -113,19 +127,18 @@ async function initLobbyPage() {
             if (result) {
                 server.stopUpdateBattle();
                 showPage("authPage");
-                
             }
     });
     //game methods
-    /*
+    
     document.getElementById('move_right').addEventListener('click', async function () {
-        console.log(await server.move(0, "right"));
+        console.log(await server.move("right"));
     });
-
+    
     document.getElementById('move_left').addEventListener('click', async function () {
-        console.log(await server.move(0, "left"));
+        console.log(await server.move("left"));
     });
-
+    /*
     document.getElementById('hit_hand').addEventListener('click', async function () {
         console.log(await server.hit(0, "HANDKICK"));
     });
@@ -153,4 +166,6 @@ async function initLobbyPage() {
             showPage("lobbyPage");
         }
     });
+
+    showPage("authPage");
 };

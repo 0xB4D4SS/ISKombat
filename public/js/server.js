@@ -28,6 +28,35 @@ class Server {
         return false;
     }
 
+    /* USER */
+    async auth(login, pass) {
+        const result = await this.sendRequest("login", {login, pass});
+        if (result && result.token) {
+            this.token = result.token;
+            this.sendIsChallenge = true;
+            this.startCallChallenge();
+        }
+        return result;
+    }
+
+    register(login, pass) {
+        const result = this.sendRequest("register", {login, pass});
+        if (result && result.data) {
+            this.token = result.token;
+        }
+        return result;
+    }
+
+    logout() {
+        this.stopCallChallenge();
+        this.stopCallIsChallengeAccepted();
+        return this.sendRequest("logout");
+    }
+    /* LOBBY */
+    getAllUsers() {
+        return this.sendRequest("getAllUsers");
+    }
+
     async startCallChallenge() {
         if (this.sendIsChallenge) {
             const result = await this.sendRequest("isChallenge");
@@ -60,34 +89,6 @@ class Server {
         this.sendIsChallengeAccepted = false;
     }
 
-    async auth(login, pass) {
-        const result = await this.sendRequest("login", {login, pass});
-        if (result && result.token) {
-            this.token = result.token;
-            this.sendIsChallenge = true;
-            this.startCallChallenge();
-        }
-        return result;
-    }
-
-    register(login, pass) {
-        const result = this.sendRequest("register", {login, pass});
-        if (result && result.data) {
-            this.token = result.token;
-        }
-        return result;
-    }
-
-    logout() {
-        this.stopCallChallenge();
-        this.stopCallIsChallengeAccepted();
-        return this.sendRequest("logout");
-    }
-
-    getAllUsers() {
-        return this.sendRequest("getAllUsers");
-    }
-
     isUserChallenged(id) {
         return this.sendRequest("isUserChallenged", { id });
     }
@@ -100,12 +101,12 @@ class Server {
     acceptChallenge(answer) {
         return this.sendRequest("acceptChallenge", { answer });
     }
-
+    /* BATTLE AND FIGHTERSS */
     async updateBattle() {
         if (this.sendUpdateBattle) {
-            const result = await this.sendRequest("update");
+            const result = await this.sendRequest("updateBattle");
             if (result) {
-                this.renderCB();
+                console.log(result);
             }
             this.updateBattle();
         }  
@@ -114,11 +115,17 @@ class Server {
     stopUpdateBattle() {
         this.sendUpdateBattle = false;
     }
-    /*
-    move(id, direction) {
-        return this.sendRequest("move", {id, direction});
+    
+    deleteFighter() {
+        this.sendIsChallenge = true;
+        this.startCallChallenge();
+        return this.sendRequest("deleteFighter");
     }
-
+    /* GAME*/
+    move(direction) {
+        return this.sendRequest("move", { direction });
+    }
+    /*
     hit(id, hitType) {
         return this.sendRequest("hit", {id,hitType});
     }
@@ -127,9 +134,5 @@ class Server {
         return this.sendRequest("setState", {id, state});
     }
     */
-    deleteFighter() {
-        this.sendIsChallenge = true;
-        this.startCallChallenge();
-        return this.sendRequest("deleteFighter");
-    }
+    
 }

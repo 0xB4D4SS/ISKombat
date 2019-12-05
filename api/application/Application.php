@@ -14,7 +14,7 @@ class Application {
         $this->iskombat = new ISKombat($db);
     } 
 
-    // user
+    /* USER */
     public function login($params) {
         if ($params["login"] && $params["pass"]) {
             return $this->user->login($params["login"], $params["pass"]);
@@ -36,7 +36,7 @@ class Application {
         return false;
     }
     
-    //lobby
+    /* LOBBY */
     public function getAllUsers($params) {
         if ($params['token']) {
             $user = $this->user->getUserByToken($params['token']);
@@ -100,14 +100,14 @@ class Application {
         }
         return false;
     }
-    // game
+    /* GAME */
     public function updateBattle($params) {
         if ($params["token"]) {
-            $user = getUserByToken($params["token"]);
+            $user = $this->user->getUserByToken($params["token"]);
             if ($user) {
-                $battle = $this->iskombat->getBattle($user->id);
+                $battle = $this->iskombat->getBattleByUserId($user->id);
                 if ($battle) {
-                    $this->iskombat->updateBattle($user->id, $battle);
+                    return $this->iskombat->updateBattle($user->id, $battle);
                 }
             }
         }
@@ -116,7 +116,7 @@ class Application {
 
     public function move($params) {
         if ($params["token"]) {
-            $user = $this->db->getUserByToken($params["token"]);
+            $user = $this->user->getUserByToken($params["token"]);
             if ($user && $params["direction"]) {
                 return $this->iskombat->move(
                     $user->id,           
