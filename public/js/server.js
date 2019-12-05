@@ -106,7 +106,7 @@ class Server {
         if (this.sendUpdateBattle) {
             const result = await this.sendRequest("updateBattle");
             if (result) {
-                console.log(result);
+                this.renderCB(result);
             }
             this.updateBattle();
         }  
