@@ -1,11 +1,13 @@
 class Server {
 
-    constructor(callChallengeCB, isAcceptChallengeCB) {
+    constructor(callChallengeCB, isAcceptChallengeCB, renderCB) {
         this.token = null;
         this.sendIsChallenge = false;
         this.sendIsChallengeAccepted = false;
+        this.sendUpdateBattle = false;
         this.callChallengeCB = callChallengeCB;
         this.isAcceptChallengeCB = isAcceptChallengeCB;
+        this.renderCB = renderCB;
     }
 
     async sendRequest(method, data) {
@@ -26,38 +28,7 @@ class Server {
         return false;
     }
 
-    async startCallChallenge() {
-        if (this.sendIsChallenge) {
-            const result = await this.sendRequest("isChallenge");
-            if (result) {
-                this.stopCallChallenge();
-                this.callChallengeCB();
-                return;
-            }
-            this.startCallChallenge();
-        }
-    }
-
-    stopCallChallenge() {
-        this.sendIsChallenge = false;
-    }
-
-    async startCallIsChallengeAccepted() {
-        if (this.sendIsChallengeAccepted) {
-            const result = await this.sendRequest("isChallengeAccepted");
-            if (result) {                      // why this data isn't enough to complete if?`
-                this.stopCallIsChallengeAccepted();
-                this.isAcceptChallengeCB();
-            }
-            this.startCallIsChallengeAccepted();
-            return result;
-        }
-    }
-
-    stopCallIsChallengeAccepted() {
-        this.sendIsChallengeAccepted = false;
-    }
-
+    /* USER */
     async auth(login, pass) {
         const result = await this.sendRequest("login", {login, pass});
         if (result && result.token) {
@@ -81,9 +52,41 @@ class Server {
         this.stopCallIsChallengeAccepted();
         return this.sendRequest("logout");
     }
-
+    /* LOBBY */
     getAllUsers() {
         return this.sendRequest("getAllUsers");
+    }
+
+    async startCallChallenge() {
+        if (this.sendIsChallenge) {
+            const result = await this.sendRequest("isChallenge");
+            if (result) {
+                this.stopCallChallenge();
+                this.callChallengeCB();
+                return;
+            }
+            this.startCallChallenge();
+        }
+    }
+
+    stopCallChallenge() {
+        this.sendIsChallenge = false;
+    }
+
+    async startCallIsChallengeAccepted() {
+        if (this.sendIsChallengeAccepted) {
+            const result = await this.sendRequest("isChallengeAccepted");
+            if (result) {
+                this.stopCallIsChallengeAccepted();
+                this.isAcceptChallengeCB();
+            }
+            this.startCallIsChallengeAccepted();
+            return result;
+        }
+    }
+
+    stopCallIsChallengeAccepted() {
+        this.sendIsChallengeAccepted = false;
     }
 
     isUserChallenged(id) {
@@ -98,11 +101,32 @@ class Server {
     acceptChallenge(answer) {
         return this.sendRequest("acceptChallenge", { answer });
     }
-    
-    move(id, direction) {
-        return this.sendRequest("move", {id, direction});
+    /* BATTLE AND FIGHTERSS */
+    async updateBattle() {
+        if (this.sendUpdateBattle) {
+            const result = await this.sendRequest("updateBattle");
+            if (result) {
+                console.log(result);
+                this.renderCB(result);
+            }
+            this.updateBattle();
+        }  
     }
 
+    stopUpdateBattle() {
+        this.sendUpdateBattle = false;
+    }
+    
+    deleteFighter() {
+        this.sendIsChallenge = true;
+        this.startCallChallenge();
+        return this.sendRequest("deleteFighter");
+    }
+    /* GAME */
+    move(direction) {
+        return this.sendRequest("move", { direction });
+    }
+    /*
     hit(id, hitType) {
         return this.sendRequest("hit", {id,hitType});
     }
@@ -110,10 +134,6 @@ class Server {
     setState(id, state) {
         return this.sendRequest("setState", {id, state});
     }
-
-    deleteFighter() {
-        this.sendIsChallenge = true;
-        this.startCallChallenge();
-        return this.sendRequest("deleteFighter");
-    }
+    */
+    
 }

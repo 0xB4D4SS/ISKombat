@@ -10,7 +10,7 @@ class Lobby {
 
     public function isUserChallenged($userId) {
         $result = $this->db->isChallenge($userId);
-        if ($result->id) {
+        if ($result) {
           return true;  
         }
         return false;

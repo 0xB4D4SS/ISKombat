@@ -29,7 +29,8 @@ class DB {
         }
         return $res;
     }
-    //users and auth
+
+    /* USER */
     public function registerUser($login, $pass, $token) {
         $query = "INSERT INTO users (login, password, token) VALUES ( '".$login."', '".$pass."', '".$token."')";
         $result = $this->connection->query($query);
@@ -41,18 +42,39 @@ class DB {
         $result = $this->connection->query($query);
         return $this->oneRecord($result); 
     }
-    public function updateUserToken($id, $token) {
-        $query = "UPDATE users SET token = '".$token."' WHERE id = ".$id."";
-        $result = $this->connection->query($query);
-        return true;
-    }
-
+    
     public function getUserByToken($token) {
         $query = "SELECT * FROM users WHERE token = '".$token."'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
-    //lobby
+
+    public function updateUserToken($id, $token) {
+        $query = "UPDATE users SET token = '".$token."' WHERE id = '".$id."'";
+        $result = $this->connection->query($query);
+        return true;
+    }
+    /* LOBBY */
+    public function newChallenge($userId1, $userId2) {
+        $query = "INSERT INTO lobby (id_user1, id_user2, status) VALUES ('".$userId1."', '".$userId2."', 'open')";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
+    public function isChallenge($userId) {
+        $query = "SELECT * 
+                  FROM lobby 
+                  WHERE id_user2 = ".$userId." AND status = 'open' OR id_user1 = '".$userId."' AND status = 'open'";
+        $result = $this->connection->query($query);
+        return $this->oneRecord($result);
+    }
+
+    public function isChallengeAccepted($userId) {
+        $query = "SELECT * FROM lobby WHERE id_user1 = '".$userId."' AND status = 'game'";
+        $result = $this->connection->query($query);
+        return $this->oneRecord($result);
+    }
+    
     public function getLobbyUsers($userId) {
         $query = "SELECT id, login
                 FROM users
@@ -68,83 +90,54 @@ class DB {
                             b.status='open' AND
                             (b.id_fighter1 = f.id OR 
                              b.id_fighter2 = f.id)) AND
-                    id <> ".$userId."";
+                    id <> '".$userId."'";
         $result = $this->connection->query($query);
         return $this->allRecords($result);
     }
-
-    public function deleteOldUserChallenge($userId) {
-        $query = "DELETE FROM lobby WHERE id_user1 = ".$userId."";
-        $result = $this->connection->query($query);
-        return true;
-    }
-
-    public function newChallenge($userId1, $userId2) {
-        $query = "INSERT INTO lobby (id_user1, id_user2, status) VALUES (".$userId1.", ".$userId2.", 'open')";
-        $result = $this->connection->query($query);
-        return true;
-    }
-
-    public function isChallenge($userId) {
-        $query = "SELECT * 
-                  FROM lobby 
-                  WHERE id_user2 = ".$userId." AND status = 'open' OR id_user1 = ".$userId." AND status = 'open'";
-        $result = $this->connection->query($query);
-        return $this->oneRecord($result);
-    }
-
-    public function isChallengeAccepted($userId) {
-        $query = "SELECT * FROM lobby WHERE id_user1 = ".$userId." AND status = 'game'";
-        $result = $this->connection->query($query);
-        return $this->oneRecord($result);
-    }
-
-    public function acceptChallenge($userId2, $answer) {
-        $query = "UPDATE lobby SET status = '".$answer."' WHERE id_user2 = ".$userId2."";
-        $result = $this->connection->query($query);
-        return true;
-    }
-
+    
     public function getLobbyInGame($userId2){
-        $query = "SELECT * FROM lobby WHERE id_user2 = ".$userId2." AND status = 'game'";
+        $query = "SELECT * FROM lobby WHERE id_user2 = '".$userId2."' AND status = 'game'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result); 
     }
-    //game
-    public function deleteFighterByUserId($userId) {
-        $query = "DELETE FROM fighters WHERE user_id = ".$userId."";
+
+    public function acceptChallenge($userId2, $answer) {
+        $query = "UPDATE lobby SET status = '".$answer."' WHERE id_user2 = '".$userId2."'";
         $result = $this->connection->query($query);
         return true;
     }
 
-    public function createFighter1($fighter1Data) {
-        $query = "INSERT INTO fighters 
-                  (user_id, x, y, width, height, state, direction, health)
-                  VALUES (".$fighter1Data->userId1.", 
-                          ".$fighter1Data->x.", 
-                          ".$fighter1Data->y.", 
-                          ".$fighter1Data->width.",
-                          ".$fighter1Data->height.",
-                         '".$fighter1Data->state."',
-                         '".$fighter1Data->direction."', 
-                          ".$fighter1Data->health.")";
+    public function deleteOldUserChallenge($userId) {
+        $query = "DELETE FROM lobby WHERE id_user1 = '".$userId."'";
         $result = $this->connection->query($query);
         return true;
     }
 
-    public function createFighter2($fighter2Data) {
-        $query = "INSERT INTO fighters 
-                  (user_id, x, y, width, height, state, direction, health)
-                  VALUES (".$fighter2Data->userId2.", 
-                          ".$fighter2Data->x.", 
-                          ".$fighter2Data->y.", 
-                          ".$fighter2Data->width.",
-                          ".$fighter2Data->height.",
-                         '".$fighter2Data->state."',
-                         '".$fighter2Data->direction."', 
-                          ".$fighter2Data->health.")";
+    public function deleteLobby($userId) {
+        $query = "DELETE FROM lobby WHERE id_user1 = '".$userId."' OR id_user2 = '".$userId."'";
         $result = $this->connection->query($query);
         return true;
+    }
+    /* FIGHTER */
+    public function createFighter($data) {
+        $query = "INSERT INTO fighters 
+                  (user_id, x, y, width, height, state, direction, health)
+                  VALUES (".$data->userId.", 
+                          ".$data->x.", 
+                          ".$data->y.", 
+                          ".$data->width.",
+                          ".$data->height.",
+                         '".$data->state."',
+                         '".$data->direction."', 
+                          ".$data->health.")";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
+    public function getFighter($fighterId) {
+        $query = "SELECT * FROM fighters WHERE id = ".$fighterId."";
+        $result = $this->connection->query($query);
+        return $this->oneRecord($result);
     }
 
     public function getFighterByUserId($userId) {
@@ -153,39 +146,58 @@ class DB {
         return $this->oneRecord($result);
     }
 
-    public function createBattle($fighterId1, $fighterId2, $timestamp) {
+    public function moveFighter($fighterId, $x, $direction) {
+        $query = "UPDATE fighters SET x = '".$x."', direction = '".$direction."' WHERE id = '".$fighterId."'";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
+    public function deleteFighterById($fighterId) {
+        $query = "DELETE FROM fighters WHERE id = ".$fighterId."";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
+    public function deleteFighterByUserId($userId) {
+        $query = "DELETE FROM fighters WHERE user_id = ".$userId."";
+        $result = $this->connection->query($query);
+        return true;
+    }
+    /* BATTLE */
+    public function createBattle($fighterId1, $fighterId2, $startTimestamp) {
         $query = "INSERT INTO battles
-                  (id_fighter1, id_fighter2, timestamp, status) 
+                  (id_fighter1, id_fighter2, startTimestamp ) 
                   VALUES (".$fighterId1.",
                          ".$fighterId2.",
-                         ".$timestamp.",
-                         'game')";
+                         ".$startTimestamp.")";
         $result = $this->connection->query($query);
         return true;
     }
 
     public function getBattle($fighterId) {
-        $query = "SELECT * FROM battles WHERE id_fighter1 = ".$fighterId." OR id_fighter2 = ".$fighterId."";
+        $query = "SELECT * FROM battles WHERE id_fighter1 = $fighterId OR id_fighter2 = $fighterId";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
 
-    public function getFighter($fighterId) {
-        $query = "SELECT * FROM fighters WHERE id = ".$fighterId."";
+    public function updateBattleTimestamp($battleId, $newTimestamp) {
+        $query = "UPDATE battles SET timestamp = '".$newTimestamp."' WHERE id = '".$battleId."'";
         $result = $this->connection->query($query);
-        return $this->oneRecord($result);
+        return true;
     }
-   
+
     public function deleteBattle($battleId) {
         $query = "DELETE FROM battles WHERE id = ".$battleId."";
         $result = $this->connection->query($query);
         return true;
     }
 
-    public function deleteLobby($userId) {
-        $query = "DELETE FROM lobby WHERE id_user1 = ".$userId." OR id_user2 = ".$userId."";
+    public function deleteBattleByFighterId($fighterId) {
+        $query = "DELETE FROM battles
+                  WHERE id_fighter1 = $fighterId
+                  OR id_fighter2 = $fighterId";
         $result = $this->connection->query($query);
         return true;
     }
-    
+
 }

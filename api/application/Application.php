@@ -14,7 +14,7 @@ class Application {
         $this->iskombat = new ISKombat($db);
     } 
 
-    // user
+    /* USER */
     public function login($params) {
         if ($params["login"] && $params["pass"]) {
             return $this->user->login($params["login"], $params["pass"]);
@@ -36,7 +36,7 @@ class Application {
         return false;
     }
     
-    //lobby
+    /* LOBBY */
     public function getAllUsers($params) {
         if ($params['token']) {
             $user = $this->user->getUserByToken($params['token']);
@@ -92,20 +92,31 @@ class Application {
                     $lobby = $this->lobby->getLobbyInGame($user->id);
                     $this->iskombat->createKombat($lobby->id_user1, $user->id);
                 }
+                if ($params["answer"] === 'no') {
+                    // what to do if 'no'?
+                }
                 return $result;
             }
         }
         return false;
     }
-    // game
-    // TODO: update method, that updates data of each fighter's attributes
-    public function update($params) {
-
+    /* GAME */
+    public function updateBattle($params) {
+        if ($params["token"]) {
+            $user = $this->user->getUserByToken($params["token"]);
+            if ($user) {
+                $battle = $this->iskombat->getBattleByUserId($user->id);
+                if ($battle) {
+                    return $this->iskombat->updateBattle($user->id, $battle);
+                }
+            }
+        }
+        return false;
     }
 
     public function move($params) {
         if ($params["token"]) {
-            $user = $this->db->getUserByToken($params["token"]);
+            $user = $this->user->getUserByToken($params["token"]);
             if ($user && $params["direction"]) {
                 return $this->iskombat->move(
                     $user->id,           
