@@ -7,15 +7,15 @@ const image = new this.Image();
 image.src = "../public/img/Sprite_N.png";
 //этот метод должен вызываться внутри updateBattle
 const FIGHTER_PICS = {
-    STANDING: {sx: 0, sy: 0, sWidth: 50, sHeight: 100},
-    MOVING: {sx: 50, sy: 0, sWidth: 50, sHeight: 100},
+    STANDING: {sx: 0, sy: 0, sWidth: 705, sHeight: 2013},
+    MOVING: {sx: 705, sy: 0, sWidth: 872, sHeight: 2013},
     //TODO: cut all fighter pics, depending on state
 }
 
 function render(data) {
     console.log(data);
     graph.clear();
-    graph.spriteFighter(image, FIGHTER_PICS.STANDING, 50, 50);
+    graph.spriteFighter(image, FIGHTER_PICS.STANDING, data.fighters[0].x, data.fighters[0].y);
 }
 //этот метод должен вызываться внутри updateBattle
 function renderCB(result) {
@@ -91,6 +91,13 @@ async function initLobbyPage() {
     }
 }
 
+function initUsernameHeader() {
+    const login = document.getElementById("login").value;
+    const userLogin = document.createElement('h6');
+    userLogin.innerHTML = "You are logged in as " + login;
+    document.getElementById("lobbyHeader").appendChild(userLogin);
+}
+
     //authorization
     document.getElementById("loginButton").addEventListener("click", async function() {
         const login = document.getElementById("login").value;
@@ -99,9 +106,7 @@ async function initLobbyPage() {
             const result = await server.auth(login, pass);
             if (result) {
                 showPage("lobbyPage");
-                const userLogin = document.createElement('h6');
-                userLogin.innerHTML = "You are logged in as " + login;
-                document.getElementById("lobbyHeader").appendChild(userLogin);
+                initUsernameHeader();
                 initLobbyPage();
             }
         }else alert("no login or pass");

@@ -19,6 +19,6 @@ class Graph {
 
     spriteFighter(img, coords, x, y) {
         const { sx, sy, sWidth, sHeight} = coords;
-        this.context.drawImage(img, sx, sy, sWidth, sHeight, x, y, sWidth, sHeight);
+        this.context.drawImage(img, sx, sy, sWidth, sHeight, x, y, 100, 200);
     }
 }

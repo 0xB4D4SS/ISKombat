@@ -106,6 +106,7 @@ class Server {
         if (this.sendUpdateBattle) {
             const result = await this.sendRequest("updateBattle");
             if (result) {
+                console.log(result);
                 this.renderCB(result);
             }
             this.updateBattle();
@@ -121,7 +122,7 @@ class Server {
         this.startCallChallenge();
         return this.sendRequest("deleteFighter");
     }
-    /* GAME*/
+    /* GAME */
     move(direction) {
         return this.sendRequest("move", { direction });
     }
