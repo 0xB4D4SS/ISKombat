@@ -160,13 +160,13 @@ class ISKombat {
             switch ($direction) {
                 case "right":
                     if ($fighter->x < $battle->right) {
-                        $x = $fighter->x + 1;
+                        $x = $fighter->x + 4;
                         return $this->db->moveFighter($fighter->id, $x, $direction);
                     }
                 break;
                 case "left":
                     if ($fighter->x > $battle->left) {
-                        $x = $fighter->x - 1;
+                        $x = $fighter->x - 4;
                         return $this->db->moveFighter($fighter->id, $x, $direction);
                     }
                 break;    
