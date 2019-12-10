@@ -24,8 +24,8 @@ function render(data) {
     console.log(data);
     graph.clear();
     //setTimeout(graph.sprite(backgroundImg, 0, 0), 1000);
-    setTimeout(graph.spriteFighter(fighter1Img, FIGHTER_PICS.STANDING, data.fighters[0].x, data.fighters[0].y), 500);
-    setTimeout(graph.spriteFighter(fighter2Img, FIGHTER_PICS_MIRRORED.STANDING, data.fighters[1].x, data.fighters[1].y), 500);
+    graph.spriteFighter(fighter1Img, FIGHTER_PICS.STANDING, data.fighters[0].x, data.fighters[0].y);
+    graph.spriteFighter(fighter2Img, FIGHTER_PICS_MIRRORED.STANDING, data.fighters[1].x, data.fighters[1].y);
 }
 function renderCB(result) {
     render(result);
