@@ -62,7 +62,7 @@ class ISKombat {
         $data = new stdClass();
         $data->userId = $userId;
         $data->x = $scene->{ ($direction === "right") ? "left" : "right"};
-        $data->y = 50;
+        $data->y = 400;
         $data->state = ISKombat::STATE["STANDING"];
         $data->width = ISKombat::WIDTH[$data->state];
         $data->height = ISKombat::HEIGHT[$data->state];
@@ -76,8 +76,8 @@ class ISKombat {
     public function createKombat($userId1, $userId2) {
         $startTimestamp = round(microtime(true) * 1000);
         $scene = new stdClass();
-        $scene->left = 0;
-        $scene->right = 100;
+        $scene->left = 50;
+        $scene->right = 1100;
         $fighter1 = $this->createFighter($userId1, $scene, "right");
         $fighter2 = $this->createFighter($userId2, $scene, "left");
         $this->db->deleteBattleByFighterId($fighter1->id); 
@@ -206,8 +206,8 @@ class ISKombat {
             break;   
         }
     }
-    
-    public function hit($id = null, $hitType = null) {
+    */
+    public function hit($id, $hitType = null) {
         if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
             getFighterById($id)->hitType = ISKombat::HITTYPE[$hitType];
             getFighterById($id)->hitTimeStamp = date("U"); // returns seconds since start of Unix epoch (1 Jan, 1970, 00:00:00 GMT)
@@ -229,5 +229,5 @@ class ISKombat {
         }
         return false;
     }
-    */
+    
 }

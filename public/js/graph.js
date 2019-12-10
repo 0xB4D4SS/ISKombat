@@ -1,13 +1,13 @@
 class Graph {
     constructor() {
         this.canvas = document.getElementById("canvas");
-        this.canvas.width = 800;
-        this.canvas.height = 600;
+        this.canvas.width = 1280;
+        this.canvas.height = 720;
         this.context = this.canvas.getContext("2d");
     }
 
     clear() {
-        this.context.fillStyle = 'red'; // #FF0000
+        this.context.fillStyle = 'black'; // #FF0000
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         //this.context.clearRect();
@@ -19,6 +19,6 @@ class Graph {
 
     spriteFighter(img, coords, x, y) {
         const { sx, sy, sWidth, sHeight} = coords;
-        this.context.drawImage(img, sx, sy, sWidth, sHeight, x, y, 100, 200);
+        this.context.drawImage(img, sx, sy, sWidth, sHeight, x, y, 150, 300);
     }
 }

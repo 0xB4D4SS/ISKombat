@@ -3,25 +3,32 @@ window.onload = function () {
 
 const server = new Server(callChallengeCB, isAcceptChallengeCB, renderCB);
 const graph = new Graph();
-const image = new this.Image();
-image.src = "../public/img/Sprite_N.png";
-//этот метод должен вызываться внутри updateBattle
+const fighter1Img = new Image();
+const fighter2Img = new Image();
+const backgroundImg = new Image();
+fighter1Img.src = "../public/img/Sprite_N.png";
+fighter2Img.src = "../public/img/Sprite_R(mirrored).png";
+backgroundImg.src = "../public/img/UDSU.png"
 const FIGHTER_PICS = {
-    STANDING: {sx: 0, sy: 0, sWidth: 705, sHeight: 2013},
-    MOVING: {sx: 705, sy: 0, sWidth: 872, sHeight: 2013},
+    STANDING: {sx: 390, sy: 0, sWidth: 398, sHeight: 1200},
+    //MOVING: {sx: 800, sy: 0, sWidth: 872, sHeight: 1200},
+    //TODO: cut all fighter pics, depending on state
+}
+
+const FIGHTER_PICS_MIRRORED = {
+    STANDING: {sx: 12328, sy: 0, sWidth: 544, sHeight: 1200},
     //TODO: cut all fighter pics, depending on state
 }
 
 function render(data) {
     console.log(data);
     graph.clear();
-    graph.spriteFighter(image, FIGHTER_PICS.STANDING, data.fighters[0].x, data.fighters[0].y);
+    //setTimeout(graph.sprite(backgroundImg, 0, 0), 1000);
+    setTimeout(graph.spriteFighter(fighter1Img, FIGHTER_PICS.STANDING, data.fighters[0].x, data.fighters[0].y), 500);
+    setTimeout(graph.spriteFighter(fighter2Img, FIGHTER_PICS_MIRRORED.STANDING, data.fighters[1].x, data.fighters[1].y), 500);
 }
-//этот метод должен вызываться внутри updateBattle
 function renderCB(result) {
     render(result);
-    
-    //graph.sprite(image, 100, 200);
 }
 
 function callChallengeCB() {
@@ -135,13 +142,13 @@ function initUsernameHeader() {
             }
     });
     //game methods
-    
-    document.getElementById('move_right').addEventListener('click', async function () {
-        console.log(await server.move("right"));
-    });
-    
-    document.getElementById('move_left').addEventListener('click', async function () {
-        console.log(await server.move("left"));
+    document.addEventListener('keydown', async function(event) {
+        if (event.code == 'KeyD') {
+            await server.move("right");
+        }
+        if (event.code == 'KeyA') {
+            await server.move("left");
+        }
     });
     /*
     document.getElementById('hit_hand').addEventListener('click', async function () {
