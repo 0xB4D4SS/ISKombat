@@ -1,7 +1,14 @@
 class Server {
 
-    token = null;
-    sendIsChallenge = false;
+    constructor(callChallengeCB, isAcceptChallengeCB, renderCB) {
+        this.token = null;
+        this.sendIsChallenge = false;
+        this.sendIsChallengeAccepted = false;
+        this.sendUpdateBattle = false;
+        this.callChallengeCB = callChallengeCB;
+        this.isAcceptChallengeCB = isAcceptChallengeCB;
+        this.renderCB = renderCB;
+    }
 
     async sendRequest(method, data) {
         const dataArr = [];
@@ -21,18 +28,7 @@ class Server {
         return false;
     }
 
-    async startCallChallenge() {
-        if (this.sendIsChallenge) {
-            const result = await this.sendRequest("isChallenge");
-            this.startCallChallenge();
-            return result;
-        }
-    }
-
-    stopCallChallenge() {
-        this.sendIsChallenge = false;
-    }
-
+    /* USER */
     async auth(login, pass) {
         const result = await this.sendRequest("login", {login, pass});
         if (result && result.token) {
@@ -53,21 +49,84 @@ class Server {
 
     logout() {
         this.stopCallChallenge();
+        this.stopCallIsChallengeAccepted();
         return this.sendRequest("logout");
     }
-
+    /* LOBBY */
     getAllUsers() {
         return this.sendRequest("getAllUsers");
     }
 
-    newChallenge(id) {
-        return this.sendRequest("newChallenge", { id });
-    }
-    
-    move(id, direction) {
-        return this.sendRequest("move", {id, direction});
+    async startCallChallenge() {
+        if (this.sendIsChallenge) {
+            const result = await this.sendRequest("isChallenge");
+            if (result) {
+                this.stopCallChallenge();
+                this.callChallengeCB();
+                return;
+            }
+            this.startCallChallenge();
+        }
     }
 
+    stopCallChallenge() {
+        this.sendIsChallenge = false;
+    }
+
+    async startCallIsChallengeAccepted() {
+        if (this.sendIsChallengeAccepted) {
+            const result = await this.sendRequest("isChallengeAccepted");
+            if (result) {
+                this.stopCallIsChallengeAccepted();
+                this.isAcceptChallengeCB();
+            }
+            this.startCallIsChallengeAccepted();
+            return result;
+        }
+    }
+
+    stopCallIsChallengeAccepted() {
+        this.sendIsChallengeAccepted = false;
+    }
+
+    isUserChallenged(id) {
+        return this.sendRequest("isUserChallenged", { id });
+    }
+
+    newChallenge(id) {
+        this.sendIsChallengeAccepted = true;
+        return this.sendRequest("newChallenge", { id });
+    }
+
+    acceptChallenge(answer) {
+        return this.sendRequest("acceptChallenge", { answer });
+    }
+    /* BATTLE AND FIGHTERSS */
+    async updateBattle() {
+        if (this.sendUpdateBattle) {
+            const result = await this.sendRequest("updateBattle");
+            if (result) {
+                console.log(result);
+                this.renderCB(result);
+            }
+            this.updateBattle();
+        }  
+    }
+
+    stopUpdateBattle() {
+        this.sendUpdateBattle = false;
+    }
+    
+    deleteFighter() {
+        this.sendIsChallenge = true;
+        this.startCallChallenge();
+        return this.sendRequest("deleteFighter");
+    }
+    /* GAME */
+    move(direction) {
+        return this.sendRequest("move", { direction });
+    }
+    /*
     hit(id, hitType) {
         return this.sendRequest("hit", {id,hitType});
     }
@@ -75,4 +134,6 @@ class Server {
     setState(id, state) {
         return this.sendRequest("setState", {id, state});
     }
+    */
+    
 }

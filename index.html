@@ -4,6 +4,7 @@
         <title>ISKombat</title>
         <script src="public/js/server.js"></script>
         <script src="public/js/main.js"></script>
+        <script src="public/js/graph.js"></script>
     </head>
     <body>
         <div id="authPage">
@@ -17,28 +18,24 @@
             
         </div>
         <div id="lobbyPage">
-            <h1>Lobby</h1>
+            <h1 id="lobbyHeader">Lobby</h1>
             <p>Player list:</p>
-            <div id="lobbyTable">
-                
+            <div id="lobbyTable"></div>
+            <div id="challenge" style="display: none;">
+                <p>You were challenged!</p>
+                <button id="accept">Accept</button>
+                <button id="decline">Decline</button>
             </div>
+            <br>
+            <button id="refreshLobby">Refresh</button>
             <button id="logoutButton">Logout</button>
         </div>
         <div id="gamePage">
-            <p> Адын</p>
-            <button id="move_right">Move right</button>
-            <br>
-            <button id="move_left">Move left</button>
-            <br>
-            <button id="hit_hand">Hit with hand</button>
-            <br>
-            <button id="hit_leg">Hit with leg</button>
-            <br>
-            <button id="stand">Stand</button>
-            <br>
-            <button id="crouch">Crouch</button>
-            <br>
-            <button id="jump">Jump</button>
+            <div>
+                <p> Fight!</p>
+                <button id="exitBattle">Exit Battle</button>
+            </div>
+            <canvas id="canvas"></canvas>
         </div>
     </body>
 </html>
