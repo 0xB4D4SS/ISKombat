@@ -126,11 +126,11 @@ class Server {
     move(direction) {
         return this.sendRequest("move", { direction });
     }
-    /*
+    
     hit(id, hitType) {
-        return this.sendRequest("hit", {id,hitType});
+        return this.sendRequest("hit", { hitType });
     }
-
+    /*
     setState(id, state) {
         return this.sendRequest("setState", {id, state});
     }

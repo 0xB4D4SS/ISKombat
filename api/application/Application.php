@@ -128,9 +128,10 @@ class Application {
     }
 
     public function hit($params) {
-        if ($params["id"] && $params["hitType"]) {
+        if ($params["token"] && $params["hitType"]) {
+            $user = $this->user->getUserByToken($params["token"]);
             return $this->iskombat->hit(
-                $params['id'],       
+                $user->id,       
                 $params['hitType']     
             );
         }

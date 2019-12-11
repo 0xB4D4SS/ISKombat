@@ -151,6 +151,12 @@ class DB {
         $result = $this->connection->query($query);
         return true;
     }
+    //TODO:
+    public function hitFighter($fighterId, $hitType) {
+        //$query = ;// UPDATE... should i decrease health from here, or from higher abstraction level, and only give here new health?
+        $result = $this->connection->query($query);
+        return true;
+    }
 
     public function deleteFighterById($fighterId) {
         $query = "DELETE FROM fighters WHERE id = ".$fighterId."";

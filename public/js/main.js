@@ -16,7 +16,7 @@ const FIGHTER_PICS = {
 }
 
 const FIGHTER_PICS_MIRRORED = {
-    STANDING: {sx: 12328, sy: 0, sWidth: 544, sHeight: 1200},
+    "STANDING": {sx: 12328, sy: 0, sWidth: 544, sHeight: 1200},
     //TODO: cut all fighter pics, depending on state
 }
 

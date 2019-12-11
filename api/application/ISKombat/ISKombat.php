@@ -13,26 +13,26 @@ class ISKombat {
     );    
 
     const WIDTH = array(  
-        "STANDING" => 1,
-        "CROUCHING" => 1.5,
-        "DOWN" => 5,
-        "JUMP" => 1,
-        "DEAD" => 5
+        "STANDING" => 300,
+        "CROUCHING" => 300,
+        "DOWN" => 400,
+        "JUMP" => 300,
+        "DEAD" => 400
     );
 
     const HEIGHT = array(  
-        "STANDING" => 5,
-        "CROUCHING" => 2.5,
-        "DOWN" => 1,
-        "JUMP" => 10,
-        "DEAD" => 1
+        "STANDING" => 150,
+        "CROUCHING" => 75,
+        "DOWN" => 50,
+        "JUMP" => 75,
+        "DEAD" => 50
     );
 
     const HITTYPE = array(
-        "HANDKICK" => "HANDKICK",
-        "LEGKICK" => "LEGKICK"
+        "HAND" => "HAND",
+        "LEG" => "LEG"
     );
-
+    /*
     const HITLENGTH = array(
         "HANDKICK" => 5,
         "LEGKICK" => 8
@@ -42,7 +42,7 @@ class ISKombat {
         "HANDKICK" => 10,
         "LEGKICK" => 15
     );
-
+    */
     function __construct($db) {
         $this->db = $db;
         //$data->hitTimeStamp = 0;      // to check time of hit before next hit
@@ -160,13 +160,13 @@ class ISKombat {
             switch ($direction) {
                 case "right":
                     if ($fighter->x < $battle->right) {
-                        $x = $fighter->x + 4;
+                        $x = $fighter->x + 5;
                         return $this->db->moveFighter($fighter->id, $x, $direction);
                     }
                 break;
                 case "left":
                     if ($fighter->x > $battle->left) {
-                        $x = $fighter->x - 4;
+                        $x = $fighter->x - 5;
                         return $this->db->moveFighter($fighter->id, $x, $direction);
                     }
                 break;    
@@ -174,7 +174,46 @@ class ISKombat {
         return false;
         }
     }
-    
+    //TODO:
+    public function hit($userId, $hitType) {
+        $fighter1 = $this->db->getFighterByUserId($userId);
+        $battle = $this->getBattleByUserId($userId);
+        if ($fighter1->id == $battle->id_fighter1) {
+            $fighter2 = $battle->id_fighter2;
+        }
+        else {
+            $fighter2 = $battle->id_fighter1;
+        }
+        $hitTimestamp = $battle->timestamp;
+        if ($fighter->state == "STANDING" || $fighter->state == "CROUCHING") {
+            if ($fighter1->x + $fighter1->width >= $fighter2->x && $fighter1->x < $fighter2->x + $fighter2->width) {
+                return $this->db->hitFighter($fighter1->id, $hitType);  
+            }
+        }
+        return false;
+        /*
+        if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
+            getFighterById($id)->hitType = ISKombat::HITTYPE[$hitType];
+            getFighterById($id)->hitTimeStamp = date("U"); // returns seconds since start of Unix epoch (1 Jan, 1970, 00:00:00 GMT)
+            switch ($hitType) {
+                
+                case "HANDKICK":
+                    if (hitCheck($id, $enemyId)) {
+                        getFighterById($enemyId)->health -= ISKombat::HITDAMAGE[$hitType]; //need to understand, how to determine enemy's id
+                    }
+                break;
+
+                case "LEGKICK":
+                    if (hitCheck($id, $enemyId)) {
+                        getFighterById($enemyId)->health -= ISKombat::HITDAMAGE[$hitType];
+                    }
+                break;
+            }
+            return true;
+        }
+        return false;
+        */
+    }
     /*
     public function setState($id = null, $state = null) {
         if (getFighterById($id)) {
@@ -207,27 +246,7 @@ class ISKombat {
         }
     }
     */
-    public function hit($id, $hitType = null) {
-        if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
-            getFighterById($id)->hitType = ISKombat::HITTYPE[$hitType];
-            getFighterById($id)->hitTimeStamp = date("U"); // returns seconds since start of Unix epoch (1 Jan, 1970, 00:00:00 GMT)
-            switch ($hitType) {
-                
-                case "HANDKICK":
-                    if (hitCheck($id, $enemyId)) {
-                        getFighterById($enemyId)->health -= ISKombat::HITDAMAGE[$hitType]; //need to understand, how to determine enemy's id
-                    }
-                break;
 
-                case "LEGKICK":
-                    if (hitCheck($id, $enemyId)) {
-                        getFighterById($enemyId)->health -= ISKombat::HITDAMAGE[$hitType];
-                    }
-                break;
-            }
-            return true;
-        }
-        return false;
-    }
+    
     
 }
