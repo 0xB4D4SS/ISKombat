@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 05 2019 г., 13:52
--- Версия сервера: 10.3.13-MariaDB
--- Версия PHP: 7.1.22
+-- Время создания: Дек 11 2019 г., 22:07
+-- Версия сервера: 10.3.13-MariaDB-log
+-- Версия PHP: 7.1.32
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -34,10 +34,10 @@ CREATE TABLE `battles` (
   `id_fighter2` int(11) NOT NULL,
   `timestamp` bigint(20) DEFAULT 0,
   `startTimestamp` bigint(20) NOT NULL DEFAULT 0,
-  `duration` int(11) NOT NULL DEFAULT 60000,
+  `duration` int(11) NOT NULL DEFAULT 120000,
   `status` varchar(50) NOT NULL DEFAULT 'game',
   `left` int(11) NOT NULL DEFAULT 0,
-  `right` int(11) NOT NULL DEFAULT 100,
+  `right` int(11) NOT NULL DEFAULT 1280,
   `delta` int(11) NOT NULL DEFAULT 33
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -132,19 +132,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `battles`
 --
 ALTER TABLE `battles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT для таблицы `fighters`
 --
 ALTER TABLE `fighters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
 
 --
 -- AUTO_INCREMENT для таблицы `lobby`
 --
 ALTER TABLE `lobby`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
