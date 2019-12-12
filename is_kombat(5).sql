@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 11 2019 г., 22:07
+-- Время создания: Дек 12 2019 г., 11:18
 -- Версия сервера: 10.3.13-MariaDB-log
 -- Версия PHP: 7.1.32
 
@@ -55,6 +55,7 @@ CREATE TABLE `fighters` (
   `width` int(11) NOT NULL,
   `height` int(11) NOT NULL,
   `state` varchar(32) NOT NULL,
+  `stateTimestamp` bigint(20) NOT NULL DEFAULT 0,
   `direction` varchar(32) NOT NULL,
   `health` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -71,6 +72,39 @@ CREATE TABLE `lobby` (
   `id_user2` int(11) NOT NULL,
   `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `lobby`
+--
+
+INSERT INTO `lobby` (`id`, `id_user1`, `id_user2`, `status`) VALUES
+(187, 9, 8, 'open');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `state`
+--
+
+CREATE TABLE `state` (
+  `id` int(11) NOT NULL,
+  `name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `duration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `state`
+--
+
+INSERT INTO `state` (`id`, `name`, `duration`) VALUES
+(1, 'STANDING', 0),
+(2, 'CROUCHING', 0),
+(3, 'DOWN', 2000),
+(4, 'JUMP', 1000),
+(5, 'DEAD', 1000000),
+(6, 'HITARM', 200),
+(7, 'HITLEG', 800),
+(8, 'BLOCK', 0);
 
 -- --------------------------------------------------------
 
@@ -118,6 +152,12 @@ ALTER TABLE `lobby`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `state`
+--
+ALTER TABLE `state`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
@@ -132,19 +172,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `battles`
 --
 ALTER TABLE `battles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT для таблицы `fighters`
 --
 ALTER TABLE `fighters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
 
 --
 -- AUTO_INCREMENT для таблицы `lobby`
 --
 ALTER TABLE `lobby`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
+
+--
+-- AUTO_INCREMENT для таблицы `state`
+--
+ALTER TABLE `state`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

@@ -30,7 +30,7 @@ class Server {
 
     /* USER */
     async auth(login, pass) {
-        const result = await this.sendRequest("login", {login, pass});
+        const result = await this.sendRequest("login", { login, pass });
         if (result && result.token) {
             this.token = result.token;
             this.sendIsChallenge = true;
@@ -40,7 +40,7 @@ class Server {
     }
 
     register(login, pass) {
-        const result = this.sendRequest("register", {login, pass});
+        const result = this.sendRequest("register", { login, pass });
         if (result && result.data) {
             this.token = result.token;
         }
@@ -48,11 +48,11 @@ class Server {
     }
 
     logout() {
-        this.stopCallChallenge();
-        this.stopCallIsChallengeAccepted();
-        return this.sendRequest("logout");
-    }
-    /* LOBBY */
+            this.stopCallChallenge();
+            this.stopCallIsChallengeAccepted();
+            return this.sendRequest("logout");
+        }
+        /* LOBBY */
     getAllUsers() {
         return this.sendRequest("getAllUsers");
     }
@@ -99,41 +99,35 @@ class Server {
     }
 
     acceptChallenge(answer) {
-        return this.sendRequest("acceptChallenge", { answer });
-    }
-    /* BATTLE AND FIGHTERSS */
+            return this.sendRequest("acceptChallenge", { answer });
+        }
+        /* BATTLE AND FIGHTERSS */
     async updateBattle() {
         if (this.sendUpdateBattle) {
             const result = await this.sendRequest("updateBattle");
             if (result) {
-                console.log(result);
                 this.renderCB(result);
             }
             this.updateBattle();
-        }  
+        }
     }
 
     stopUpdateBattle() {
         this.sendUpdateBattle = false;
     }
-    
+
     deleteFighter() {
-        this.sendIsChallenge = true;
-        this.startCallChallenge();
-        return this.sendRequest("deleteFighter");
-    }
-    /* GAME */
+            this.sendIsChallenge = true;
+            this.startCallChallenge();
+            return this.sendRequest("deleteFighter");
+        }
+        /* GAME */
     move(direction) {
         return this.sendRequest("move", { direction });
     }
-    
-    hit(id, hitType) {
+
+    hit(hitType) {
         return this.sendRequest("hit", { hitType });
     }
-    /*
-    setState(id, state) {
-        return this.sendRequest("setState", {id, state});
-    }
-    */
-    
+
 }

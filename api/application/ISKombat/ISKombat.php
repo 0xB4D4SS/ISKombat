@@ -124,6 +124,17 @@ class ISKombat {
                 $this->db->deleteBattle($battle->id);
                 //$this->endBattle(); // method, that shows endbattle screen
             }
+            $fighter = $this->db->getFighterByUserId($userId);
+            if ($this->isStateChangeable($fighter)) {
+                switch ($fighter->state) {
+                    case "DOWN":
+                    case "HITARM":
+                    case "HITLEG":
+                        $this->db->setState($fighter->id, "STANDING");
+                    break;
+                    
+                }
+            }
             $fighter1 = $this->db->getFighter($battle->id_fighter1);
             $fighter2 = $this->db->getFighter($battle->id_fighter2);
             return array("scene" => $battle,
@@ -153,6 +164,17 @@ class ISKombat {
         return true;
     }
 
+    private function isStateChangeable($fighter) {
+        $state = $fighter->state;
+        $stateTimestamp = $fighter->stateTimestamp;
+        $stateDuration = $this->db->getStateDuration($state)->duration;
+        $currentTimestamp = round(microtime(true) * 1000);
+        if ($currentTimestamp - $stateTimestamp >= $stateDuration) {
+            return true;
+        }
+        return false;
+    }
+
     public function move($userId, $direction) {
         $fighter = $this->db->getFighterByUserId($userId);
         $battle = $this->getBattleByUserId($userId);
@@ -178,19 +200,27 @@ class ISKombat {
     public function hit($userId, $hitType) {
         $fighter1 = $this->db->getFighterByUserId($userId);
         $battle = $this->getBattleByUserId($userId);
+
+        if ($this->isStateChangeable($fighter1)) {
+            $this->db->setState($fighter1->id, $hitType);
+            return true;
+        }
+        return false;
+        /*
         if ($fighter1->id == $battle->id_fighter1) {
             $fighter2 = $battle->id_fighter2;
         }
         else {
             $fighter2 = $battle->id_fighter1;
         }
+        */
         $hitTimestamp = $battle->timestamp;
-        if ($fighter->state == "STANDING" || $fighter->state == "CROUCHING") {
+        if ($fighter1->state == "STANDING" || $fighter1->state == "CROUCHING") {
             if ($fighter1->x + $fighter1->width >= $fighter2->x && $fighter1->x < $fighter2->x + $fighter2->width) {
                 return $this->db->hitFighter($fighter1->id, $hitType);  
             }
         }
-        return false;
+        //return false;
         /*
         if (getFighterById($id) && (getFighterById($id)->state == "STANDING" || getFighterById($id)->state == "CROUCHING")) {
             getFighterById($id)->hitType = ISKombat::HITTYPE[$hitType];

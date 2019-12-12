@@ -146,6 +146,21 @@ class DB {
         return $this->oneRecord($result);
     }
 
+    public function getStateDuration($stateName) {
+        $query = "SELECT duration FROM state WHERE name = '".$stateName."'";
+        $result = $this->connection->query($query);
+        return $this->oneRecord($result);
+    }
+
+    public function setState($fighterId, $stateName) {
+        $stateTimestamp = round(microtime(true) * 1000);
+        $query = "UPDATE fighters 
+                  SET state = '".$stateName."', stateTimestamp = ".$stateTimestamp." 
+                  WHERE id = ".$fighterId."";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
     public function moveFighter($fighterId, $x, $direction) {
         $query = "UPDATE fighters SET x = '".$x."', direction = '".$direction."' WHERE id = '".$fighterId."'";
         $result = $this->connection->query($query);
