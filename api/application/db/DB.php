@@ -30,6 +30,10 @@ class DB {
         return $res;
     }
 
+    public function getMillisTime() {
+        return round(microtime(true) * 1000);
+    }
+
     /* USER */
     public function registerUser($login, $pass, $token) {
         $query = "INSERT INTO users (login, password, token) VALUES ( '".$login."', '".$pass."', '".$token."')";
@@ -152,8 +156,8 @@ class DB {
         return $this->oneRecord($result);
     }
 
-    public function setState($fighterId, $stateName) {
-        $stateTimestamp = round(microtime(true) * 1000);
+    public function setFighterState($fighterId, $stateName) {
+        $stateTimestamp = $this->getMillisTime();
         $query = "UPDATE fighters 
                   SET state = '".$stateName."', stateTimestamp = ".$stateTimestamp." 
                   WHERE id = ".$fighterId."";
@@ -167,8 +171,8 @@ class DB {
         return true;
     }
     //TODO:
-    public function hitFighter($fighterId, $hitType) {
-        //$query = ;// UPDATE... should i decrease health from here, or from higher abstraction level, and only give here new health?
+    public function hitFighter($targetId, $health) {
+        $query = "UPDATE fighters SET health = '".$health."' WHERE id = '".$targetId."'";
         $result = $this->connection->query($query);
         return true;
     }
@@ -185,7 +189,8 @@ class DB {
         return true;
     }
     /* BATTLE */
-    public function createBattle($fighterId1, $fighterId2, $startTimestamp) {
+    public function createBattle($fighterId1, $fighterId2) {
+        $startTimestamp = $this->getMillisTime();
         $query = "INSERT INTO battles
                   (id_fighter1, id_fighter2, startTimestamp ) 
                   VALUES (".$fighterId1.",
@@ -201,7 +206,8 @@ class DB {
         return $this->oneRecord($result);
     }
 
-    public function updateBattleTimestamp($battleId, $newTimestamp) {
+    public function updateBattleTimestamp($battleId) {
+        $newTimestamp = $this->getMillisTime();
         $query = "UPDATE battles SET timestamp = '".$newTimestamp."' WHERE id = '".$battleId."'";
         $result = $this->connection->query($query);
         return true;

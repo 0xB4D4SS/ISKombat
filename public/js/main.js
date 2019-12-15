@@ -31,7 +31,11 @@ window.onload = function() {
             data.fighters[0].x,
             data.fighters[0].y
         );
-        graph.spriteFighter(fighter2Img, FIGHTER_PICS_MIRRORED[data.fighters[1].state], data.fighters[1].x, data.fighters[1].y);
+        graph.spriteFighter(
+            fighter2Img, 
+            FIGHTER_PICS_MIRRORED[data.fighters[1].state], 
+            data.fighters[1].x, data.fighters[1].y
+        );
     }
 
     function renderCB(result) {
