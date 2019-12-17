@@ -19,7 +19,9 @@ class ISKombat {
         "CROUCHING" => 300,
         "DOWN" => 400,
         "JUMP" => 300,
-        "DEAD" => 400
+        "DEAD" => 400,
+        "HITARM" => 500,
+        "HITLEG" => 600
     );
 
     const HEIGHT = array(  
@@ -27,7 +29,9 @@ class ISKombat {
         "CROUCHING" => 75,
         "DOWN" => 50,
         "JUMP" => 75,
-        "DEAD" => 50
+        "DEAD" => 50,
+        "HITARM" => 150,
+        "HITLEG" => 150
     );
     
     function __construct($db) {
@@ -169,9 +173,8 @@ class ISKombat {
                                         $y = $fighter->y, 
                                         $width = $fighter->width, 
                                         $height = $fighter->height, 
-                                        $health = $fighter->health) {
-    */
-    /*
+                                        $health = $fighter->health) {}
+
     public function updateFighter($fighter) {
     // set width, height and health
         switch ($fighter->state) {
@@ -217,20 +220,21 @@ class ISKombat {
     }
 
     private function hitCheck($fighter, $target) {
+        print_r($fighter);
+        print_r($target);
         switch ($fighter->direction) {
             case "right":
-                if (($fighter->x + $fighter->width >= $target->x) && ($fighter->x < $target->x + $target->width)) {
+                if (($fighter->x + $fighter->width >= $target->x) && ($fighter->x <= $target->x + $target->width)) {
                     return true;  
                 }
-                return false;
             break;
             case "left":
-                if (($fighter->x + $fighter->width <= $target->x) && ($fighter->x > $target->x + $target->width)) {
+                if (($fighter->x + $fighter->width <= $target->x) && ($fighter->x >= $target->x + $target->width)) {
                     return true;  
                 }
-                return false;
             break;
         }
+        return false;
     }
     //TODO: ( health doesn't decrease somewhy )
     public function hit($userId, $hitType) {
@@ -241,13 +245,18 @@ class ISKombat {
             $this->db->setFighterState($fighter->id, $hitType);
         }
         if ($fighter->id == $battle->id_fighter1) {
-            $target = $battle->id_fighter2;
+            $target = $this->db->getFighter($battle->id_fighter2);
         }
         else {
-            $target = $battle->id_fighter1;
+            $target = $this->db->getFighter($battle->id_fighter1);
         }
         if ($this->hitCheck($fighter, $target)) {
-            $healthDecrease = ( $hitType === "HITARM") ? 5 : 10;
+            if ($hitType == "HITARM") {
+                $healthDecrease = 5;
+            }
+            if ($hitType == "HITLEG") {
+                $healthDecrease = 10;
+            }
             $newTargetHealth = $target->health - $healthDecrease;
             $this->db->hitFighter($target->id, $newTargetHealth);
             return true;

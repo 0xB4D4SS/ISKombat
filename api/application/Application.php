@@ -133,7 +133,7 @@ class Application {
             if ($user) {
                 return $this->iskombat->hit(
                     $user->id,       
-                    $params['hitType']     
+                    $params["hitType"]     
                 );
             }
         }
