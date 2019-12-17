@@ -8,15 +8,15 @@ window.onload = function() {
     fighter1Img.src = "../public/img/Sprite_N.png";
     fighter2Img.src = "../public/img/Sprite_R(mirrored).png";
     backgroundImg.src = "../public/img/UDSU.png"
-
-    const FIGHTER_PICS = {
+    // TODO: array, that gives pics depending on fighters direction
+    const FIGHTER_PICS_right = {
         STANDING: { sx: 390, sy: 0, sWidth: 398, sHeight: 1200 },
         HITARM: { sx: 3888, sy: 0, sWidth: 540, sHeight: 1200 }
         //MOVING: {sx: 800, sy: 0, sWidth: 872, sHeight: 1200},
         //TODO: cut all fighter pics, depending on state
     }
 
-    const FIGHTER_PICS_MIRRORED = {
+    const FIGHTER_PICS_left = {
         STANDING: { sx: 12328, sy: 0, sWidth: 544, sHeight: 1200 },
         HITARM: { sx: 8648, sy: 0, sWidth: 702, sHeight: 1200 }
         //TODO: cut all fighter pics, depending on state
@@ -25,15 +25,17 @@ window.onload = function() {
     function render(data) {
         graph.clear();
         //setTimeout(graph.sprite(backgroundImg, 0, 0), 1000);
+        directionFighter1 = data.fighters[0].direction;
+        directionFighter2 = data.fighters[1].direction;
         graph.spriteFighter(
             fighter1Img,
-            FIGHTER_PICS[data.fighters[0].state],
+            FIGHTER_PICS_right[data.fighters[0].state],
             data.fighters[0].x,
             data.fighters[0].y
         );
         graph.spriteFighter(
             fighter2Img, 
-            FIGHTER_PICS_MIRRORED[data.fighters[1].state], 
+            FIGHTER_PICS_left[data.fighters[1].state], 
             data.fighters[1].x, data.fighters[1].y
         );
     }

@@ -20,8 +20,8 @@ class ISKombat {
         "DOWN" => 400,
         "JUMP" => 300,
         "DEAD" => 400,
-        "HITARM" => 500,
-        "HITLEG" => 600
+        "HITARM" => 300,
+        "HITLEG" => 400
     );
 
     const HEIGHT = array(  
@@ -64,8 +64,8 @@ class ISKombat {
         return false;
     }
 
-    private function isFighterDead($fighterId) {
-        if ($this->db->getFighter($fighterId)->health < 1) {
+    private function isFighterDead($fighter) {
+        if ($fighter->health < 1) {
             return true;
         }
         return false;
@@ -122,6 +122,9 @@ class ISKombat {
             }
             $fighter1 = $this->db->getFighter($battle->id_fighter1);
             $fighter2 = $this->db->getFighter($battle->id_fighter2);
+            if ($this->isFighterDead($fighter1) || $this->isFighterDead($fighter2)) {
+                return $this->endBattle($battle, $userId);
+            }
             return array("scene" => $battle,
                          "fighters" => array($fighter1,
                                              $fighter2
@@ -218,10 +221,8 @@ class ISKombat {
         return false;
         }
     }
-
+    // TODO:
     private function hitCheck($fighter, $target) {
-        print_r($fighter);
-        print_r($target);
         switch ($fighter->direction) {
             case "right":
                 if (($fighter->x + $fighter->width >= $target->x) && ($fighter->x <= $target->x + $target->width)) {
@@ -236,7 +237,7 @@ class ISKombat {
         }
         return false;
     }
-    //TODO: ( health doesn't decrease somewhy )
+    
     public function hit($userId, $hitType) {
         $fighter = $this->db->getFighterByUserId($userId);
         $battle = $this->getBattleByUserId($userId);
@@ -261,7 +262,6 @@ class ISKombat {
             $this->db->hitFighter($target->id, $newTargetHealth);
             return true;
         }
-        //$hitTimestamp = $battle->timestamp;
         return false;
     }
     
