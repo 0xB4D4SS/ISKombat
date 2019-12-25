@@ -248,8 +248,8 @@ class DB {
     public function getResult($winner_id, $loser_id) {
         $query = "SELECT * 
                   FROM results 
-                  WHERE winner_id = '".$winner_id."' AND loser_id = '".$loser_id."' 
-                  ORDER BY DESC LIMIT 1";
+                  WHERE winner_id = $winner_id AND loser_id = $loser_id 
+                  ORDER BY id DESC LIMIT 1";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
