@@ -17,8 +17,8 @@ window.onload = function() {
     }
 
     const FIGHTER_PICS_left = {
-        STANDING: { sx: 12328, sy: 0, sWidth: 544, sHeight: 1200 },
-        HITARM: { sx: 8648, sy: 0, sWidth: 702, sHeight: 1200 }
+        STANDING: { sx: 333, sy: 0, sWidth: 536, sHeight: 1200 },
+        HITARM: { sx: 3763, sy: 0, sWidth: 700, sHeight: 1200 }
         //TODO: cut all fighter pics, depending on state
     }
 
@@ -41,6 +41,12 @@ window.onload = function() {
     }
 
     function renderCB(result) {
+        if (result && result.endBattle) {
+            server.stopUpdateBattle();
+            alert("END! Winner: "+result.winner+", Loser: "+result.loser+".");
+            // TODO: отработать конец боя: сообщение о победителе/проигравшем, выкинуть в лобби (можно просто алёрт XD)
+            return;
+        }
         render(result);
     }
 

@@ -81,7 +81,45 @@ class ISKombat {
         }
         return false;
     }
-    
+
+    private function getResult($battle) {
+        if ($battle->status == "finish") {
+            $winner;
+            $loser;
+            $fighter1 = $this->db->getFighter($battle->id_fighter1);
+            $fighter2 = $this->db->getFighter($battle->id_fighter2);
+            if ($fighter1->health - $fighter2->health >= 0) {
+                $loser = $fighter2;
+                $winner = $fighter1;
+            }else {
+                $loser = $fighter1;
+                $winner = $fighter2;
+            }
+            $this->db->addResult($winner->user_id, $loser->user_id);
+            return $this->db->getResult($winner->user_id, $loser->user_id);
+        }
+        return false;
+    }
+
+    private function endBattle($battle, $userId) {
+        // TODO: зачем-то дважды добавляет results
+        $this->db->setBattleStatus($battle->id, "finish");
+        $result = $this->getResult($battle);
+        if ($result) {
+            $winner = $this->db->getUserById($result->winner_id);
+            $loser = $this->db->getUserById($result->loser_id);
+            $this->db->deleteLobby($userId);
+            $this->db->deleteFighterById($battle->id_fighter1);
+            $this->db->deleteFighterById($battle->id_fighter2);
+            return array(
+                'endBattle' => true,
+                'winner' => $winner->login,
+                'loser' => $loser->login
+            );
+        }
+        return false;
+    }
+
     public function createKombat($userId1, $userId2) {
         $scene = new stdClass();
         $scene->left = 50;
@@ -93,20 +131,16 @@ class ISKombat {
         $this->db->createBattle($fighter1->id, $fighter2->id);
         return true;
     }
-    
-    public function endBattle($battle, $userId) {
-        $this->db->deleteLobby($userId);
-        $this->db->deleteFighterById($battle->id_fighter1);
-        $this->db->deleteFighterById($battle->id_fighter2);
-        $this->db->deleteBattle($battle->id);
-        // call endbattle screen ( maybe at client side )
-        return true;
-    }
-    
+   
     public function updateBattle($userId, $battle) {
         $this->db->updateBattleTimestamp($battle->id);
         if ($this->isUpdate($battle)) {
             if ($this->isTimeout($battle)) {
+                return $this->endBattle($battle, $userId);
+            }
+            $fighter1 = $this->db->getFighter($battle->id_fighter1);
+            $fighter2 = $this->db->getFighter($battle->id_fighter2);
+            if ($this->isFighterDead($fighter1) || $this->isFighterDead($fighter2)) {
                 return $this->endBattle($battle, $userId);
             }
             $fighter = $this->db->getFighterByUserId($userId);
@@ -119,11 +153,6 @@ class ISKombat {
                         $this->db->setFighterState($fighter->id, "STANDING");
                     break;
                 }
-            }
-            $fighter1 = $this->db->getFighter($battle->id_fighter1);
-            $fighter2 = $this->db->getFighter($battle->id_fighter2);
-            if ($this->isFighterDead($fighter1) || $this->isFighterDead($fighter2)) {
-                return $this->endBattle($battle, $userId);
             }
             return array("scene" => $battle,
                          "fighters" => array($fighter1,

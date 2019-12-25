@@ -53,8 +53,14 @@ class DB {
         return $this->oneRecord($result);
     }
 
-    public function updateUserToken($id, $token) {
-        $query = "UPDATE users SET token = '".$token."' WHERE id = '".$id."'";
+    public function getUserById($Id) {
+        $query = "SELECT * FROM users WHERE id = '".$Id."'";
+        $result = $this->connection->query($query);
+        return $this->oneRecord($result);
+    }
+
+    public function updateUserToken($Id, $token) {
+        $query = "UPDATE users SET token = '".$token."' WHERE id = '".$Id."'";
         $result = $this->connection->query($query);
         return true;
     }
@@ -170,7 +176,7 @@ class DB {
         $result = $this->connection->query($query);
         return true;
     }
-    //TODO:
+    
     public function hitFighter($targetId, $health) {
         $query = "UPDATE fighters SET health = '".$health."' WHERE id = '".$targetId."'";
         $result = $this->connection->query($query);
@@ -213,6 +219,12 @@ class DB {
         return true;
     }
 
+    public function setBattleStatus($battleId, $status) {
+        $query = "UPDATE battles SET status = '".$status."' WHERE id = '".$battleId."'";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
     public function deleteBattle($battleId) {
         $query = "DELETE FROM battles WHERE id = ".$battleId."";
         $result = $this->connection->query($query);
@@ -225,6 +237,21 @@ class DB {
                   OR id_fighter2 = $fighterId";
         $result = $this->connection->query($query);
         return true;
+    }
+
+    public function addResult($winner_id, $loser_id) {
+        $query = "INSERT INTO results (winner_id, loser_id) VALUES ('".$winner_id."', '".$loser_id."')";
+        $result = $this->connection->query($query);
+        return true;
+    }
+
+    public function getResult($winner_id, $loser_id) {
+        $query = "SELECT * 
+                  FROM results 
+                  WHERE winner_id = '".$winner_id."' AND loser_id = '".$loser_id."' 
+                  ORDER BY DESC LIMIT 1";
+        $result = $this->connection->query($query);
+        return $this->oneRecord($result);
     }
 
 }

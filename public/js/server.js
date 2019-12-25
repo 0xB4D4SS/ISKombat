@@ -48,11 +48,11 @@ class Server {
     }
 
     logout() {
-            this.stopCallChallenge();
-            this.stopCallIsChallengeAccepted();
-            return this.sendRequest("logout");
-        }
-        /* LOBBY */
+        this.stopCallChallenge();
+        this.stopCallIsChallengeAccepted();
+        return this.sendRequest("logout");
+    }
+    /* LOBBY */
     getAllUsers() {
         return this.sendRequest("getAllUsers");
     }
@@ -99,9 +99,9 @@ class Server {
     }
 
     acceptChallenge(answer) {
-            return this.sendRequest("acceptChallenge", { answer });
-        }
-        /* BATTLE AND FIGHTERSS */
+        return this.sendRequest("acceptChallenge", { answer });
+    }
+    /* BATTLE AND FIGHTERSS */
     async updateBattle() {
         if (this.sendUpdateBattle) {
             const result = await this.sendRequest("updateBattle");
@@ -117,11 +117,11 @@ class Server {
     }
 
     deleteFighter() {
-            this.sendIsChallenge = true;
-            this.startCallChallenge();
-            return this.sendRequest("deleteFighter");
-        }
-        /* GAME */
+        this.sendIsChallenge = true;
+        this.startCallChallenge();
+        return this.sendRequest("deleteFighter");
+    }
+    /* GAME */
     move(direction) {
         return this.sendRequest("move", { direction });
     }
