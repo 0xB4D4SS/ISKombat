@@ -15,23 +15,23 @@ class ISKombat {
     );    
 
     const WIDTH = array(  
-        "STANDING" => 300,
+        "STANDING" => 150,
         "CROUCHING" => 300,
         "DOWN" => 400,
-        "JUMP" => 300,
+        "JUMP" => 150,
         "DEAD" => 400,
-        "HITARM" => 300,
-        "HITLEG" => 400
+        "HITARM" => 150,
+        "HITLEG" => 250
     );
 
     const HEIGHT = array(  
-        "STANDING" => 150,
-        "CROUCHING" => 75,
+        "STANDING" => 300,
+        "CROUCHING" => 150,
         "DOWN" => 50,
-        "JUMP" => 75,
+        "JUMP" => 150,
         "DEAD" => 50,
-        "HITARM" => 150,
-        "HITLEG" => 150
+        "HITARM" => 300,
+        "HITLEG" => 300
     );
     
     function __construct($db) {
@@ -66,6 +66,7 @@ class ISKombat {
 
     private function isFighterDead($fighter) {
         if ($fighter->health < 1) {
+            $this->db->setFighterState($fighter->id, "DEAD");
             return true;
         }
         return false;
@@ -197,7 +198,6 @@ class ISKombat {
         return $this->db->getFighterByUserId($userId);
     }
 
-    // TODO:
     /*
     maybe create method, that completely updates fighter record in DB, depending on parameters that are given to this method?
     like: public function updateFighter($fighter, 

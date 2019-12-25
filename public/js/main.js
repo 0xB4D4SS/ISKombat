@@ -6,20 +6,23 @@ window.onload = function() {
     const fighter2Img = new Image();
     const backgroundImg = new Image();
     fighter1Img.src = "../public/img/Sprite_N.png";
-    fighter2Img.src = "../public/img/Sprite_R(mirrored).png";
+    fighter2Img.src = "../public/img/Sprite_A(mirrored).png";
     backgroundImg.src = "../public/img/UDSU.png"
-    // TODO: array, that gives pics depending on fighters direction
+    //TODO: cut all fighter pics, depending on state
     const FIGHTER_PICS_right = {
-        STANDING: { sx: 390, sy: 0, sWidth: 398, sHeight: 1200 },
-        HITARM: { sx: 3888, sy: 0, sWidth: 540, sHeight: 1200 }
-        //MOVING: {sx: 800, sy: 0, sWidth: 872, sHeight: 1200},
-        //TODO: cut all fighter pics, depending on state
+        STANDING: { sx: 390, sy: 0, sWidth: 400, sHeight: 1200 },
+        HITARM: { sx: 3888, sy: 0, sWidth: 540, sHeight: 1200 },
+        HITLEG: { sx: 5125, sy: 0, sWidth: 850, sHeight: 1200 },
+        MOVING: { sx: 1493, sy: 0, sWidth: 502, sHeight: 1200 },
+        DEAD: { sx: 11992, sy: 0, sWidth: 1207, sHeight: 1200 }
     }
 
     const FIGHTER_PICS_left = {
-        STANDING: { sx: 333, sy: 0, sWidth: 536, sHeight: 1200 },
-        HITARM: { sx: 3763, sy: 0, sWidth: 700, sHeight: 1200 }
-        //TODO: cut all fighter pics, depending on state
+        STANDING: { sx: 375, sy: 0, sWidth: 472, sHeight: 1200 },
+        HITARM: { sx: 3771, sy: 0, sWidth: 668, sHeight: 1200 },
+        HITLEG: { sx: 4881, sy: 0, sWidth: 854, sHeight: 1200 },
+        MOVING: { sx: 1579, sy: 0, sWidth: 520, sHeight: 1200 },
+        DEAD: { sx: 11996, sy: 0, sWidth: 1203, sHeight: 1200 }
     }
 
     function render(data) {
@@ -31,12 +34,14 @@ window.onload = function() {
             fighter1Img,
             FIGHTER_PICS_right[data.fighters[0].state],
             data.fighters[0].x,
-            data.fighters[0].y
+            data.fighters[0].y,
+            data.fighters[0].state
         );
         graph.spriteFighter(
             fighter2Img, 
             FIGHTER_PICS_left[data.fighters[1].state], 
-            data.fighters[1].x, data.fighters[1].y
+            data.fighters[1].x, data.fighters[1].y,
+            data.fighters[1].state
         );
     }
 
@@ -44,7 +49,8 @@ window.onload = function() {
         if (result && result.endBattle) {
             server.stopUpdateBattle();
             alert("END! Winner: "+result.winner+", Loser: "+result.loser+".");
-            // TODO: отработать конец боя: сообщение о победителе/проигравшем, выкинуть в лобби (можно просто алёрт XD)
+            server.deleteFighter();
+            showPage("lobbyPage");
             return;
         }
         render(result);
@@ -164,6 +170,9 @@ window.onload = function() {
         if (event.keyCode == 69) { // KeyE
             server.hit("HITARM");
         }
+        if (event.keyCode == 81) { // KeyQ
+            server.hit("HITLEG");
+        }
         if (event.keyCode == 68) { // KeyD
             server.move("right");
         }
@@ -193,7 +202,7 @@ window.onload = function() {
     });
     */
     document.getElementById("exitBattle").addEventListener("click", async function() {
-        const result = await server.deleteFighter();
+        server.deleteFighter();
         if (result) {
             server.stopUpdateBattle();
             showPage("lobbyPage");

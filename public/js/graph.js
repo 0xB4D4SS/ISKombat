@@ -17,8 +17,25 @@ class Graph {
         this.context.drawImage(img, x, y);
     }
 
-    spriteFighter(img, coords, x, y) {
-        const { sx, sy, sWidth, sHeight} = coords;
-        this.context.drawImage(img, sx, sy, sWidth, sHeight, x, y, 150, 300);
+    spriteFighter(img, coords, x, y, state) {
+        var picWidth;
+        var picHeight;
+        const { sx, sy, sWidth, sHeight } = coords;
+        switch (state) {
+            case "STANDING":
+            case "HITARM":
+                picWidth = 150;
+                picHeight = 300;
+            break;
+            case "HITLEG":
+                picWidth = 250;
+                picHeight = 300;
+            break;
+            case "DEAD": 
+                picWidth = 400;
+                picHeight = 75;
+            break;
+        }
+        this.context.drawImage(img, sx, sy, sWidth, sHeight, x, y, picWidth, picHeight);
     }
 }
