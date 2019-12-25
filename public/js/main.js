@@ -202,7 +202,7 @@ window.onload = function() {
     });
     */
     document.getElementById("exitBattle").addEventListener("click", async function() {
-        server.deleteFighter();
+        const result = server.deleteFighter();
         if (result) {
             server.stopUpdateBattle();
             showPage("lobbyPage");
