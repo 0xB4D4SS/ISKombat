@@ -7,9 +7,9 @@ function router($params) {
     $method = $params["method"];
     switch ($method) {
         //user methods
-        case "login": return $app->login($params);                              // логинит пользователя
-        case "register": return $app->register($params);                        // регистрирует нового пользователя
-        case "logout": return $app->logout($params);                            // разлогинивает пользователя
+        case "login": return $app->login($params);       // логинит пользователя
+        case "register": return $app->register($params); // регистрирует нового пользователя
+        case "logout": return $app->logout($params);     // разлогинивает пользователя
         // lobby
         case "getAllUsers": return $app->getAllUsers($params);                  // возвращает список пользователей онлайн
         case "isUserChallenged": return $app->isUserChallenged($params);        // возвращает истину, если пользователю уже отправили запрос на бой
@@ -19,7 +19,6 @@ function router($params) {
         case "acceptChallenge": return $app->acceptChallenge($params);          // обновляет статус записи в БД в таблице lobby в зависимости от того, принял ли пользователь вызов на бой 
         // game methods
         case "move": return $app->move($params);           // метод, перемещающий бойца по сцене
-        //case "setState": return $app->setState($params); // метод, меняющий состояние бойца ( стоит, сидит, лежит, в прыжке, мертв )
         case "hit": return $app->hit($params);             // метод, позволяющий бойцу сделать удар ( ногой или рукой )
         case "deleteFighter": return $app->deleteFighter($params);
         case "updateBattle": return $app->updateBattle($params);       // метод, обновляющий данные битвы

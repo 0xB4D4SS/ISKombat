@@ -9,8 +9,16 @@ class Graph {
     clear() {
         this.context.fillStyle = 'black'; // #FF0000
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        //this.context.clearRect();
+    }
+
+    fillRect(x, y, width, height, color) {
+        this.context.fillStyle = color || '#000';
+        this.context.fillRect(x, y, width, height);
+    }
+
+    lifeBar(health, x, y) {
+        this.fillRect(x, y - 20, 100, 20);
+        this.fillRect(x, y - 20, health, 20, '#0f0');
     }
 
     sprite(img, x, y) {
@@ -37,5 +45,11 @@ class Graph {
             break;
         }
         this.context.drawImage(img, sx, sy, sWidth, sHeight, x, y, picWidth, picHeight);
+    }
+
+    textOut(text, x, y) {
+        this.context.fillStyle = '#f00';
+        this.context.font = "48px Arial";
+        this.context.fillText(text, x, y);
     }
 }

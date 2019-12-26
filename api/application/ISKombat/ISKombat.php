@@ -254,12 +254,16 @@ class ISKombat {
     private function hitCheck($fighter, $target) {
         switch ($fighter->direction) {
             case "right":
-                if (($fighter->x + $fighter->width >= $target->x) && ($fighter->x <= $target->x + $target->width)) {
+                if (($fighter->x + $fighter->width >= $target->x) && 
+                    ($fighter->x <= $target->x + $target->width)
+                ) {
                     return true;  
                 }
             break;
             case "left":
-                if (($fighter->x + $fighter->width <= $target->x) && ($fighter->x >= $target->x + $target->width)) {
+                if (($fighter->x <= $target->x + $target->width) && 
+                    ($fighter->x >= $target->x)
+                ) {
                     return true;  
                 }
             break;
@@ -270,14 +274,12 @@ class ISKombat {
     public function hit($userId, $hitType) {
         $fighter = $this->db->getFighterByUserId($userId);
         $battle = $this->getBattleByUserId($userId);
-
         if ($this->isStateChangeable($fighter)) {
             $this->db->setFighterState($fighter->id, $hitType);
         }
         if ($fighter->id == $battle->id_fighter1) {
             $target = $this->db->getFighter($battle->id_fighter2);
-        }
-        else {
+        } else {
             $target = $this->db->getFighter($battle->id_fighter1);
         }
         if ($this->hitCheck($fighter, $target)) {

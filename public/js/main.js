@@ -25,23 +25,44 @@ window.onload = function() {
         DEAD: { sx: 11996, sy: 0, sWidth: 1203, sHeight: 1200 }
     }
 
+    function getTime(ms) {
+        ms = Math.floor(ms / 1000);
+        let min = Math.floor(ms / 60);
+        let sec = Math.floor(ms - min * 60);
+        min = (min < 10) ? `0${min}` : min;
+        sec = (sec < 10) ? `0${sec}` : sec;
+        return `${min}:${sec}`;
+    }
+
     function render(data) {
+
+        const fighter1 = data.fighters[0];
+        const fighter2 = data.fighters[1];
+
         graph.clear();
-        //setTimeout(graph.sprite(backgroundImg, 0, 0), 1000);
-        directionFighter1 = data.fighters[0].direction;
-        directionFighter2 = data.fighters[1].direction;
+        graph.sprite(backgroundImg, 0, 0);
+
+        // вывести время
+        const { timestamp, startTimestamp, duration } = data.scene;
+        graph.textOut(getTime(duration - (timestamp - startTimestamp)), 600, 80);
+
+        // линейки жизни
+        graph.lifeBar(fighter1.health - 0, fighter1.x - 0, fighter1.y - 0);
+        graph.lifeBar(fighter2.health - 0, fighter2.x - 0, fighter2.y - 0);
+
         graph.spriteFighter(
             fighter1Img,
-            FIGHTER_PICS_right[data.fighters[0].state],
-            data.fighters[0].x,
-            data.fighters[0].y,
-            data.fighters[0].state
+            FIGHTER_PICS_right[fighter1.state],
+            fighter1.x,
+            fighter1.y,
+            fighter1.state
         );
         graph.spriteFighter(
             fighter2Img, 
-            FIGHTER_PICS_left[data.fighters[1].state], 
-            data.fighters[1].x, data.fighters[1].y,
-            data.fighters[1].state
+            FIGHTER_PICS_left[fighter2.state], 
+            fighter2.x, 
+            fighter2.y,
+            fighter2.state
         );
     }
 
@@ -125,7 +146,7 @@ window.onload = function() {
     function initUsernameHeader() {
         const login = document.getElementById("login").value;
         const userLogin = document.createElement('h6');
-        userLogin.innerHTML = "You are logged in as " + login;
+        userLogin.innerHTML = "ТВОЁ ПОГОНЯЛО: " + login;
         document.getElementById("lobbyHeader").appendChild(userLogin);
     }
 
