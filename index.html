@@ -4,41 +4,53 @@
         <title>ISKombat</title>
         <script src="public/js/server.js"></script>
         <script src="public/js/main.js"></script>
+        <script src="public/js/graph.js"></script>
     </head>
-    <body>
-        <div id="authPage">
-            <p>Authorize</p>
-            <label>Login</label><input id="login">
-            <br>
-            <label>Password</label><input type="password" id="pass">
-            <br>
-            <button id="loginButton">Login</button>
-            <button id="registerButton">Register</button>
-            
-        </div>
-        <div id="lobbyPage">
-            <h1>Lobby</h1>
-            <p>Player list:</p>
-            <div id="lobbyTable">
-                
+    <body style = "background-color : #000000">
+
+        <audio loop>
+            <source src="public/audio/some.mp3">
+        </audio>
+
+        <center>
+            <div id="authPage">
+                <h1 align="center" style="color:#9e0000">ISKOMBAT</h1>
+                <label><h1 style="color:#0061cf">Login:</h1></label><input id="login">
+                <br>
+                <label><h1 style="color:#0061cf">Password:</h1></label><input type="password" id="pass"><br><br>
+                <button id="loginButton"><h1 style="color:#0e0000af">Login</h1></button>
+                <button id="registerButton"><h1 style="color:#0e0000af">Register</h1></button><br><br>
+                <img src="/public/img/1551801993_giphy.gif">
             </div>
-            <button id="logoutButton">Logout</button>
-        </div>
-        <div id="gamePage">
-            <p> Адын</p>
-            <button id="move_right">Move right</button>
-            <br>
-            <button id="move_left">Move left</button>
-            <br>
-            <button id="hit_hand">Hit with hand</button>
-            <br>
-            <button id="hit_leg">Hit with leg</button>
-            <br>
-            <button id="stand">Stand</button>
-            <br>
-            <button id="crouch">Crouch</button>
-            <br>
-            <button id="jump">Jump</button>
-        </div>
+        </center>
+        <center>
+            <div id="lobbyPage">
+                <h1 id="lobbyHeader" style = "color:rgb(251, 0, 251)">ЛОББИ</h1>
+                <h1 style = "color:#ff0000"> СВЕЖЕЕ МЯСО </h1>
+                        <h1 style = "color:#ff0000"> <div id="lobbyTable"></div></h1>
+                        <div id="challenge" style="display: none;">
+                    <button id="accept"><h1 align="center" style="color:#000000">Accept</h1></button>
+                    <button id="decline"><h1 align="center" style="color:#000000">Decline</h1></button>
+                </div>
+                <button id="refreshLobby"><h1 align="center" style="color:#000000">Refresh</h1></button>
+                <button id="logoutButton"><h1 align="center" style="color:#000000">Logout</h1></button>
+                <br>
+                <img src="/public/img/Y60L.gif">
+                <img src="/public/img/Ymo8.gif">
+                <img src="/public/img/ZcsT.gif">
+                <img src="/public/img/3yCC.gif">
+                <img src="/public/img/Mortal-Kombat-гифки-много-gif-под-катом-MK-Gif-15047 (1).gif">
+                <img src="/public/img/8DxX.gif">
+            </div>
+        </center>
+        <center>
+            <div id="gamePage">
+                <div>
+                    <h1 align="center" style="color:#ff0000">СРАЖАЙТЕСЬ!!!</h1>
+                    <button id="exitBattle"><h1 align="center" style="color:#000000">Exit Battle</h1></button>
+                </div>
+                <canvas id="canvas"></canvas>
+            </div>
+        </center>
     </body>
 </html>
