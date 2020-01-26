@@ -39,9 +39,13 @@ class Graph {
                 picWidth = 250;
                 picHeight = 300;
             break;
+            case "CROUCHING":
+                picWidth = 150;
+                picHeight = 300;
+            break;
             case "DEAD": 
                 picWidth = 400;
-                picHeight = 75;
+                picHeight = 300;
             break;
         }
         this.context.drawImage(img, sx, sy, sWidth, sHeight, x, y, picWidth, picHeight);

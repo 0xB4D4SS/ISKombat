@@ -130,4 +130,8 @@ class Server {
         return this.sendRequest("hit", { hitType });
     }
 
+    setState(state) {
+        return this.sendRequest("setState", { state });
+    }
+
 }

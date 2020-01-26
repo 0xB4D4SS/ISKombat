@@ -20,6 +20,7 @@ function router($params) {
         // game methods
         case "move": return $app->move($params);           // метод, перемещающий бойца по сцене
         case "hit": return $app->hit($params);             // метод, позволяющий бойцу сделать удар ( ногой или рукой )
+        case "setState": return $app->setState($params);   // метод, изменяющий состояние бойца (стоит, сидит, лежит, TODO: прыгает)
         case "deleteFighter": return $app->deleteFighter($params);
         case "updateBattle": return $app->updateBattle($params);       // метод, обновляющий данные битвы
         default: return false;

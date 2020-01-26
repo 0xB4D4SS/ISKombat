@@ -11,7 +11,8 @@ window.onload = function() {
     //TODO: cut all fighter pics, depending on state
     const FIGHTER_PICS_right = {
         STANDING: { sx: 390, sy: 0, sWidth: 400, sHeight: 1200 },
-        HITARM: { sx: 3888, sy: 0, sWidth: 540, sHeight: 1200 },
+        CROUCHING: { sx: 6307, sy: 0, sWidth: 514, sHeight: 1200 },
+        HITARM: { sx: 4001, sy: 0, sWidth: 532, sHeight: 1200 },
         HITLEG: { sx: 5125, sy: 0, sWidth: 850, sHeight: 1200 },
         MOVING: { sx: 1493, sy: 0, sWidth: 502, sHeight: 1200 },
         DEAD: { sx: 11992, sy: 0, sWidth: 1207, sHeight: 1200 }
@@ -19,6 +20,7 @@ window.onload = function() {
 
     const FIGHTER_PICS_left = {
         STANDING: { sx: 375, sy: 0, sWidth: 472, sHeight: 1200 },
+        CROUCHING: { sx: 6410, sy: 0, sWidth: 445, sHeight: 1200 },
         HITARM: { sx: 3771, sy: 0, sWidth: 668, sHeight: 1200 },
         HITLEG: { sx: 4881, sy: 0, sWidth: 854, sHeight: 1200 },
         MOVING: { sx: 1579, sy: 0, sWidth: 520, sHeight: 1200 },
@@ -199,6 +201,14 @@ window.onload = function() {
         }
         if (event.keyCode == 65) { // KeyA
             server.move("left");
+        }
+        if (event.keyCode == 83) { // KeyS
+            server.setState("CROUCHING");
+        }
+    });
+    document.addEventListener('keyup', function(event) {
+        if (event.keyCode == 83) { // KeyS
+            server.setState("STANDING");
         }
     });
     /*
