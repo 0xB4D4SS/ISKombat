@@ -141,10 +141,11 @@ class Application {
     }
 
     public function setState($params) {
-        if ($params["id"] && $params["state"]) {
+        if ($params["token"] && $params["state"]) {
+            $user = $this->user->getUserByToken($params["token"]);
             return $this->iskombat->setState(
-                $params['id'],      
-                $params['state']      
+                $user->id,      
+                $params["state"]      
             );
         }
         return false;

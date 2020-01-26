@@ -295,5 +295,13 @@ class ISKombat {
         }
         return false;
     }
+
+    public function setState($userId, $state) {
+        $fighter = $this->db->getFighterByUserId($userId);
+        if ($fighter) {
+            return $this->db->setFighterState($fighter->id, $state);
+        }
+        return false;
+    }
     
 }
