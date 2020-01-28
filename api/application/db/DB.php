@@ -53,14 +53,14 @@ class DB {
         return $this->oneRecord($result);
     }
 
-    public function getUserById($Id) {
-        $query = "SELECT * FROM users WHERE id = '".$Id."'";
+    public function getUserById($id) {
+        $query = "SELECT * FROM users WHERE id = '".$id."'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
 
-    public function updateUserToken($Id, $token) {
-        $query = "UPDATE users SET token = '".$token."' WHERE id = '".$Id."'";
+    public function updateUserToken($id, $token) {
+        $query = "UPDATE users SET token = '".$token."' WHERE id = '".$id."'";
         $result = $this->connection->query($query);
         return true;
     }
@@ -74,7 +74,7 @@ class DB {
     public function isChallenge($userId) {
         $query = "SELECT * 
                   FROM lobby 
-                  WHERE id_user2 = ".$userId." AND status = 'open' OR id_user1 = '".$userId."' AND status = 'open'";
+                  WHERE id_user2 = '".$userId."' AND status = 'open' OR id_user1 = '".$userId."' AND status = 'open'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
