@@ -64,6 +64,7 @@ class DB {
         $result = $this->connection->query($query);
         return true;
     }
+    
     /* LOBBY */
     public function newChallenge($userId1, $userId2) {
         $query = "INSERT INTO lobby (id_user1, id_user2, status) VALUES ('".$userId1."', '".$userId2."', 'open')";
@@ -145,13 +146,13 @@ class DB {
     }
 
     public function getFighter($fighterId) {
-        $query = "SELECT * FROM fighters WHERE id = ".$fighterId."";
+        $query = "SELECT * FROM fighters WHERE id = '".$fighterId."'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
 
     public function getFighterByUserId($userId) {
-        $query = "SELECT * FROM fighters WHERE user_id = ".$userId."";
+        $query = "SELECT * FROM fighters WHERE user_id = '".$userId."'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
@@ -165,8 +166,8 @@ class DB {
     public function setFighterState($fighterId, $stateName) {
         $stateTimestamp = $this->getMillisTime();
         $query = "UPDATE fighters 
-                  SET state = '".$stateName."', stateTimestamp = ".$stateTimestamp." 
-                  WHERE id = ".$fighterId."";
+                  SET state = '".$stateName."', stateTimestamp = '".$stateTimestamp."' 
+                  WHERE id = '".$fighterId."'";
         $result = $this->connection->query($query);
         return true;
     }
@@ -184,13 +185,13 @@ class DB {
     }
 
     public function deleteFighterById($fighterId) {
-        $query = "DELETE FROM fighters WHERE id = ".$fighterId."";
+        $query = "DELETE FROM fighters WHERE id = '".$fighterId."'";
         $result = $this->connection->query($query);
         return true;
     }
 
     public function deleteFighterByUserId($userId) {
-        $query = "DELETE FROM fighters WHERE user_id = ".$userId."";
+        $query = "DELETE FROM fighters WHERE user_id = '".$userId."'";
         $result = $this->connection->query($query);
         return true;
     }
@@ -199,15 +200,15 @@ class DB {
         $startTimestamp = $this->getMillisTime();
         $query = "INSERT INTO battles
                   (id_fighter1, id_fighter2, startTimestamp ) 
-                  VALUES (".$fighterId1.",
-                         ".$fighterId2.",
-                         ".$startTimestamp.")";
+                  VALUES ('".$fighterId1."',
+                         '".$fighterId2."',
+                         '".$startTimestamp."')";
         $result = $this->connection->query($query);
         return true;
     }
 
     public function getBattle($fighterId) {
-        $query = "SELECT * FROM battles WHERE id_fighter1 = $fighterId OR id_fighter2 = $fighterId";
+        $query = "SELECT * FROM battles WHERE id_fighter1 = '".$fighterId."' OR id_fighter2 = '".$fighterId."'";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
     }
@@ -226,15 +227,15 @@ class DB {
     }
 
     public function deleteBattle($battleId) {
-        $query = "DELETE FROM battles WHERE id = ".$battleId."";
+        $query = "DELETE FROM battles WHERE id = '".$battleId."'";
         $result = $this->connection->query($query);
         return true;
     }
 
     public function deleteBattleByFighterId($fighterId) {
         $query = "DELETE FROM battles
-                  WHERE id_fighter1 = $fighterId
-                  OR id_fighter2 = $fighterId";
+                  WHERE id_fighter1 = '".$fighterId."'
+                  OR id_fighter2 = '".$fighterId."'";
         $result = $this->connection->query($query);
         return true;
     }
@@ -248,7 +249,7 @@ class DB {
     public function getResult($winner_id, $loser_id) {
         $query = "SELECT * 
                   FROM results 
-                  WHERE winner_id = $winner_id AND loser_id = $loser_id 
+                  WHERE winner_id = '".$winner_id."' AND loser_id = '".$loser_id."' 
                   ORDER BY id DESC LIMIT 1";
         $result = $this->connection->query($query);
         return $this->oneRecord($result);
