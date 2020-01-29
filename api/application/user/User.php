@@ -38,6 +38,4 @@ Class User {
         return array("token" => $token);
     }
 
-    
-
 }
