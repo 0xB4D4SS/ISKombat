@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  fpm:
+    build: fpm
+    tty: true
+    working_dir: "${CB_MOUNT_PATH}"
+    volumes:
+      - "..:${CB_MOUNT_PATH}"
+      - "./fpm/config/${CB_PHP_CONFIG_FILE}:/usr/local/etc/php/php.ini:ro"
+
+  nginx:
+    image: nginx:stable-alpine
+    working_dir: "${CB_MOUNT_PATH}"
+    ports:
+      - "80:80"
+    volumes:
+      - "..:${CB_MOUNT_PATH}:ro"
+      - "./nginx/${CB_NGINX_CONFIG_FILE}:/etc/nginx/conf.d/iskombat.conf:ro"
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=iskombat
+      - MYSQL_USER=forge
+      - MYSQL_PASSWORD=forge
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  mysql_data:

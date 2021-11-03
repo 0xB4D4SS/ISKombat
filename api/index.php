@@ -1,5 +1,5 @@
 <?php
-error_reporting(1);
+error_reporting(E_ALL);
 require_once("application/Application.php");
 
 function router($params) {
